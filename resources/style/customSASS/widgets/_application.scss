@@ -1,0 +1,114 @@
+.application {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .auth-widget {}
+
+    .navbar {}
+
+    .content {
+        flex-grow: 1;
+        overflow: none;
+    }
+}
+
+.events {
+    display: flex;
+    min-height: 100%;
+    max-height: 94vh;
+    height: auto;
+
+    .events-nav {
+        position: relative;
+        width: $events-nav-width;
+        overflow-y: auto;
+        padding-bottom: 100px;
+
+        .events-nav-header {
+            position: sticky;
+            top: 0;
+            padding: 1rem;
+            font-weight: bolder;
+            text-align: center;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+
+        .events-nav-item-list {
+
+            .events-nav-item {
+                padding: 1rem;
+                cursor: pointer;
+
+                .events-nav-item-head {
+                    display: flex;
+                    justify-content: space-between;
+                    padding-bottom: 16px;
+                    font-weight: bolder;
+
+                    .events-nav-item-head-client {}
+
+                    .events-nav-item-head-date {}
+                }
+
+                .events-nav-item-description {}
+            }
+        }
+    }
+
+    .events-content {
+        flex-grow: 1;
+        overflow-y: auto !important;
+        position: relative;
+
+        .events-header-toolbar {
+            position: absolute;
+            top: 0;
+            // width: calc(100vw - );
+
+        }
+    }
+}
+
+
+
+.event-divider {
+    flex-shrink: 0;
+    width: 1.5rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 0.5em 1.5em rgb(0 0 0 / 10%), inset 0 0.125em 0.5em rgb(0 0 0 / 15%);
+}
+
+
+
+.events-nav-item-list {
+
+    .events-nav-item:not(.active):hover {
+        background-color: shade-color($white, 20%);
+
+    }
+
+    .events-nav-item.active {
+        background-color: tint-color($primary, 20%);
+        color: $white;
+    }
+}
+
+
+.events-nav-header {
+    background-color: $white;
+    border-bottom: 1px solid #dee2e6;
+
+}
+
+.events-nav-item {
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 200ms ease-in-out,
+        color 200ms ease-in-out;
+}

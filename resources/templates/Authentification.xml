@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<messages>
+	<message id='login-template'>
+		<div class="form-container sign-up-container">
+			<div class="form-auth">
+				<h1 class="h1-auth">Create Account</h1>
+					<span class="span-login">or use your email for registration</span>
+					${registration-form-view} 
+				</div>
+		</div>
+		<div class="form-container sign-in-container">
+			<div class="form-auth">
+				<h1 class="h1-auth">Sign in</h1>
+					<span
+					class="span-login">or use your account</span> ${login-form-view} <a
+					class="a-auth">Forgot your password?</a>
+			</div>
+		</div>
+
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					<h1 class="h1-auth">Welcome Back!</h1>
+					<p class="p-login">
+					We need to identify you somehow, so we require a minimum of 
+					information, or just login if you have an account
+					</p> 
+					${btn-sign-in class="ghost button-login"} 
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1 class="h1-auth">Hello, Friend!</h1>
+						<p class="p-login">First Login or register a new accout if you dont have one </p> 
+						${btn-sign-up class="ghost button-login"} 
+				</div>
+			</div>
+		</div>
+	</message>
+
+	<message id='login-form-template'>
+
+		<form>
+			<div class="social-container">
+				<a class="a-auth">
+					${social-facebook-login}
+				</a>
+				<a class="a-auth">
+					${social-google-login}
+				</a>
+			</div> 
+			${user-email class="input-auth"} 
+			${user-password class="input-auth mb-2"} 
+			${submit-info class="text-danger"} 
+			${submit-button class="button-login mt-1"} 
+		</form>
+	</message>
+
+	<message id='registration-form-template'>
+
+		<form>
+			<div class="social-container">
+				<a class="a-auth">
+					${social-facebook-registration}
+				</a>
+				<a class="a-auth">
+					${social-google-registration}
+				</a>
+			</div> ${user-name class="input-auth"} 
+			${user-email class="input-auth"} 
+			${user-password class="input-auth"}
+			${user-password-repeat class="input-auth mb-2"} 
+			${submit-info class="text-danger"}
+			${submit-button class="button-login mt-2"} 
+		</form>
+
+	</message>
+
+</messages>

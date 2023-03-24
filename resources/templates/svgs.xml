@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+
+
+	<message id='google-svg'>
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+			class="bi bi-google" viewBox="0 0 16 16">
+			<path
+				d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+		</svg>
+	</message>
+
+	<message id='facebook-svg'>
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+			fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+			stroke-linejoin="round" class="feather feather-facebook">
+			<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+		</svg>
+	</message>
+
+	<message id='settings-svg'>
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+			fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+			stroke-linejoin="round" class="feather feather-settings">
+			<circle cx="12" cy="12" r="3"></circle>
+			<path
+				d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+		</svg>
+	</message>
+
+	<message id='hamburger-svg'>
+
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+			fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+			stroke-linejoin="round" class="feather feather-menu">
+			<line x1="3" y1="12" x2="21" y2="12"></line>
+			<line x1="3" y1="6" x2="21" y2="6"></line>
+			<line x1="3" y1="18" x2="21" y2="18"></line>
+		</svg>
+	</message>
+
+	<message id='svg-2'>
+
+	</message>
+
+	<message id='svg-3'>
+
+	</message>
+
+	<message id='svg-4'>
+
+	</message>
+
+	<message id='svg-5'>
+
+	</message>
+
+	<message id='svg-6'>
+
+	</message>
+
+	<message id='svg-7'>
+
+	</message>
+
+</messages>

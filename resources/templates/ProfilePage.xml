@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<messages>
+
+	<message id='profile-page-template'>
+		${profile-header-widget class="profile-header"}
+		
+		${dialog-widget}
+		<div class="profile-body">
+			<div class="profile-body-left">
+				${profile-stats-widget class="profile-stats"}
+				${profile-menu-widget class="profile-menu"}
+				${profile-settings-menu-widget class="profile-menu"}
+			</div>
+			<div class="profile-body-right">
+				${profile-service-description-widget class="profile-service-description"}
+				${profile-service-work-widget class="profile-service-work"}
+				${profile-settings-widget}
+			</div>
+		</div>
+	</message>
+
+	<message id='profile-header-template'>
+		<div class="profile-identity">
+			<div class="profile-image">
+			  <img
+				class="profile-avatar"
+				src="resources/images/alex.jpg"
+				alt="user photo"
+			  />
+			  <div class="dot online"></div>
+			</div>
+			<div class="profile-info">
+			  <div class="profile-name">${profile-name}</div>
+			  <div class="profile-websites">
+				<a href="">${profile-link-one}</a>
+				<a href="">${profile-link-two}</a>
+			  </div>
+			</div>
+		  </div>
+
+		  ${settings-button-widget class="profile-button"}
+	</message>
+
+	<message id='profile-stats-template'>
+		<div class="profile-stat">
+			<div class="profile-stat-count">148</div>
+			<div class="profile-stat-name">events</div>
+		  </div>
+		  <div class="profile-stat">
+			<div class="profile-stat-count">275</div>
+			<div class="profile-stat-name">total hours</div>
+		  </div>
+		  <div class="profile-stat">
+			<div class="profile-stat-count">28</div>
+			<div class="profile-stat-name">stat 3</div>
+		  </div>
+	</message>
+	
+
+	<message id='profile-menu-template'>
+		<div class="d-flex justify-content-between">
+			<div class="profile-menu-heading">Services</div>
+			${add-service-button class="btn btn-outline-info"}
+		</div>
+
+		<div class="services-nav">
+			${services-nav-item-0 class="services-nav-item"}
+			${services-nav-item-1 class="services-nav-item"}
+			${services-nav-item-2 class="services-nav-item"}
+			${services-nav-item-3 class="services-nav-item"}
+			${services-nav-item-4 class="services-nav-item"}
+			${services-nav-item-5 class="services-nav-item"}
+			${services-nav-item-6 class="services-nav-item"}
+			${services-nav-item-7 class="services-nav-item"}
+			${services-nav-item-8 class="services-nav-item"}
+			${services-nav-item-9 class="services-nav-item"}
+		</div>
+	</message>
+
+
+	<message id='profile-menu-settings-template'>
+		<div class="profile-menu-heading">${menu-title}</div>
+		<div class="services-nav">
+			${settings-profile-nav-item class="services-nav-item active"}
+			${settings-other-nav-item class="services-nav-item"}
+
+		</div>
+	</message>
+
+	<message id='profile-menu-nav-item-template'>
+		<a class="services-nav-link" href="#">${service-title}</a>
+	</message>
+	
+	<message id='profile-service-description-template'>
+		<div class="profile-service-description-heading">
+			<div class="profile-service-description-heading-title">
+			${service-title}
+			</div>
+			${copy-button-widget class="btn btn-outline-info"}
+		  </div>
+		  <div class="profile-service-description-body">${service-description}</div>
+	</message>
+
+	<message id='profile-service-work-template'>
+		<div class="profile-service-work-heading">
+			<div class="work-title">All Work History</div>
+		 	</div>
+		  	<div class="work-nav">
+			  ${work-nav-item-photos class="work-nav-item active"}
+			  ${work-nav-item-videos class="work-nav-item"}
+			  ${work-nav-item-reviews class="work-nav-item"}
+			</div>
+
+
+		  <div class="work-body">
+			<div class="work-body-card"></div>
+		  </div>
+	</message>
+
+	<message id='work-nav-item-template'>
+		<a class="work-nav-item-link">${nav-item-title}</a>
+	</message>
+
+	<message id='settings-button-template'>
+		${settings-btn}
+		${profile-btn}
+		${preview-profile-btn}
+	</message>
+
+	<message id='copy-button-template'>
+		<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="16"
+		height="16"
+		fill="currentColor"
+		class="bi bi-clipboard-check"
+		viewBox="0 0 16 16"
+	  >
+		<path
+		  fill-rule="evenodd"
+		  d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"
+		/>
+		<path
+		  d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"
+		/>
+		<path
+		  d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"
+		/>
+	  </svg>
+	</message>
+
+
+</messages>

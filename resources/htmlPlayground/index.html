@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <title>Event Manager Lab</title>
+</head>
+
+<body>
+
+
+  <div class="application">
+
+    <div id="o1h0xh3i" class="navbar-dark bg-dark navbar-expand-sm navbar">
+      <div class="container-fluid">
+        <a id="o1h0xh3l" class="navbar-brand"><span id="o1h0xh3m">Event Manager Lab</span></a>
+        <button id="o1h0xh3k" type="button"
+          onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}(function(o){let navbarCollapse = o.parentElement.querySelector('.navbar-collapse');if (typeof navbarCollapse === 'null') return;new bootstrap.Collapse(navbarCollapse);})(o,e);"
+          class="navbar-toggler btn">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="o1h0xh3j" class="navbar-collapse collapse">
+          <ul id="o1h0xh3p" class="navbar-nav me-auto">
+            <li id="o1h0xh3t" class="active nav-item"><a id="o1h0xh3v" href="/?_=/events"
+                onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(){Wt._p_.setHash('/events',true);};f(o,e);}Wt4_9_1.cancelEvent(e,0x2);Wt._p_.update(o,'s8fe',e,true);}"
+                class="active nav-link"><span id="o1h0xh3w"><span id="o1h0xh3x"
+                    style="white-space:nowrap;">Events</span></span></a></li>
+            <li id="o1h0xh44" class="nav-item"><a id="o1h0xh46" href="/?_=/test"
+                onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(){Wt._p_.setHash('/test',true);};f(o,e);}Wt4_9_1.cancelEvent(e,0x2);Wt._p_.update(o,'s8ff',e,true);}"
+                class="nav-link"><span id="o1h0xh47"><span id="o1h0xh48"
+                    style="white-space:nowrap;">Test</span></span></a></li>
+            <li id="o1h0xh9e" class="nav-item"><a id="o1h0xh9g" href="/?_=/addEvent"
+                onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(){Wt._p_.setHash('/addEvent',true);};f(o,e);}Wt4_9_1.cancelEvent(e,0x2);Wt._p_.update(o,'s900',e,true);}"
+                class="nav-link"><span id="o1h0xh9h"><span id="o1h0xh9i" style="white-space:nowrap;">Add
+                    Event</span></span></a></li>
+          </ul>
+          <div id="o1h0xh9k">
+            <div id="o1h0xh9j"
+              onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s8fd',e,true);">
+
+              <div class="btn btn-outline-secondary font-weight-bold">Logout</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="content">
+      <div class="events">
+        <div class="events-nav">
+          <div class="events-nav-header">Events</div>
+          <div class="events-nav-item-list">
+
+            <div class="events-nav-item active">
+              <div class="events-nav-item-head">
+                <div class="events-nav-item-head-client">Cristina Stanciu</div>
+                <div class="events-nav-item-head-date">12/04/2023</div>
+              </div>
+              <div class="events-nav-item-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Voluptate, eum.</div>
+            </div>
+
+          </div>
+        </div>
+        <div class="event-divider"></div>
+        <div class="events-content">
+          <div class="events-header-toolbar p-5 bg-success"></div>
+
+          <div class="accordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true">
+                  titlu
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse "
+                aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                  text1
+                </div>
+              </div>
+            </div>
+
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapseTwo">
+                  titlu
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse ">
+                <div class="accordion-body">
+                  text1
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
