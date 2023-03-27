@@ -1,5 +1,5 @@
 #include "include/AddEventDialog.h"
-
+#include <Wt/WMessageBox.h>
 #include "../../comunication/EventDataModule.h"
 #include <Ice/Ice.h>
 #include <stdexcept>
@@ -8,7 +8,7 @@ AddEventDialog::AddEventDialog(std::shared_ptr<Login> login)
     : WDialog("Register Event"),
       login_(login)
 {
-  setStyleClass("shadow-lg");
+  // setStyleClass("shadow-lg");
 
   setMinimumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
   setMaximumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
@@ -20,7 +20,6 @@ AddEventDialog::AddEventDialog(std::shared_ptr<Login> login)
 
   contents()->setStyleClass("p-0");
   setMovable(false);
-
   auto addServiceBtn = titleBar()->addWidget(std::make_unique<Wt::WPushButton>("Add Service"));
   addServiceBtn->setStyleClass("btn btn-outline-primary ms-auto");
 
@@ -52,7 +51,12 @@ void AddEventDialog::submitBtnClicked()
   {
     return;
   }
-
+  if (!eventView_->clientForm_->confirmBtn_->isHidden())
+  {
+    eventView_->clientForm_->process();
+    eventView_->clientForm_->confirmBtn_->hide();
+    eventView_->clientForm_->clearBtn_->show();
+  }
   // get event and client data
   eventDataPack.eventData = eventView_->eventForm_->model_->getData();
   eventDataPack.clientData = eventView_->clientForm_->model_->getData();
@@ -99,5 +103,4 @@ void AddEventDialog::submitBtnClicked()
   }
 
   accept();
-  eventRegisterd_.emit();
 }

@@ -4,22 +4,24 @@
 #include <Ice/Ice.h>
 #include <stdexcept>
 #include <Wt/WDialog.h>
+#include <Wt/WMessageBox.h>
 
 EventView::EventView(std::shared_ptr<Login> login)
     : WContainerWidget(),
       login_(login)
 {
-    setStyleClass("d-flex");
+    setStyleClass("d-flex overflow-auto h-100");
     eventFormWrapper_ = addWidget(std::make_unique<Wt::WContainerWidget>());
     servicesWrapper_ = addWidget(std::make_unique<Wt::WContainerWidget>());
 
     auto eventForm = std::make_unique<EventFormView>(login);
 
-    clientForm_ = eventFormWrapper_->addWidget(std::make_unique<ClientFormView>(login, eventForm->model_));
+    clientForm_ = eventFormWrapper_->addWidget(std::make_unique<ClientFormView>(login));
     eventFormWrapper_->addWidget(std::make_unique<Wt::WText>("<hr class=\"border-top border-primary m-0\" />"));
     eventForm_ = eventFormWrapper_->addWidget(std::move(eventForm));
 
-    servicesWrapper_->setStyleClass("flex-grow-1 accordion");
+    servicesWrapper_->setStyleClass("flex-grow-1 accordion overflow-auto");
+    servicesWrapper_->setHeight(Wt::WLength(80, Wt::LengthUnit::ViewportHeight));
     eventFormWrapper_->setStyleClass("");
 }
 
@@ -50,14 +52,43 @@ void EventView::setData(EventDataModule::EventDataPack eventDataPack)
 
         // Set Service Values
         serviceFormWidget->serviceForm_->setData(serviceData);
-        serviceFormWidget->deleteService().connect(this, [=](){ removeServiceDialog(serviceData); });
+        serviceFormWidget->deleteService().connect(this, [=]()
+                                                   { removeServiceDialog(serviceData); });
         serviceFormWidget->setSettingsMenu();
     }
 }
 
 void EventView::addService()
 {
-    auto serviceFormWidget = servicesWrapper_->addWidget(std::make_unique<ServiceFormWidget>(login_, eventForm_->model_));
+    if (login_->user().servicesInfoSq.size() == 0)
+    {
+        createNoServicesMessage();
+    }
+    else
+    {
+        auto serviceFormWidget = servicesWrapper_->addWidget(std::make_unique<ServiceFormWidget>(login_, eventForm_->model_));
+    }
+}
+
+void EventView::createNoServicesMessage()
+{
+    auto messageBox = addChild(std::make_unique<Wt::WMessageBox>(
+        "Nu ai nici un serviciu!",
+        "<p>Pentru a adauga servicii unui eveniment ai doua optiuni</p>"
+        "<p>1. Trebuie tu sa ai servicii, pe care le poti adauga din pagina de profil</p>"
+        "<p>2. Daca ai prieteni pe platforma care au servicii poti adauga din serviciile lor</p>"
+        "<p>Din pacate observ ca nu ai nici tu servicii si nici prieteni</p>"
+        "Prin urmare va trebui sa creezi un serviciu pentru a putea adauga servicii la evenimente",
+        Wt::Icon::Information,
+        Wt::StandardButton::Ok));
+
+    messageBox->setMovable(false);
+
+    messageBox->buttonClicked().connect([=]
+                                        {
+			if (messageBox->buttonResult() == Wt::StandardButton::Ok)
+				removeChild(messageBox); });
+    messageBox->show();
 }
 
 void EventView::clientChanged(Wt::WString clientName, int clientId)
@@ -168,12 +199,12 @@ void EventView::removeServiceDialog(EventDataModule::ServiceData serviceData)
     delBtn->clicked().connect(dialog, &Wt::WDialog::accept);
     closeBtn->clicked().connect(dialog, &Wt::WDialog::reject);
 
-    dialog->finished().connect([=](){
+    dialog->finished().connect([=]()
+                               {
         if (dialog->result() == Wt::DialogCode::Accepted)
         {
             removeService(serviceData.id);
         }
-        removeChild(dialog);
-    });
+        removeChild(dialog); });
     dialog->show();
 }

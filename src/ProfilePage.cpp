@@ -45,7 +45,7 @@ void ProfilePage::setProfileData()
     auto updateInfoBtn = description_->bindWidget("copy-button-widget", std::make_unique<Wt::WPushButton>("Edit Service"));
     updateInfoBtn->clicked().connect(this, &ProfilePage::modifyServiceDialog);
 
-    header_->bindString("profile-name", Wt::WString(login_->user().userName));
+    header_->bindString("profile-name", Wt::WString(login_->user().name));
     header_->bindEmpty("profile-link-one");
     header_->bindEmpty("profile-link-two");
 
@@ -82,13 +82,13 @@ void ProfilePage::setServicesMenu()
     for (int i = 0; i <= 9; ++i)
     {
         auto serviceString = Wt::WString("services-nav-item-" + std::to_string(i));
-
-        if (i >= login_->userServices_.size())
+        auto userServices = login_->user().servicesInfoSq;
+        if (i >= userServices.size())
         {
             menu_->bindEmpty("services-nav-item-" + std::to_string(i));
             continue;
         }
-        auto service = login_->userServices_.at(i);
+        auto service = userServices.at(i);
         auto serviceNavItem = menu_->bindWidget(serviceString.toUTF8(), std::make_unique<Wt::WTemplate>(tr("profile-menu-nav-item-template")));
         serviceNavItem->setObjectName("services-" + Wt::WString(service.title).toUTF8());
 
@@ -96,8 +96,8 @@ void ProfilePage::setServicesMenu()
         if (i == 0)
         {
             serviceNavItem->addStyleClass("active");
-            description_->bindString("service-title", Wt::WString(login_->userServices_.at(i).title));
-            description_->bindString("service-description", Wt::WString(login_->userServices_.at(i).description));
+            description_->bindString("service-title", Wt::WString(userServices.at(i).title));
+            description_->bindString("service-description", Wt::WString(userServices.at(i).description));
         }
 
         serviceNavItem->clicked().connect([=]()
@@ -111,9 +111,9 @@ void ProfilePage::setServicesMenu()
                     if(serviceNavItem->hasStyleClass("active")){
                         return;
                     }
-                    for(int j = 0; j < login_->userServices_.size(); ++j){
+                    for(int j = 0; j < userServices.size(); ++j){
 
-                        auto serviceName = Wt::WString("services-" + Wt::WString(login_->userServices_.at(j).title));
+                        auto serviceName = Wt::WString("services-" + Wt::WString(userServices.at(j).title));
                         auto serviceNavItem = menu_->find(serviceName.toUTF8());
                         if(serviceNavItem->hasStyleClass("active")){
                             serviceNavItem->removeStyleClass("active");
@@ -185,6 +185,7 @@ void ProfilePage::addServiceDialog()
                                                 throw std::runtime_error("Invalid proxy");
                                             }
                                             authInterface->addUserService(login_->userToken(), serviceInfo);
+                                            login_->getUserServices();
                                             setServicesMenu();
                                         }
                                         catch (const std::exception &e)
@@ -207,7 +208,7 @@ void ProfilePage::modifyServiceDialog()
     serviceInfo.title = description_->resolveStringValue("service-title").toUTF8();
 
     // iterate over login_->userServices_ and find the service with the same title
-    for (auto service : login_->userServices_)
+    for (auto service : login_->user().servicesInfoSq)
     {
 
         if (Wt::WString(service.title) == Wt::WString(serviceInfo.title))

@@ -8,23 +8,22 @@ class Login
 public:
 	Login();
 
-	void login(AuthModule::StructLoginReturn structLoginReturn);
+	void login(AuthModule::LoginReturn structLoginReturn);
 	void logout();
 	bool isLoggedIn();
 
 	std::string eventConnString_;
 	std::string authConnString_;
 
-	AuthModule::StructLoginReturn &user() { return user_; };
+	AuthModule::LoginReturn &user() { return user_; };
 	Wt::Signal<> &changed() { return changed_; };
-	std::string userToken() { return user_.userToken; };
+	std::string userToken() { return user_.token; };
 	bool loggedInOnce_ = false;
 
-	AuthModule::ServiceInfoSq userServices_;
 	void getUserServices();
 
 private:
-	AuthModule::StructLoginReturn user_;
+	AuthModule::LoginReturn user_;
 	Wt::Signal<> changed_;
 	void getConnectionStrings();
 };

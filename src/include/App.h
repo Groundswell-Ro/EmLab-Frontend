@@ -20,7 +20,6 @@ public:
 
     Wt::WNavigationBar *navigation_;
     Wt::WStackedWidget *contentsStack_;
-    EventDataModule::SeqClients seqClients_;
 
 private:
     void handleUserAuth();

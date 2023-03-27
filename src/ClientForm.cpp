@@ -46,9 +46,8 @@ EventDataModule::ClientData ClientFormModel::getData()
 }
 
 // C L I E N T ____________ V I E W
-ClientFormView::ClientFormView(std::shared_ptr<Login> login, std::shared_ptr<EventFormModel> eventModel)
-    : login_(login),
-      eventModel_(eventModel)
+ClientFormView::ClientFormView(std::shared_ptr<Login> login)
+    : login_(login)
 {
     setMinimumSize(Wt::WLength(280, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
     setMaximumSize(Wt::WLength(350, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
@@ -85,25 +84,16 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login, std::shared_ptr<Eve
     bindEmpty("submit-info");
 
     clearBtn_->hide();
-    setSignals();
-
-    // react to buttons
-    updateView(model_.get());
-}
-
-void ClientFormView::setSignals()
-{
 
     // connect clientName_ and clientPhone_ changed signal to lineEditChanged
     clientName_->textInput().connect(this, [=]()
                                      { clientNameChanged(clientName_->valueText()); });
     clientPhone_->textInput().connect(this, [=]()
                                       { clientPhoneChanged(clientPhone_->valueText()); });
-
-    // clientName_->changed().connect(this, &ClientFormView::process);
-
     confirmBtn_->clicked().connect(this, &ClientFormView::process);
     clearBtn_->clicked().connect(this, &ClientFormView::clearData);
+    // react to buttons
+    updateView(model_.get());
 }
 
 void ClientFormView::setData(EventDataModule::ClientData clientData)
@@ -240,7 +230,6 @@ void ClientFormView::process()
 {
     std::cout << "\n\n process \n\n ";
     // update model
-    updateModel(model_.get());
     if (!validate())
     {
         return;
@@ -273,18 +262,22 @@ void ClientFormView::process()
 
 bool ClientFormView::validate()
 {
+    updateModel(model_.get());
     if (model_->validate())
     {
         return true;
+        updateView(model_.get());
     }
     else if (!model_->validateField(model_->ClientNameField))
     {
         clientName_->setFocus();
+        updateViewField(model_.get(), model_->ClientNameField);
         bindString("submit-info", Wt::WString("Client name is required"));
     }
     else if (!model_->validateField(model_->ClientPhoneNumberField))
     {
         clientPhone_->setFocus();
+        updateViewField(model_.get(), model_->ClientPhoneNumberField);
         bindString("submit-info", Wt::WString("Client phone is required"));
     }
     else

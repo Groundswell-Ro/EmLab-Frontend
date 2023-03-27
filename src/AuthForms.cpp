@@ -1,20 +1,15 @@
 #include "include/AuthForms.h"
-#include <Wt/WLengthValidator.h> // used to add type and functionality to the validator
+#include <Wt/WLengthValidator.h>
 #include <Wt/WRegExpValidator.h>
 #include <Wt/WLineEdit.h>
 #include <Wt/WPushButton.h>
 
 #include <Ice/Ice.h>
 #include <stdexcept>
+
 // login form fields
 const Wt::WFormModel::Field LoginFormModel::UserEmail = "user-email";
 const Wt::WFormModel::Field LoginFormModel::UserPassword = "user-password";
-
-// registration form fields
-const Wt::WFormModel::Field RegistrationFormModel::UserName = "user-name";
-const Wt::WFormModel::Field RegistrationFormModel::UserEmail = "user-email";
-const Wt::WFormModel::Field RegistrationFormModel::UserPassword = "user-password";
-const Wt::WFormModel::Field RegistrationFormModel::UserPasswordRepeat = "user-password-repeat";
 
 std::shared_ptr<Wt::WValidator> createUserEmailValidator()
 {
@@ -52,14 +47,14 @@ LoginFormModel::LoginFormModel()
 	setValue(UserPassword, "asdfghj1");
 }
 
-AuthModule::StructLoginInfo LoginFormModel::getData()
+AuthModule::LoginInfo LoginFormModel::getData()
 {
 	std::cout << "\n\n AuthentificationWidget::loginUser() Started \n";
 
-	AuthModule::StructLoginInfo loginUserInfo;
-	loginUserInfo.userEmail = valueText(UserEmail).toUTF8();
-	loginUserInfo.userPassword = valueText(UserPassword).toUTF8();
-	return loginUserInfo;
+	AuthModule::LoginInfo loginInfo;
+	loginInfo.email = valueText(UserEmail).toUTF8();
+	loginInfo.password = valueText(UserPassword).toUTF8();
+	return loginInfo;
 }
 
 LoginFormView::LoginFormView(std::shared_ptr<Login> login)
@@ -121,15 +116,15 @@ void LoginFormView::process()
 			}
 
 			// Try to login in server
-			AuthModule::StructLoginReturn userDataResult = authInterface->tryLogin(model_->getData());
-			switch (userDataResult.loginResponse)
+			AuthModule::LoginReturn loginReturn = authInterface->loginUser(model_->getData());
+			switch (loginReturn.loginResponse)
 			{
 			case AuthModule::LoginResponse::NotIdentified:
 				bindWidget("submit-info", std::make_unique<Wt::WText>("No user with that Email"));
 				break;
 			case AuthModule::LoginResponse::LoggedIn:
-				bindWidget("submit-info", std::make_unique<Wt::WText>("User Succesfuly Logged In"));
-				login_->login(userDataResult);
+				bindEmpty("submit-info");
+				login_->login(loginReturn);
 				break;
 			case AuthModule::LoginResponse::Identified:
 				bindWidget("submit-info", std::make_unique<Wt::WText>("User Succesfuly Identified"));
@@ -147,6 +142,12 @@ void LoginFormView::process()
 		}
 	}
 }
+
+// registration form fields
+const Wt::WFormModel::Field RegistrationFormModel::UserName = "user-name";
+const Wt::WFormModel::Field RegistrationFormModel::UserEmail = "user-email";
+const Wt::WFormModel::Field RegistrationFormModel::UserPassword = "user-password";
+const Wt::WFormModel::Field RegistrationFormModel::UserPasswordRepeat = "user-password-repeat";
 
 // Registration Form Model Implementation
 RegistrationFormModel::RegistrationFormModel()
@@ -169,14 +170,14 @@ RegistrationFormModel::RegistrationFormModel()
 	setValue(UserPasswordRepeat, "asdfghj1");
 }
 
-AuthModule::StructRegistrationInfo RegistrationFormModel::getData()
+AuthModule::RegistrationInfo RegistrationFormModel::getData()
 {
-	AuthModule::StructRegistrationInfo structRegistrationInfo;
-	structRegistrationInfo.userName = valueText(UserName).toUTF8();
-	structRegistrationInfo.structLoginInfo.userEmail = valueText(UserEmail).toUTF8();
-	structRegistrationInfo.structLoginInfo.userPassword = valueText(UserPassword).toUTF8();
+	AuthModule::RegistrationInfo registrationInfo;
+	registrationInfo.name = valueText(UserName).toUTF8();
+	registrationInfo.email = valueText(UserEmail).toUTF8();
+	registrationInfo.password = valueText(UserPassword).toUTF8();
 
-	return structRegistrationInfo;
+	return registrationInfo;
 }
 
 RegistrationFormView::RegistrationFormView(std::shared_ptr<Login> login)
@@ -258,16 +259,22 @@ void RegistrationFormView::process()
 			}
 
 			// Try to login in server
-			AuthModule::StructRegistrationReturn structRegistrationReturn = authInterface->tryRegister(model_->getData());
-			switch (structRegistrationReturn.registrationResponse)
+			AuthModule::RegistrationResponse registrationResponse = authInterface->registerUser(model_->getData());
+
+			if (registrationResponse == AuthModule::RegistrationResponse::RegistrationSuccessful)
 			{
-			case AuthModule::RegistrationResponse::UserRegistrationSuccessful:
-				bindWidget("submit-info", std::make_unique<Wt::WText>("Registration Successful"));
-				login_->login(structRegistrationReturn.structLoginReturn);
-				break;
-			case AuthModule::RegistrationResponse::UserEmailAlreadyExists:
+				bindEmpty("submit-info");
+				// Log User In
+				AuthModule::LoginInfo loginInfo;
+				loginInfo.email = model_->valueText(model_->UserEmail).toUTF8();
+				loginInfo.password = model_->valueText(model_->UserPassword).toUTF8();
+
+				AuthModule::LoginReturn loginReturn = authInterface->loginUser(loginInfo);
+				login_->login(loginReturn);
+			}
+			else if (registrationResponse == AuthModule::RegistrationResponse::EmailAlreadyExists)
+			{
 				bindWidget("submit-info", std::make_unique<Wt::WText>("User with same Email identified, forgot Password ?"));
-				break;
 			}
 		}
 		catch (const std::exception &e)

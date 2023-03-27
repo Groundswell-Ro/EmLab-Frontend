@@ -35,9 +35,9 @@ public:
     void removeServiceDialog(EventDataModule::ServiceData serviceData);
     bool firstSetData_ = true;
     Wt::Signal<Wt::WString, int> &eventChangedClient() { return eventChangedClient_; };
+    void createNoServicesMessage();
 
 private:
     void clientChanged(Wt::WString clientName, int newClient);
     Wt::Signal<Wt::WString, int> eventChangedClient_;
-
 };

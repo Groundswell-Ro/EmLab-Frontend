@@ -16,7 +16,7 @@ public:
 	static const Field UserPassword;
 
 	LoginFormModel();
-	AuthModule::StructLoginInfo getData();
+	AuthModule::LoginInfo getData();
 
 private:
 };
@@ -29,7 +29,6 @@ public:
 
 	std::shared_ptr<LoginFormModel> model_;
 	std::shared_ptr<Login> login_;
-
 
 private:
 	void process();
@@ -46,7 +45,7 @@ public:
 
 	RegistrationFormModel();
 
-	AuthModule::StructRegistrationInfo getData();
+	AuthModule::RegistrationInfo getData();
 
 private:
 };

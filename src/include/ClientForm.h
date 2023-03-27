@@ -30,10 +30,9 @@ private:
 class ClientFormView : public Wt::WTemplateFormView
 {
 public:
-    ClientFormView(std::shared_ptr<Login> login, std::shared_ptr<EventFormModel> eventModel);
+    ClientFormView(std::shared_ptr<Login> login);
 
     std::shared_ptr<Login> login_;
-    std::shared_ptr<EventFormModel> eventModel_;
 
     Wt::WSuggestionPopup *clientNameSugestion_;
     Wt::WSuggestionPopup *clientPhoneSugestion_;
@@ -67,7 +66,6 @@ private:
     void createSugestionPopups();
     void resetSuggestions();
     void clearData();
-    void setSignals();
     // Wt::Signal<int> clientSelected_;
     Wt::Signal<Wt::WString, int> clientChanged_;
 };

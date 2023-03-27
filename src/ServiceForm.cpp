@@ -63,11 +63,11 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
       eventModel_(eventModel),
       login_(login)
 {
-    auto userName = login_->user().userName;
+    auto userName = login_->user().name;
     ServiceMap serviceMap;
     // {{userName, {"Kids Entertainer", "Magician", "Ballons Workshop", "Ballon modeling artist"}}};
 
-    auto userServices = login_->userServices_;
+    auto userServices = login_->user().servicesInfoSq;
 
     std::vector<std::string> services;
     for (auto service : userServices)
@@ -142,7 +142,7 @@ EventDataModule::ServiceData ServiceFormModel::getData()
 void ServiceFormModel::initializeModels(ServiceMap servMap)
 {
     // provider code should be user phone number
-    auto userName = login_->user().userName;
+    auto userName = login_->user().name;
     providers = {{userName, {"Myself"}}};
     services = servMap;
     // Create a provider model.

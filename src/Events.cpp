@@ -11,6 +11,7 @@
 #include <Ice/Ice.h>
 #include <stdexcept>
 #include <Wt/WLabel.h>
+#include <Wt/WMessageBox.h>
 // #include <Wt/WMenuItem.h>
 using namespace std;
 
@@ -18,10 +19,8 @@ Events::Events(std::shared_ptr<Login> login)
 	: WContainerWidget(),
 	  login_(login)
 {
-	auto addEventDialog = addWidget(std::make_unique<AddEventDialog>(login_));
-	
-	addEventDialog->eventRegisterd().connect(this, &Events::displayEventsData);
 	setStyleClass("events position-relative");
+
 	// Events Navigation
 	auto eventsNavContainer = addWidget(std::make_unique<Wt::WContainerWidget>());
 	eventsNavContainer->setStyleClass("events-nav");
@@ -60,7 +59,14 @@ Events::Events(std::shared_ptr<Login> login)
 	auto addEventBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("+", Wt::TextFormat::XHTML));
 	addEventBtn->setStyleClass("btn btn-outline-primary ms-auto");
 	addEventBtn->clicked().connect(this, [=]()
-								   { addEventDialog->show(); });
+								   {
+									   
+									   auto addEventDialog = addChild(std::make_unique<AddEventDialog>(login_));
+									   addEventDialog->show();
+										addEventDialog->finished().connect([=](){
+											addEventDialog->removeFromParent();
+											displayEventsData();
+										}); });
 
 	refreshBtn->clicked().connect(this, &Events::displayEventsData);
 	delEventBtn_->clicked().connect(this, &Events::removeEvent);
@@ -219,7 +225,14 @@ void Events::eventDateChanged(Wt::WDate eventDate, int eventId)
 
 void Events::addServiceToEventDialog()
 {
+
 	auto eventView = static_cast<EventView *>(eventsContentStack_->currentWidget()->children().at(0));
+
+	if (login_->user().servicesInfoSq.size() == 0)
+	{
+		eventView->createNoServicesMessage();
+		return;
+	}
 
 	auto dialog = addChild(std::make_unique<Wt::WDialog>("Add service"));
 	auto serviceFormView = dialog->contents()->addWidget(std::make_unique<ServiceFormView>(login_, eventView->eventForm_->model_));
@@ -228,15 +241,16 @@ void Events::addServiceToEventDialog()
 	auto cancelBtn = dialog->footer()->addWidget(std::make_unique<Wt::WPushButton>("Cancel"));
 	dialog->rejectWhenEscapePressed();
 
-	submitBtn->clicked().connect(this, [=](){
-		if(serviceFormView->validate()){
-			dialog->accept();
-		}else 
-		{
-			std::cout << "\n\n service form not valid \n\n";
-		}
-		
-	});
+	submitBtn->clicked().connect(this, [=]()
+								 {
+									 if (serviceFormView->validate())
+									 {
+										 dialog->accept();
+									 }
+									 else
+									 {
+										 std::cout << "\n\n service form not valid \n\n";
+									 } });
 	cancelBtn->clicked().connect(dialog, &Wt::WDialog::reject);
 
 	dialog->finished().connect([=]()
@@ -249,9 +263,7 @@ void Events::addServiceToEventDialog()
 								   }else {
 										std::cout << "\n\n add service to event dialog rejected \n\n";
 								   }
-								   removeChild(dialog);
-							   });
+								   removeChild(dialog); });
 
 	dialog->show();
 }
-

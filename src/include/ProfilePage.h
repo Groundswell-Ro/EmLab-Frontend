@@ -20,7 +20,7 @@ public:
     ProfileSettings *settings_profile_;
     Wt::WTemplate *settings_profile_menu_;
 
-    AuthModule::ServiceInfoSq services_;
+    AuthModule::ServicesInfoSq services_;
 
 private:
     void setProfileData();

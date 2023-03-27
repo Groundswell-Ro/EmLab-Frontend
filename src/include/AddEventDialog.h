@@ -11,12 +11,9 @@ public:
     AddEventDialog(std::shared_ptr<Login> login);
     EventView *eventView_;
 
-    Wt::Signal<> &eventRegisterd() { return eventRegisterd_; };
-
     void submitBtnClicked();
 
     std::shared_ptr<Login> login_;
 
 private:
-    Wt::Signal<> eventRegisterd_;
 };
