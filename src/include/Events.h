@@ -2,7 +2,6 @@
 #include <Wt/WContainerWidget.h>
 #include <Wt/WStackedWidget.h>
 #include "LoginObj.h"
-#include "AddEventDialog.h"
 
 class Events : public Wt::WContainerWidget
 {

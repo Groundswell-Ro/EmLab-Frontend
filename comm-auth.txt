@@ -1,1 +1,0 @@
-this file contains the connection string to the backend for production if the processes live one sepparate machines

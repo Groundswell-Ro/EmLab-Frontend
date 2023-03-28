@@ -2,7 +2,6 @@
 #include "LoginObj.h"
 #include "AuthWidget.h"
 #include "../../../comunication/EventDataModule.h"
-#include "AddEventDialog.h"
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/WStackedWidget.h>

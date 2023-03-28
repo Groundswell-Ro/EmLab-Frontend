@@ -1,6 +1,5 @@
 #include "include/Events.h"
 #include "include/EventView.h"
-// #include "include/AddEventDialog.h"
 #include <Wt/WTemplate.h>
 #include <Wt/WMenu.h>
 #include <Wt/WStackedWidget.h>
@@ -13,7 +12,7 @@
 #include <stdexcept>
 #include <Wt/WLabel.h>
 #include <Wt/WMessageBox.h>
-// #include <Wt/WMenuItem.h>
+
 using namespace std;
 
 Events::Events(std::shared_ptr<Login> login)
@@ -104,10 +103,9 @@ void Events::addEventDialog()
 					{
 						registerEvent(eventView->getData());
 					}
-					addEventDialog->animateHide(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft, Wt::TimingFunction::Linear, 400));
 					addEventDialog->removeFromParent(); });
 
-	addEventDialog->animateShow(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft, Wt::TimingFunction::Linear, 400));
+	addEventDialog->animateShow(Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 400));
 }
 
 // display all events data, first removes all the events if there is any and then brings all the events data from the server
