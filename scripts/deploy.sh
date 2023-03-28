@@ -10,8 +10,6 @@ ls
 
 echo '------ DEPLOY -----'
 scp frontend evntmgr@tstfront:./
-scp comm-auth.txt evntmgr@tstfront:./
-scp comm-event.txt evntmgr@tstfront:./
 scp makefile evntmgr@tstfront:./
 scp -r ./resources evntmgr@tstfront:./resources
 
