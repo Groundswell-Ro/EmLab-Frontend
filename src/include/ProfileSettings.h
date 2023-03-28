@@ -16,5 +16,4 @@ public:
 private:
     void setProfileMenu();
     void setOtherMenu();
-    void addSubscriptionDialog();
 };

@@ -43,13 +43,12 @@ void EventManagerLab::createApp()
 	navigation_->setObjectName("navigation");
 
 	// navigation->setResponsive(true);
-	navigation_->addStyleClass("navbar-dark bg-dark navbar-expand-sm");
+	navigation_->addStyleClass("navbar navbar-dark bg-dark navbar-expand-sm");
 	navigation_->setTitle("Event Manager Lab");
 
 	contentsStack_ = addWidget(std::make_unique<Wt::WStackedWidget>());
 	contentsStack_->addStyleClass("content");
-	navigation_->setObjectName("content");
-
+	contentsStack_->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromRight, Wt::TimingFunction::Linear, 400), true);
 	auto leftMenu_ = navigation_->addMenu(std::make_unique<Wt::WMenu>(contentsStack_));
 	leftMenu_->addStyleClass("me-auto");
 
@@ -62,7 +61,8 @@ void EventManagerLab::createApp()
 	leftMenu_->addItem("Events", std::move(eventsContentItem))->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/events"));
 	leftMenu_->addItem("Profile", std::move(profileContentsItem))->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/profile"));
 
-	auto logoutBtn = navigation_->addWidget(std::make_unique<Wt::WTemplate>(tr("logout-btn")));
+	auto logoutBtn = navigation_->addWidget(std::make_unique<Wt::WPushButton>("Logout"));
+	logoutBtn->addStyleClass("btn btn-outline-secondary");
 	logoutBtn->clicked().connect(this, [=]()
 								 { login_->logout(); });
 }

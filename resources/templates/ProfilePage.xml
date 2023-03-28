@@ -39,7 +39,7 @@
 			</div>
 		  </div>
 
-		  ${settings-button-widget class="profile-button"}
+		  ${settings-button-widget }
 	</message>
 
 	<message id='profile-stats-template'>

@@ -12,15 +12,14 @@ public:
 
     Wt::WContainerWidget *eventsMenu_;
     Wt::WStackedWidget *eventsContentStack_;
-
-    Wt::WPushButton *delEventBtn_;
-    Wt::WPushButton *addServiceBtn_;
+    void addEventDialog();
 
 private:
-    void addServiceToEventDialog();
+    void addServiceToEventDialog(int eventId);
     void displayEventsData();
     void addEventToList(EventDataModule::EventDataPack eventDataPack);
-    void removeEvent();
+    void removeEvent(int eventId);
     void eventClientChanged(Wt::WString clientName, int eventId);
     void eventDateChanged(Wt::WDate eventDate, int eventId);
+    void registerEvent(EventDataModule::EventDataPack eventDataPack);
 };

@@ -14,15 +14,11 @@ EventView::EventView(std::shared_ptr<Login> login)
     eventFormWrapper_ = addWidget(std::make_unique<Wt::WContainerWidget>());
     servicesWrapper_ = addWidget(std::make_unique<Wt::WContainerWidget>());
 
-    auto eventForm = std::make_unique<EventFormView>(login);
-
     clientForm_ = eventFormWrapper_->addWidget(std::make_unique<ClientFormView>(login));
-    eventFormWrapper_->addWidget(std::make_unique<Wt::WText>("<hr class=\"border-top border-primary m-0\" />"));
-    eventForm_ = eventFormWrapper_->addWidget(std::move(eventForm));
+    eventFormWrapper_->addWidget(std::make_unique<Wt::WText>("<hr />", Wt::TextFormat::XHTML));
+    eventForm_ = eventFormWrapper_->addWidget(std::make_unique<EventFormView>(login));
 
     servicesWrapper_->setStyleClass("flex-grow-1 accordion overflow-auto");
-    servicesWrapper_->setHeight(Wt::WLength(80, Wt::LengthUnit::ViewportHeight));
-    eventFormWrapper_->setStyleClass("");
 }
 
 void EventView::setData(EventDataModule::EventDataPack eventDataPack)
@@ -207,4 +203,53 @@ void EventView::removeServiceDialog(EventDataModule::ServiceData serviceData)
         }
         removeChild(dialog); });
     dialog->show();
+}
+
+EventDataModule::EventDataPack EventView::getData()
+{
+    EventDataModule::EventDataPack eventDataPack;
+
+    eventDataPack.eventData = eventForm_->model_->getData();
+    eventDataPack.clientData = clientForm_->model_->getData();
+
+    // get services form widgets
+    auto servicesWidgets = servicesWrapper_->children();
+
+    // iterate through services form widgets and validate and update data
+    for (int i = 0; i < servicesWidgets.size(); ++i)
+    {
+        auto servFormWidget = static_cast<ServiceFormWidget *>(servicesWidgets.at(i));
+        // update model and validate
+        servFormWidget->serviceForm_->updateModel(servFormWidget->serviceForm_->model_.get());
+        // update view
+        servFormWidget->serviceForm_->updateView(servFormWidget->serviceForm_->model_.get());
+
+        // get service data
+        eventDataPack.seqServices.push_back(servFormWidget->serviceForm_->model_->getData());
+    }
+    return eventDataPack;
+}
+
+bool EventView::validateFormsData()
+{
+    eventForm_->updateModel(eventForm_->model_.get());
+    clientForm_->updateModel(clientForm_->model_.get());
+
+    if (!clientForm_->validate() || !eventForm_->validate())
+    {
+        return false;
+    }
+
+    auto servicesWidgets = servicesWrapper_->children();
+    for (int i = 0; i < servicesWidgets.size(); ++i)
+    {
+        auto servFormWidget = static_cast<ServiceFormWidget *>(servicesWidgets.at(i));
+        servFormWidget->serviceForm_->updateModel(servFormWidget->serviceForm_->model_.get());
+        if (!servFormWidget->serviceForm_->validate())
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

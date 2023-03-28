@@ -36,6 +36,8 @@ public:
     bool firstSetData_ = true;
     Wt::Signal<Wt::WString, int> &eventChangedClient() { return eventChangedClient_; };
     void createNoServicesMessage();
+    bool validateFormsData();
+    EventDataModule::EventDataPack getData();
 
 private:
     void clientChanged(Wt::WString clientName, int newClient);

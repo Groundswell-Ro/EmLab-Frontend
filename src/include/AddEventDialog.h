@@ -11,7 +11,7 @@ public:
     AddEventDialog(std::shared_ptr<Login> login);
     EventView *eventView_;
 
-    void submitBtnClicked();
+    // void submitBtnClicked();
 
     std::shared_ptr<Login> login_;
 

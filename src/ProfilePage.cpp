@@ -50,9 +50,8 @@ void ProfilePage::setProfileData()
     header_->bindEmpty("profile-link-two");
 
     auto headerBtns = header_->bindWidget("settings-button-widget", std::make_unique<Wt::WTemplate>(tr("settings-button-template")));
-    auto settingsBtn = headerBtns->bindWidget("settings-btn", std::make_unique<Wt::WPushButton>("Settings"));
-    auto profileBtn = headerBtns->bindWidget("profile-btn", std::make_unique<Wt::WPushButton>("Profile"));
-    // auto previewBtn = headerBtns->bindWidget("preview-profile-btn", std::make_unique<Wt::WPushButton>("Preview Profile"));
+    auto settingsBtn = headerBtns->bindWidget("settings-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-gear-fill\"></i>", Wt::TextFormat::XHTML));
+    auto profileBtn = headerBtns->bindWidget("profile-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-person-circle\"></i>", Wt::TextFormat::XHTML));
     headerBtns->bindEmpty("preview-profile-btn");
 
     settingsBtn->clicked().connect(this, [=]()

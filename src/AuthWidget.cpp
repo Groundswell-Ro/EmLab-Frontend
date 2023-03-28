@@ -10,12 +10,9 @@ AuthWidget::AuthWidget(std::shared_ptr<Login> login)
 {
 	titleBar()->setStyleClass("d-flex justify-content-center align-items-center");
 
-	setMinimumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
-	setMaximumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
-	setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportWidth), Wt::Side::Left);
-	setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportWidth), Wt::Side::Right);
-	setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportHeight), Wt::Side::Top);
-	setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportHeight), Wt::Side::Bottom);
+	setMinimumSize(Wt::WLength(767, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
+	// setMaximumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
+
 	setMovable(false);
 	contents()->setStyleClass("d-flex justify-content-center align-items-center");
 	authTemp_ = contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("login-template")));

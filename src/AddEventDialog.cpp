@@ -8,8 +8,6 @@ AddEventDialog::AddEventDialog(std::shared_ptr<Login> login)
     : WDialog("Register Event"),
       login_(login)
 {
-  // setStyleClass("shadow-lg");
-
   setMinimumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
   setMaximumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
 
@@ -36,71 +34,73 @@ AddEventDialog::AddEventDialog(std::shared_ptr<Login> login)
 
   auto submitBtn = footer()->addWidget(std::make_unique<Wt::WPushButton>("Submit Data"));
   submitBtn->setStyleClass("btn btn-lg btn-success");
-  submitBtn->clicked().connect(this, &AddEventDialog::submitBtnClicked);
+  submitBtn->clicked().connect(this, [=]()
+                               { if(eventView_->validateFormsData())
+                                accept(); });
 }
 
-void AddEventDialog::submitBtnClicked()
-{
-  EventDataModule::EventDataPack eventDataPack;
+// void AddEventDialog::submitBtnClicked()
+// {
+//   EventDataModule::EventDataPack eventDataPack;
 
-  // update event model
-  eventView_->eventForm_->updateModel(eventView_->eventForm_->model_.get());
+//   // update event model
+//   eventView_->eventForm_->updateModel(eventView_->eventForm_->model_.get());
 
-  // validate event and client model
-  if (!eventView_->clientForm_->validate() || !eventView_->eventForm_->validate())
-  {
-    return;
-  }
-  if (!eventView_->clientForm_->confirmBtn_->isHidden())
-  {
-    eventView_->clientForm_->process();
-    eventView_->clientForm_->confirmBtn_->hide();
-    eventView_->clientForm_->clearBtn_->show();
-  }
-  // get event and client data
-  eventDataPack.eventData = eventView_->eventForm_->model_->getData();
-  eventDataPack.clientData = eventView_->clientForm_->model_->getData();
+//   // validate event and client model
+//   if (!eventView_->clientForm_->validate() || !eventView_->eventForm_->validate())
+//   {
+//     return;
+//   }
+//   if (!eventView_->clientForm_->confirmBtn_->isHidden())
+//   {
+//     eventView_->clientForm_->process();
+//     eventView_->clientForm_->confirmBtn_->hide();
+//     eventView_->clientForm_->clearBtn_->show();
+//   }
+//   // get event and client data
+//   eventDataPack.eventData = eventView_->eventForm_->model_->getData();
+//   eventDataPack.clientData = eventView_->clientForm_->model_->getData();
 
-  // update event and client view
-  eventView_->eventForm_->updateView(eventView_->eventForm_->model_.get());
-  eventView_->clientForm_->updateView(eventView_->clientForm_->model_.get());
+//   // update event and client view
+//   eventView_->eventForm_->updateView(eventView_->eventForm_->model_.get());
+//   eventView_->clientForm_->updateView(eventView_->clientForm_->model_.get());
 
-  // get services form widgets
-  auto servicesWidgets = eventView_->servicesWrapper_->children();
+//   // get services form widgets
+//   auto servicesWidgets = eventView_->servicesWrapper_->children();
 
-  // iterate through services form widgets and validate and update data
-  for (int i = 0; i < servicesWidgets.size(); ++i)
-  {
-    auto servFormWidget = static_cast<ServiceFormWidget *>(servicesWidgets.at(i));
-    // update model and validate
-    servFormWidget->serviceForm_->updateModel(servFormWidget->serviceForm_->model_.get());
-    if (!servFormWidget->serviceForm_->validate())
-    {
-      return;
-    }
-    // update view
-    servFormWidget->serviceForm_->updateView(servFormWidget->serviceForm_->model_.get());
+//   // iterate through services form widgets and validate and update data
+//   for (int i = 0; i < servicesWidgets.size(); ++i)
+//   {
+//     auto servFormWidget = static_cast<ServiceFormWidget *>(servicesWidgets.at(i));
+//     // update model and validate
+//     servFormWidget->serviceForm_->updateModel(servFormWidget->serviceForm_->model_.get());
+//     if (!servFormWidget->serviceForm_->validate())
+//     {
+//       return;
+//     }
+//     // update view
+//     servFormWidget->serviceForm_->updateView(servFormWidget->serviceForm_->model_.get());
 
-    // get service data
-    eventDataPack.seqServices.push_back(servFormWidget->serviceForm_->model_->getData());
-  }
+//     // get service data
+//     eventDataPack.seqServices.push_back(servFormWidget->serviceForm_->model_->getData());
+//   }
 
-  // Ice communication for sending event date to server
-  try
-  {
-    Ice::CommunicatorHolder ich = Ice::initialize();
-    auto base = ich->stringToProxy(login_->eventConnString_);
-    auto eventsDataInterface = Ice::checkedCast<EventDataModule::EventsDataInterfacePrx>(base);
-    if (!eventsDataInterface)
-    {
-      throw std::runtime_error("Invalid proxy");
-    }
-    eventsDataInterface->registerEvent(login_->userToken(), eventDataPack);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << e.what() << std::endl;
-  }
+//   // Ice communication for sending event date to server
+//   try
+//   {
+//     Ice::CommunicatorHolder ich = Ice::initialize();
+//     auto base = ich->stringToProxy(login_->eventConnString_);
+//     auto eventsDataInterface = Ice::checkedCast<EventDataModule::EventsDataInterfacePrx>(base);
+//     if (!eventsDataInterface)
+//     {
+//       throw std::runtime_error("Invalid proxy");
+//     }
+//     eventsDataInterface->registerEvent(login_->userToken(), eventDataPack);
+//   }
+//   catch (const std::exception &e)
+//   {
+//     std::cerr << e.what() << std::endl;
+//   }
 
-  accept();
-}
+//   accept();
+// }

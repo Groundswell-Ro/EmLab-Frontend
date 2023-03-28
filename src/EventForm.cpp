@@ -103,8 +103,6 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
     setMinimumSize(Wt::WLength(280, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
     setMaximumSize(Wt::WLength(350, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
 
-    setStyleClass("py-3");
-
     model_ = std::make_shared<EventFormModel>();
     setTemplateText(tr("event-form-template"));
     addFunction("id", &WTemplate::Functions::id);

@@ -2,38 +2,38 @@
 <messages>
 
 	<message id='event-form-template'>
-		<form class="form-inline ">
+		<form class="form-inline m-2">
 
 			<div class="form-floating mb-3 d-flex"> 
 				${event-date class="form-control" } 
-				<label class="form-control=sm" for="${id:event-date}">Event <b>Date</b></label>
+				<label class="form-control=sm" for="${id:event-date}"><b>Data</b></label>
 				${event-date-btn-change class="btn btn-sm btn-outline-warning"}
 				${event-date-btn-confirm class="btn btn-sm btn-primary"}
 
 			</div>
 			<div class="form-floating mb-3 d-flex"> 
 				${event-start class="form-control" }
-				<label for="${id:event-start}"> Start <b>Time</b></label>
+				<label for="${id:event-start}"><b>Ora</b> de inceput</label>
 				${event-start-btn-change class="btn btn-sm btn-outline-warning"}
 				${event-start-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="form-floating mb-3 d-flex"> 
 				${event-duration class="form-control" } 
-				<label for="${id:event-duration}"><b>Duration</b></label>
+				<label for="${id:event-duration}"><b>Durata</b> in ore</label>
 				${event-duration-btn-change class="btn btn-sm btn-outline-warning"}
 				${event-duration-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="form-floating mb-3 d-flex"> 
 				${event-location class="form-control" } 
 				<label
-					for="${id:event-location}"><b>Location</b></label>
+					for="${id:event-location}"><b>Locatia</b></label>
 				${event-location-btn-change class="btn btn-sm btn-outline-warning"}
 				${event-location-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="form-floating mb-3 d-flex"> 
 				${event-observations class="form-control" } 
-				<label for="${id:event-observations}"><b>Observations</b></label>
+				<label for="${id:event-observations}"><b>Observatii</b></label>
 				${event-observations-btn-change class="btn btn-sm btn-outline-warning"}
 				${event-observations-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
@@ -42,49 +42,49 @@
 	</message>
 
 	<message id='service-form-template'>
-		<form class="form-inline">
+		<form class="form-inline m-2">
 			<div class="form-floating mb-3 d-flex"> 
 				${provider-identity class="form-control" } 
-				<label for="${id:provider-identity}">Provider Name</label>
+				<label for="${id:provider-identity}">Alege un <b>Provider</b></label>
 				${service-provider-identity-btn-change class="btn btn-sm btn-outline-warning"}
 				${service-provider-identity-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="form-floating mb-3 d-flex"> 
 				${provider-service class="form-control" } 
-				<label for="${id:provider-identity}">Provider Service</label>
+				<label for="${id:provider-identity}">Alege <b>Serviciul</b> providerului</label>
 				${service-provider-service-btn-change class="btn btn-sm btn-outline-warning"}
 				${service-provider-service-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="form-floating mb-3 d-flex"> 
 				${service-start class="form-control" } 
-				<label for="${id:service-start}"> Start</label>
+				<label for="${id:service-start}"><b>Ora</b> de inceput</label>
 				${service-start-btn-change class="btn btn-sm btn-outline-warning"}
 				${service-start-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="form-floating mb-3 d-flex"> 
 				${service-duration class="form-control" } 
-				<label for="${id:service-duration}"> Durata Ore</label>
+				<label for="${id:service-duration}"><b>Durata</b></label>
 				${service-duration-btn-change class="btn btn-sm btn-outline-warning"}
 				${service-duration-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="form-floating mb-3 d-flex"> 
 				${service-cost class="form-control" } 
-				<label for="${id:service-cost}">Cost</label>
+				<label for="${id:service-cost}"><b>Tariful / ora</b></label>
 				${service-cost-btn-change class="btn btn-sm btn-outline-warning"}
 				${service-cost-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="form-floating mb-3 d-flex"> 
 				${service-description class="form-control" } 
-				<label for="${id:service-description}">Descriere serviciu</label>
+				<label for="${id:service-description}"><b>Descriere</b> serviciu</label>
 				${service-description-btn-change class="btn btn-sm btn-outline-warning"}
 				${service-description-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="form-floating mb-3 d-flex">
 				 ${service-observations class="form-control" } 
-				 <label for="${id:service-observations}">Observatii Suplimentare</label>
+				 <label for="${id:service-observations}"><b>Observatii</b></label>
 				 ${service-observations-btn-change class="btn btn-sm btn-outline-warning"}
 				 ${service-observations-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
@@ -93,41 +93,45 @@
 	</message>
 
 	<message id='service-header-toggler-template'>
-		${provider-identity} - ${provider-service} - ${service-start} - ${service-duration} H - ${service-cost} lei
+		${provider-identity}${provider-service}${service-start}${service-duration}${service-cost}
 	</message>
 
 	<message id='service-form-widget-template'>
 		<div class="accordion-item d-flex">
+			${service-menu class="btn btn-outline-secondary"}
 			<div class="accordion-header flex-grow-1">
 				${service-header-toggler class="accordion-button"}
 			</div>
-			${service-menu class="btn btn-outline-secondary"}
 		</div>
 		${service-form class="px-2 accordion-collapse collapse"}
 	</message>
 
 
 	<message id='client-form-template'>
-		<form class="form-inline">
-			<div class="form-floating mb-3"> ${client-name class="form-control" } <label
-				for="${id:client-name}"> Client <b>Name</b>
-			</label>
-			</div>
-			<div class="form-floating mb-1"> ${client-phone class="form-control" } <label
-				for="${id:client-phone}"> Client <b>Phone</b>
-			</label>
-			</div>
+		<form class="form-inline my-2 mx-3">
+			<div class="w-100 my-1">
+
 				${clear-client-btn class="btn btn-outline-warning w-100"}
 				${confirm-client-btn class="btn btn-success w-100"}
+			</div>
+			<div class="form-floating mb-3"> ${client-name class="form-control" } <label
+				for="${id:client-name}"><b>Nume</b> client
+			</label>
+			</div>
+			<div class="form-floating"> ${client-phone class="form-control" } <label
+				for="${id:client-phone}"><b>Telefon</b> client
+			</label>
+			</div>
 			<span class="help-inline text-danger">${submit-info}</span>
 		</form>
 	</message>
+
 	<message id='event-nav-item'>
 		<div class="events-nav-item-head">
 		  <div class="events-nav-item-head-client">${client-name}</div>
 		  <div class="events-nav-item-head-date">${event-date}</div>
 		</div>
-		<div class="events-nav-item-description">${info}</div>  
+		<div class="events-nav-item-description">${settings-btn}</div>  
 	  </message>
   
   

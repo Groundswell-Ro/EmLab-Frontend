@@ -1,31 +1,50 @@
 .application {
-    position: relative;
+    // position: relative;
 
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    // display: flex;
+    // flex-direction: column;
+    // overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 57px 1fr;
+    grid-template-areas:
+        "navbar"
+        "content";
+
 
     .auth-widget {}
 
-    .navbar {}
-
-    .content {
-        flex-grow: 1;
-        overflow: none;
+    .navbar {
+        grid-area: navbar;
     }
+
+    .content {}
 }
 
 .events {
-    display: flex;
-    min-height: 100%;
-    max-height: 94vh;
-    height: auto;
+    // display: flex;
+    // min-height: 100%;
+    // max-height: 94vh;
+    // height: auto;
+    grid-area: content;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: calc(100vh - 57px);
+    overflow: auto;
+    grid-template-areas:
+        "events-nav events-view";
 
     .events-nav {
-        position: relative;
-        width: $events-nav-width;
-        overflow-y: auto;
+        grid-area: events-nav;
+        // position: relative;
+        // min-width: $events-nav-width;
+        // max-width: $events-nav-width;
+        // overflow-y: auto;
         padding-bottom: 100px;
+        // height: 95vh;
+        overflow-y: auto;
+        position: static !important;
 
         .events-nav-header {
             position: sticky;
@@ -55,12 +74,18 @@
                     .events-nav-item-head-date {}
                 }
 
-                .events-nav-item-description {}
+                .events-nav-item-description {
+                    display: flex;
+                    justify-content: end;
+
+
+                }
             }
         }
     }
 
     .events-content {
+        grid-area: events-view;
         flex-grow: 1;
         overflow-y: auto !important;
         position: relative;
@@ -90,13 +115,12 @@
 .events-nav-item-list {
 
     .events-nav-item:not(.active):hover {
-        background-color: shade-color($white, 20%);
+        background-color: shade-color($white, 10%);
 
     }
 
     .events-nav-item.active {
-        background-color: tint-color($primary, 20%);
-        color: $white;
+        background-color: tint-color($primary, 60%);
     }
 }
 

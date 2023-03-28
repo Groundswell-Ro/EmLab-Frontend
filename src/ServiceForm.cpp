@@ -226,8 +226,6 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     setMinimumSize(Wt::WLength(280, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
     setMaximumSize(Wt::WLength(350, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
 
-    setStyleClass("py-3");
-
     model_ = std::make_shared<ServiceFormModel>(eventModel, login_);
     if (eventModel_->id == 0)
     {
@@ -735,6 +733,9 @@ ServiceFormWidget::ServiceFormWidget(std::shared_ptr<Login> login, std::shared_p
     : WTemplate(tr("service-form-widget-template")),
       login_(login)
 {
+    setMinimumSize(Wt::WLength(412, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
+    setMaximumSize(Wt::WLength::Auto, Wt::WLength::Auto);
+
     setStyleClass("accordion-item");
     headerToggler_ = bindWidget("service-header-toggler", std::make_unique<Wt::WTemplate>(tr("service-header-toggler-template")));
     headerToggler_->setStyleClass("accordion-button collapsed");
@@ -768,13 +769,14 @@ ServiceFormWidget::ServiceFormWidget(std::shared_ptr<Login> login, std::shared_p
 
 void ServiceFormWidget::setSettingsMenu()
 {
-    settingsBtn_ = bindWidget("service-menu", std::make_unique<Wt::WPushButton>(""));
+    settingsBtn_ = bindWidget("service-menu", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-three-dots-vertical\"></i>", Wt::TextFormat::UnsafeXHTML));
 
     auto popupMenu = std::make_unique<Wt::WPopupMenu>();
+    popupMenu->addStyleClass("dropdown-menu-dark");
     popupMenu->addItem("Delete Service")->triggered().connect(this, [=]()
                                                               { deleteService_.emit(serviceForm_->model_->getData()); });
-
     settingsBtn_->setMenu(std::move(popupMenu));
+    settingsBtn_->setStyleClass("btn btn-outline-dark btn-sm");
 }
 
 ServiceDialog::ServiceDialog(std::shared_ptr<Login> login, EventDataModule::ServiceData serviceData)

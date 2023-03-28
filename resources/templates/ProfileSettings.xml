@@ -18,25 +18,9 @@
 		<div class="settings-body">
             <div class="settings-body-title">User Data</div>
 			<div class="settings-body-content">
-				${subscription-preview-widget class="mb-3 subscription-preview"}
 				${change-password-widget}
 			</div>
 		</div>
-	</message>
-
-	<message id='subscription-preview-template'>
-		
-		<div class="subscription-preview">
-			<div class="subscription-preview-title"><h4>Subscription Plan</h4></div>
-			<div class="subscription-preview-body">
-			${free-plan class="subscription-preview-plan"}
-			${monthly-plan class="subscription-preview-plan"}
-			${yearly-plan class="subscription-preview-plan"}
-			</div>
-			<div class="subscription-preview-change-plan">
-				${change-subscription-button class="btn btn-outline-success"}
-			</div>
-		  </div>
 	</message>
 
 	<message id='subscription-payment-dialog-template'>
