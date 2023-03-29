@@ -76,7 +76,7 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
     }
     serviceMap.insert({userName, services});
 
-    initializeModels(serviceMap);
+    initializeModels();
 
     addField(ServiceProviderIdentityField);
     addField(ServiceProviderServiceField);
@@ -100,12 +100,6 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
 EventDataModule::ServiceData ServiceFormModel::getData()
 {
     EventDataModule::ServiceData serviceData;
-    std::cout << "\n\n";
-    std::cout << "----" << Wt::asString(value(ServiceProviderIdentityField)).toUTF8();
-    std::cout << "\n\n";
-    std::cout << "----" << Wt::asString(value(ServiceProviderServiceField)).toUTF8();
-    std::cout << "\n\n";
-
     serviceData.id = id;
     serviceData.eventId = eventModel_->id;
     serviceData.providerIdentity = Wt::asString(value(ServiceProviderIdentityField)).toUTF8();
@@ -119,42 +113,29 @@ EventDataModule::ServiceData ServiceFormModel::getData()
     return serviceData;
 }
 
-// // from here, handles the provider and the services
-// ProviderMap ServiceFormModel::getProviders()
-// {
-//     ProviderMap ProviderMap = {
-//         {"1", {"Myself"}},
-//         // {"2", {"Another"}}
-//     };
-//     return ProviderMap;
-// }
-
-// ServiceMap ServiceFormModel::getServices()
-// {
-//     ServiceMap serviceMap = {
-//         {"1", {"Kids Entertainer", "Magician", "Ballons Workshop", "Ballon modeling artist"}},
-//         {"2", {"A - Kids Entertainer", "A - Magician", "A - Ballons Workshop", "A - Ballon modeling artist"}}};
-
-//     //
-//     return serviceMap;
-// }
-
-void ServiceFormModel::initializeModels(ServiceMap servMap)
+void ServiceFormModel::initializeModels()
 {
     // provider code should be user phone number
     auto userName = login_->user().name;
-    providers = {{userName, {"Myself"}}};
-    services = servMap;
-    // Create a provider model.
-    providerModel_ = std::make_shared<Wt::WStandardItemModel>(providers.size(), 1);
+    providersMap = {{userName, {"Tu esti providerul"}}};
+    auto userServices = login_->user().servicesInfoSq;
+
+    std::vector<std::string> services;
+    for (auto service : userServices)
+    {
+        services.push_back(service.title);
+    }
+    servicesMap.insert({userName, services});
+
+    providerModel_ = std::make_shared<Wt::WStandardItemModel>(providersMap.size(), 1);
 
     // For each provider, update the model based on the key (corresponding
     // to the provider code):
     // - set the provider name for the display role,
     // - set the service names for the user role.
     int row = 0;
-    for (ProviderMap::const_iterator i = providers.begin();
-         i != providers.end(); ++i)
+    for (ProviderMap::const_iterator i = providersMap.begin();
+         i != providersMap.end(); ++i)
     {
         providerModel_->setData(row, 0, i->second, Wt::ItemDataRole::Display);
         providerModel_->setData(row++, 0, i->first, Wt::ItemDataRole::User);
@@ -162,22 +143,22 @@ void ServiceFormModel::initializeModels(ServiceMap servMap)
 
     // Create a city model.
     serviceModel_ = std::make_shared<Wt::WStandardItemModel>();
-    // updateProviderServicesModel(providers.begin()->first);
+    updateProviderServicesModel(providersMap.begin()->first);
 }
 
 void ServiceFormModel::updateProviderServicesModel(const std::string &providerCode)
 {
     serviceModel_->clear();
 
-    ServiceMap::const_iterator i = services.find(providerCode);
+    ServiceMap::const_iterator i = servicesMap.find(providerCode);
 
-    if (i != services.end())
+    if (i != servicesMap.end())
     {
         const std::vector<std::string> &services = i->second;
 
         // The initial text shown in the city combo box should be an empty
         // string.
-        serviceModel_->appendRow(std::make_unique<Wt::WStandardItem>());
+        // serviceModel_->appendRow(std::make_unique<Wt::WStandardItem>());
 
         for (unsigned j = 0; j < services.size(); ++j)
             serviceModel_->appendRow(std::make_unique<Wt::WStandardItem>(services[j]));
@@ -185,7 +166,7 @@ void ServiceFormModel::updateProviderServicesModel(const std::string &providerCo
     else
     {
         serviceModel_->appendRow(
-            std::make_unique<Wt::WStandardItem>("(Choose Service)"));
+            std::make_unique<Wt::WStandardItem>("(Nu exista servicii disponibile)"));
     }
 }
 
@@ -227,9 +208,6 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     setMaximumSize(Wt::WLength(350, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
 
     model_ = std::make_shared<ServiceFormModel>(eventModel, login_);
-    if (eventModel_->id == 0)
-    {
-    }
     setTemplateText(tr("service-form-template"));
     addFunction("id", &Wt::WTemplate::Functions::id);
 
@@ -649,11 +627,9 @@ void ServiceFormView::setData(EventDataModule::ServiceData serviceData)
 
     model_->id = serviceData.id;
 
-    const std::string &providerIdentity = serviceData.providerIdentity;
-    const std::string &providerService = serviceData.providerService;
+    std::string providerService = serviceData.providerService;
 
-    providerService_->setCurrentIndex(providerService_->findText(serviceData.providerService, Wt::MatchFlag::StringExactly));
-
+    model_->setValue(model_->ServiceProviderServiceField, providerService);
     model_->setValue(model_->ServiceStartField, serviceTimeString);
     model_->setValue(model_->ServiceDurationField, serviceData.duration);
     model_->setValue(model_->ServiceCostField, serviceData.cost);

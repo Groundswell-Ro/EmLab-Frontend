@@ -2,9 +2,78 @@
 <messages>
 
 
-	<message id='test'>
+	<message id='client-copy-data-template'>
+		<div class="ms-2">
+			<p class="mb-1 text-decoration-underline">Client</p>
+			<div class="ms-2">
+				<div class="d-flex justify-content-between"><span>Nume:</span> <span>${client-name}</span></div>
+				<div class="d-flex justify-content-between">Telefon: <b class="">${client-phone}</b></div>
+			</div>
+		</div>
+	</message>
 
-	
+	<message id='event-copy-data-template'>
+
+		<div class="m-2">
+			<p class="mb-1 text-decoration-underline">Eveniment</p>
+			<div class="ms-2">
+				<div class="d-flex justify-content-between">Data: <b class="w-75">${event-date}</b></div>
+				<div class="d-flex justify-content-between">Ora: <b class="w-75">${event-time}</b></div>
+				<div class="d-flex justify-content-between">Durata: <b class="w-75">${event-duration}</b></div>
+				<div class="d-flex justify-content-between">Locatie: <b class="w-75">${event-location}</b></div>
+				<div class="d-flex justify-content-between">Observatii: <b class="w-75">${event-observations}</b></div>
+				<div class="d-flex justify-content-between">Total: <b class="w-75">${event-total-cost}</b></div>
+
+				
+				<!-- <dt class="col-sm-3 fw-normal">Data:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${event-date}</dd>
+				<dt class="col-sm-3 fw-normal">Ora:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${event-time}</dd>
+				<dt class="col-sm-3 fw-normal">Durata:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${event-duration}</dd>
+				<dt class="col-sm-3 fw-normal">Locatie:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${event-location}</dd>
+				<dt class="col-sm-3 fw-normal">Observatii:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${event-observations}</dd>
+				<dt class="col-sm-3 fw-normal">Total:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${event-total-cost}</dd> -->
+
+			</div>
+		</div>
+	</message>
+
+	<message id='service-copy-data-template'>
+		<div class="m-2">
+			<p class="mb-1 text-decoration-underline">Serviciu</p>
+			<div class="ms-2">
+				<div class="d-flex justify-content-between">Providerul: <b class="w-75">${service-provider}</b></div>
+				<div class="d-flex justify-content-between">Serviciul: <b class="w-75">${service-provider-service}</b></div>
+				<div class="d-flex justify-content-between">Ora: <b class="w-75">${service-time}</b></div>
+				<div class="d-flex justify-content-between">Durata: <b class="w-75">${service-duration}</b></div>
+				<div class="d-flex justify-content-between">Tariful / ora: <b class="w-75">${service-cost}</b></div>
+				<div class="d-flex justify-content-between">Descriere: <b class="w-75">${service-description}</b></div>
+				<div class="d-flex justify-content-between">Observatii: <b class="w-75">${service-observations}</b></div>
+				<div class="d-flex justify-content-between">Total: <b class="w-75">${service-total-cost}</b></div>
+
+
+				<!-- <dt class="col-sm-3 fw-normal">Providerul:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-provider}</dd>
+				<dt class="col-sm-3 fw-normal">Serviciul:</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-provider-service}</dd>
+				<dt class="col-sm-3 fw-normal">Ora</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-time}</dd>
+				<dt class="col-sm-3 fw-normal">Durata</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-duration}</dd>
+				<dt class="col-sm-3 fw-normal">Tariful / ora</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-cost}</dd>
+				<dt class="col-sm-3 fw-normal">Descriere</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-description}</dd>
+				<dt class="col-sm-3 fw-normal">Observatii</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-observations}</dd>
+				<dt class="col-sm-3 fw-normal">Total</dt>
+				<dd class="col-sm-9 fw-bold text-center">${service-total-cost}</dd> -->
+			</div>
+		</div>
 	</message>
 
 </messages>

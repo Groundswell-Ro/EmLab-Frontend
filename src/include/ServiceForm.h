@@ -49,12 +49,7 @@ public:
     std::shared_ptr<Wt::WAbstractItemModel> providerModel() { return providerModel_; }
     std::shared_ptr<Wt::WAbstractItemModel> serviceModel() { return serviceModel_; }
 
-    // ProviderMap getProviders();
-    // ServiceMap getServices();
-
-    void initializeModels(ServiceMap servMap);
-
-    // to here, handles the providers and the services
+    void initializeModels();
 
     EventDataModule::ServiceData getData();
 
@@ -63,14 +58,14 @@ public:
     Wt::WString dateFormat_ = "dd/MM/yyyy";
     Wt::WString timeFormat_ = "HH:mm AP";
 
+    ProviderMap providersMap;
+    ServiceMap servicesMap;
+
 private:
     std::shared_ptr<Wt::WValidator> createTextValidator(bool mandatory, int min, int max);
     std::shared_ptr<Wt::WValidator> createDoubleValidator(double min, double max);
     std::shared_ptr<Wt::WValidator> createIntValidator(int min, int max);
     std::shared_ptr<Wt::WValidator> createMandatoryValidator();
-
-    ProviderMap providers;
-    ServiceMap services;
 
     std::shared_ptr<Wt::WStandardItemModel> providerModel_, serviceModel_;
 };

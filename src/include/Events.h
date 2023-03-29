@@ -15,8 +15,9 @@ public:
 
 private:
     void addServiceToEventDialog(int eventId);
+    void copyEventDataDialog(EventDataModule::EventDataPack eventDataPack);
     void displayEventsData();
-    void addEventToList(EventDataModule::EventDataPack eventDataPack);
+    void addEventToList(EventDataModule::EventDataPack eventDataPack, bool active = false);
     void removeEvent(int eventId);
     void eventClientChanged(Wt::WString clientName, int eventId);
     void eventDateChanged(Wt::WDate eventDate, int eventId);

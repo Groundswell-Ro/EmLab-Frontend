@@ -54,8 +54,6 @@ Events::Events(std::shared_ptr<Login> login)
 
 	addEventBtn->clicked().connect(this, &Events::addEventDialog);
 
-	// delEventBtn_->clicked().connect(this, &Events::removeEvent);
-	// addServiceBtn_->clicked().connect(this, &Events::addServiceToEventDialog);
 	// Navigation Menu
 	eventsMenu_ = eventsNavContainer->addWidget(std::make_unique<Wt::WContainerWidget>());
 
@@ -108,7 +106,6 @@ void Events::addEventDialog()
 	addEventDialog->animateShow(Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 400));
 }
 
-// display all events data, first removes all the events if there is any and then brings all the events data from the server
 void Events::displayEventsData()
 {
 	// std::cout << "\n\n displayEventsData -------------------------------------------\n\n";
@@ -144,57 +141,44 @@ void Events::displayEventsData()
 	// add events to this view
 	if (seqEventDataPack.size() != 0)
 	{
-		for (int i = 0; i < seqEventDataPack.size(); ++i)
+		auto size = seqEventDataPack.size();
+		for (int i = 0; i < size; ++i)
 		{
-			addEventToList(seqEventDataPack.at(i));
+			if (i == 0)
+				addEventToList(seqEventDataPack.at(i), true);
+			else
+				addEventToList(seqEventDataPack.at(i));
 		}
-		eventsContentStack_->setCurrentIndex(0);
-		eventsMenu_->children().at(0)->addStyleClass("active");
 	}
 }
 
 // adds events to the view
-void Events::addEventToList(EventDataModule::EventDataPack eventDataPack)
+void Events::addEventToList(EventDataModule::EventDataPack eventDataPack, bool active)
 {
-	// std::cout << "\n\n addEventToList -------------------------------------------\n\n";
-	auto navItem = eventsMenu_->addWidget(std::make_unique<Wt::WTemplate>(tr("event-nav-item")));
+	auto navItemWidget = std::make_unique<Wt::WTemplate>(tr("event-nav-item"));
+	auto navItem = navItemWidget.get();
+	auto eventContentWrapperWidget = std::make_unique<Wt::WContainerWidget>();
+	auto eventContentWrapper = eventContentWrapperWidget.get();
+	eventsContentStack_->addWidget(std::move(eventContentWrapperWidget));
+	eventsMenu_->addWidget(std::move(navItemWidget));
 	navItem->setStyleClass("events-nav-item");
+	std::cout << "\n\n eventsContentStack_->currentIndex() = " << eventsContentStack_->currentIndex() << "\n\n";
+
+	if (active)
+	{
+		if (eventsContentStack_->count() > 1)
+		{
+			int clickedItemIndex = eventsMenu_->indexOf(navItem);
+			int curentItemIndex = eventsContentStack_->currentIndex();
+			eventsMenu_->widget(curentItemIndex)->removeStyleClass("active");
+			eventsContentStack_->setCurrentIndex(clickedItemIndex);
+		}
+		navItem->addStyleClass("active");
+	}
+
 	auto eventSettingsBtn = navItem->bindWidget("settings-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-gear\"></i>", Wt::TextFormat::XHTML));
 
-	auto popupMenu = std::make_unique<Wt::WPopupMenu>();
-	popupMenu->addStyleClass("dropdown-menu-dark");
-	auto addServiceBtn = popupMenu->addItem("./resources/Icons/myIcons/file-earmark-plus.svg", "Adauga serviciu");
-	auto copyDataBtn = popupMenu->addItem("./resources/Icons/myIcons/clipboard-check.svg", "Copiaza datele");
-	popupMenu->addSeparator();
-	auto deleteBtn = popupMenu->addItem("./resources/Icons/myIcons/trash3.svg", "Sterge evenimetul");
-	addServiceBtn->clicked().connect(this, [=]()
-									 { addServiceToEventDialog(eventDataPack.eventData.id); });
-	deleteBtn->clicked().connect(this, [=]()
-								 { 
-		auto messageBox = addChild(std::make_unique<Wt::WMessageBox>(
-        "Esti sigur ca vrei sa stergi evenimentul?",
-        "<p>Evenimentul va fi sters impreuna cu toate serviciile lui</p>",
-        Wt::Icon::Critical,
-        Wt::StandardButton::Ok | Wt::StandardButton::Cancel));
-		messageBox->titleBar()->addStyleClass("bg-danger text-light");
-
-		messageBox->setMovable(false);
-
-		messageBox->buttonClicked().connect([=]
-											{
-				if (messageBox->buttonResult() == Wt::StandardButton::Ok){
-					removeEvent(eventDataPack.eventData.id);
-				}
-					removeChild(messageBox);
-				});
-    	messageBox->show(); });
-
-	eventSettingsBtn->setMenu(std::move(popupMenu));
-
-	eventSettingsBtn->setStyleClass("btn btn-outline-dark btn-sm rounded-circle");
-
-	auto eventFormWidgetWrapper = eventsContentStack_->addWidget(std::make_unique<Wt::WContainerWidget>());
-	auto eventView = eventFormWidgetWrapper->addWidget(std::make_unique<EventView>(login_));
+	auto eventView = eventContentWrapper->addWidget(std::make_unique<EventView>(login_));
 
 	auto eventWrapperId_name = Wt::WString(std::to_string(eventDataPack.eventData.id) + "_event_data");
 	auto navItemEventId_name = Wt::WString(std::to_string(eventDataPack.eventData.id) + "_event_nav_item");
@@ -206,24 +190,52 @@ void Events::addEventToList(EventDataModule::EventDataPack eventDataPack)
 	eventView->eventForm_->dateChanged().connect(this, &Events::eventDateChanged);
 	eventView->setData(eventDataPack);
 
-	if (eventsContentStack_->count() == 1)
-	{
-		navItem->addStyleClass("active");
-	}
-
 	navItem->clicked().connect(this, [=]()
 							   {
-								   int curentItemIndex = eventsContentStack_->currentIndex();
-								   int clickedItemIndex = eventsMenu_->indexOf(navItem);
+		int curentItemIndex = eventsContentStack_->currentIndex();
+		int clickedItemIndex = eventsMenu_->indexOf(navItem);
 
-								   if (curentItemIndex == clickedItemIndex)
-								   {
-									   return;
-								   }
+		if (curentItemIndex == clickedItemIndex)
+		{
+			return;
+		}
 
-								   eventsMenu_->widget(curentItemIndex)->removeStyleClass("active");
-								   eventsMenu_->widget(clickedItemIndex)->addStyleClass("active");
-								   eventsContentStack_->setCurrentIndex(clickedItemIndex); });
+		eventsContentStack_->setCurrentIndex(clickedItemIndex);
+		eventsMenu_->widget(curentItemIndex)->removeStyleClass("active");
+		eventsMenu_->widget(clickedItemIndex)->addStyleClass("active"); });
+
+	auto popupMenu = std::make_unique<Wt::WPopupMenu>();
+	popupMenu->addStyleClass("dropdown-menu-dark");
+	auto addServiceBtn = popupMenu->addItem("./resources/Icons/myIcons/file-earmark-plus.svg", "Adauga serviciu");
+	auto copyDataBtn = popupMenu->addItem("./resources/Icons/myIcons/clipboard-check.svg", "Copiaza datele");
+	popupMenu->addSeparator();
+	auto deleteBtn = popupMenu->addItem("./resources/Icons/myIcons/trash3.svg", "Sterge evenimetul");
+	addServiceBtn->clicked().connect(this, [=]()
+									 { addServiceToEventDialog(eventDataPack.eventData.id); });
+	copyDataBtn->clicked().connect(this, [=]()
+								   { copyEventDataDialog(eventView->getData()); });
+	deleteBtn->clicked().connect(this, [=]()
+								 {
+		auto messageBox = addChild(std::make_unique<Wt::WMessageBox>(
+			"Esti sigur ca vrei sa stergi evenimentul?",
+			"<p>Evenimentul va fi sters impreuna cu toate serviciile lui</p>",
+			Wt::Icon::Critical,
+			Wt::StandardButton::Ok | Wt::StandardButton::Cancel));
+		messageBox->titleBar()->addStyleClass("bg-danger text-light");
+
+		messageBox->setMovable(false);
+
+		messageBox->buttonClicked().connect([=]
+											{
+				if (messageBox->buttonResult() == Wt::StandardButton::Ok){
+					removeEvent(eventDataPack.eventData.id);
+				}
+					removeChild(messageBox); });
+					
+		messageBox->show(); });
+
+	eventSettingsBtn->setMenu(std::move(popupMenu));
+	eventSettingsBtn->setStyleClass("btn btn-outline-dark btn-sm rounded-circle");
 }
 
 // remove current active event from the view and backend
@@ -240,25 +252,11 @@ void Events::removeEvent(int eventId)
 			throw std::runtime_error("Invalid proxy");
 		}
 		eventsDataInterface->deleteRecord(login_->userToken(), EventDataModule::Table::events, eventId);
+		displayEventsData();
 	}
 	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
-	}
-
-	auto navItem = eventsMenu_->find(Wt::WString(std::to_string(eventId) + "_event_nav_item").toUTF8());
-	auto eventView = eventsContentStack_->find(Wt::WString(std::to_string(eventId) + "_event_data").toUTF8());
-	eventsMenu_->removeWidget(navItem);
-	eventsContentStack_->removeWidget(eventView);
-
-	if (eventsMenu_->count() == 0)
-	{
-		return;
-	}
-	else
-	{
-		eventsContentStack_->setCurrentIndex(0);
-		eventsMenu_->children().at(0)->addStyleClass("active");
 	}
 }
 
@@ -338,11 +336,83 @@ void Events::registerEvent(EventDataModule::EventDataPack eventDataPack)
 		{
 			throw std::runtime_error("Invalid proxy");
 		}
-		eventsDataInterface->registerEvent(login_->userToken(), eventDataPack);
+
+		auto newEvDataPack = eventsDataInterface->registerEvent(login_->userToken(), eventDataPack);
+		addEventToList(newEvDataPack, true);
 	}
 	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	displayEventsData();
+	// displayEventsData();
+}
+
+void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
+{
+	auto dialog = addChild(std::make_unique<Wt::WDialog>());
+	dialog->setResizable(true);
+	dialog->setMinimumSize(500, 600);
+	dialog->titleBar()->addStyleClass("bg-primary text-light text-center");
+	auto closeBtn = dialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("esc"));
+	closeBtn->clicked().connect(dialog, &Wt::WDialog::reject);
+	dialog->rejectWhenEscapePressed();
+	dialog->setWindowTitle("Datele evenimentului");
+	dialog->contents()->setStyleClass("d-flex");
+
+	auto eventDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
+	auto servicesDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
+
+	eventDataWrapper->setStyleClass("flex-grow-1");
+	servicesDataWrapper->setStyleClass("flex-grow-1");
+
+	auto clientTemp = eventDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("client-copy-data-template")));
+	auto eventTemp = eventDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("event-copy-data-template")));
+
+	// get the data ready for desplay
+	auto dateTime = Wt::WDateTime().fromString(eventDataPack.eventData.dateTime, "dd/MM/yyyy HH:mm AP");
+	auto dateString = dateTime.toString("dd/MMMM/yyyy");
+	auto timeString = dateTime.toString("HH:mm AP");
+
+	auto duration = eventDataPack.eventData.duration;
+	auto hours = (int)duration;
+	auto minutes = (int)((duration - hours) * 60);
+	auto minutesString = std::to_string(minutes);
+	if (minutes == 0)
+		minutesString = "00";
+	auto durationString = Wt::WString(std::to_string(hours) + ":" + minutesString + " H");
+
+	clientTemp->bindString("client-name", eventDataPack.clientData.name);
+	clientTemp->bindString("client-phone", eventDataPack.clientData.phone);
+
+	eventTemp->bindString("event-date", dateString);
+	eventTemp->bindString("event-time", timeString);
+	eventTemp->bindString("event-duration", durationString);
+	eventTemp->bindString("event-location", eventDataPack.eventData.location);
+	eventTemp->bindString("event-observations", eventDataPack.eventData.observations);
+	eventTemp->bindString("event-total-cost", "ajungem si aici");
+
+	for (auto service : eventDataPack.seqServices)
+	{
+		auto serviceTime = Wt::WTime().fromString(service.dateTime, "dd/MM/yyyy HH:mm AP").toString("HH:mm AP");
+
+		auto duration = service.duration;
+		auto hours = (int)duration;
+		auto minutes = (int)((duration - hours) * 60);
+		auto minutesString = std::to_string(minutes);
+		if (minutes == 0)
+			minutesString = "00";
+		auto durationString = Wt::WString(std::to_string(hours) + ":" + minutesString + " H");
+
+		auto serviceTemp = servicesDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("service-copy-data-template")));
+		serviceTemp->bindString("service-provider", service.providerIdentity);
+		serviceTemp->bindString("service-provider-service", service.providerService);
+		serviceTemp->bindString("service-time", serviceTime);
+		serviceTemp->bindString("service-duration", durationString);
+		serviceTemp->bindString("service-cost", std::to_string(service.cost));
+		serviceTemp->bindString("service-description", service.description);
+		serviceTemp->bindString("service-observations", service.observations);
+		serviceTemp->bindString("service-total-cost", "ajungem si aici");
+	}
+
+	dialog->show();
 }
