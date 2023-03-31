@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <Wt/WLabel.h>
 #include <Wt/WMessageBox.h>
+#include <Wt/WApplication.h>
 
 using namespace std;
 
@@ -351,13 +352,13 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 {
 	auto dialog = addChild(std::make_unique<Wt::WDialog>());
 	dialog->setResizable(true);
-	dialog->setMinimumSize(500, 600);
+	dialog->setMinimumSize(850, 600);
 	dialog->titleBar()->addStyleClass("bg-primary text-light text-center");
 	auto closeBtn = dialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("esc"));
 	closeBtn->clicked().connect(dialog, &Wt::WDialog::reject);
 	dialog->rejectWhenEscapePressed();
 	dialog->setWindowTitle("Datele evenimentului");
-	dialog->contents()->setStyleClass("d-flex");
+	dialog->contents()->setStyleClass("d-flex p-3");
 
 	auto eventDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
 	auto servicesDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
@@ -391,9 +392,12 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 	eventTemp->bindString("event-observations", eventDataPack.eventData.observations);
 	eventTemp->bindString("event-total-cost", "ajungem si aici");
 
+	auto copyClientDataBtn = clientTemp->bindWidget("copy-client-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
+	auto copyEventDataBtn = eventTemp->bindWidget("copy-event-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
+
 	for (auto service : eventDataPack.seqServices)
 	{
-		auto serviceTime = Wt::WTime().fromString(service.dateTime, "dd/MM/yyyy HH:mm AP").toString("HH:mm AP");
+		auto serviceDateTime = Wt::WDateTime().fromString(service.dateTime, "dd/MM/yyyy HH:mm AP");
 
 		auto duration = service.duration;
 		auto hours = (int)duration;
@@ -406,13 +410,23 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 		auto serviceTemp = servicesDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("service-copy-data-template")));
 		serviceTemp->bindString("service-provider", service.providerIdentity);
 		serviceTemp->bindString("service-provider-service", service.providerService);
-		serviceTemp->bindString("service-time", serviceTime);
+		serviceTemp->bindString("service-date", serviceDateTime.toString("dd/MMMM/yyyy"));
+		serviceTemp->bindString("service-time", serviceDateTime.toString("HH:mm AP"));
 		serviceTemp->bindString("service-duration", durationString);
-		serviceTemp->bindString("service-cost", std::to_string(service.cost));
+		serviceTemp->bindString("service-cost", std::to_string(service.cost) + " RON");
 		serviceTemp->bindString("service-description", service.description);
 		serviceTemp->bindString("service-observations", service.observations);
 		serviceTemp->bindString("service-total-cost", "ajungem si aici");
+		
+		Wt::WString copyServicesJsFunc = Wt::WString("setServicesCheckboxes(") + serviceTemp->id() + Wt::WString(")");
+		serviceTemp->doJavaScript(copyServicesJsFunc.toUTF8());
 	}
+	clientTemp->doJavaScript("setClientCheckboxes()");
+	eventTemp->doJavaScript("setEventCheckboxes()");
+	
 
-	dialog->show();
+	dialog->finished().connect([=]()
+							   { removeChild(dialog); });
+
+		dialog->show();
 }
