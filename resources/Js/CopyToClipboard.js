@@ -1,72 +1,325 @@
 function setClientCheckboxes() {
-  // get Checkboxes
+  // get elements
   let clientPhoneCheckbox = document.getElementById("clientPhoneCheckbox");
+  let clientPhoneElement = document.getElementById("clientPhone");
 
-  // check if checkboxes are null
-  if (clientPhoneCheckbox == null) {
-    console.log(
-      "check the ids of the checkboxes that i get, one of them is null"
-    );
+  // check if elements are null
+  if(clientPhoneCheckbox == null) {
+    console.log("setClientCheckboxes() clientPhoneCheckbox is null");
+    return;
+  }else if(clientPhoneElement == null) {
+    console.log("setClientCheckboxes() clientPhoneElement is null");
     return;
   }
 
-  // set checkboxes to checked
-  clientPhoneCheckbox.checked = true;
+  // set checkboxes
+  if(clientPhoneElement.textContent == "")
+    clientPhoneCheckbox.disabled = true;
+  else  
+    clientPhoneCheckbox.checked = true;
 }
 
 function setEventCheckboxes() {
-  // get Checkboxes
-  let eventDateCheckbox = document.getElementById("eventDateCheckbox");
+  // get checkboxes elements
   let eventTimeCheckbox = document.getElementById("eventTimeCheckbox");
   let eventDurationCheckbox = document.getElementById("eventDurationCheckbox");
   let eventLocationCheckbox = document.getElementById("eventLocationCheckbox");
-  let eventObservationsCheckbox = document.getElementById(
-    "eventObservationsCheckbox"
-  );
-  let eventTotalCostCheckbox = document.getElementById(
-    "eventTotalCostCheckbox"
-  );
+  let eventObservationsCheckbox = document.getElementById("eventObservationsCheckbox");
+  let eventTotalCostCheckbox = document.getElementById("eventTotalCostCheckbox");
 
-  // check if checkboxes are null
-  if (
-    eventDateCheckbox == null ||
-    eventTimeCheckbox == null ||
-    eventDurationCheckbox == null ||
-    eventLocationCheckbox == null ||
-    eventObservationsCheckbox == null ||
-    eventTotalCostCheckbox == null
-  ) {
-    console.log(
-      "check the ids of the checkboxes that i get, one of them is null"
-    );
+  // get text elements
+  let eventTimeElement = document.getElementById("eventTime");
+  let eventDurationElement = document.getElementById("eventDuration");
+  let eventLocationElement = document.getElementById("eventLocation");
+  let eventObservationsElement = document.getElementById("eventObservations");
+  let eventTotalCostElement = document.getElementById("eventTotalCost");
+
+  let eventObservationTogglerInput = document.getElementById("eventShowObservations");
+
+
+
+  // check elements are null
+  if(eventTimeElement == null) {
+    console.log("setEventCheckboxes() eventTimeElement is null");
+    return;
+  }else if(eventDurationElement == null) {
+    console.log("setEventCheckboxes() eventDurationElement is null");
+    return;
+  }else if(eventLocationElement == null) {
+    console.log("setEventCheckboxes() eventLocationElement is null");
+    return;
+  }else if(eventObservationsElement == null) {
+    console.log("setEventCheckboxes() eventObservationsElement is null");
+    return;
+  }else if(eventTotalCostElement == null) {
+    console.log("setEventCheckboxes() eventTotalCostElement is null");
+    return;
+  }else if(eventTimeCheckbox == null) {
+    console.log("setEventCheckboxes() eventTimeCheckbox is null");
+    return;
+  }else if(eventDurationCheckbox == null) {
+    console.log("setEventCheckboxes() eventDurationCheckbox is null");
+    return;
+  }else if(eventLocationCheckbox == null) {
+    console.log("setEventCheckboxes() eventLocationCheckbox is null");
+    return;
+  }else if(eventObservationsCheckbox == null) {
+    console.log("setEventCheckboxes() eventObservationsCheckbox is null");
+    return;
+  }else if(eventTotalCostCheckbox == null) {
+    console.log("setEventCheckboxes() eventTotalCostCheckbox is null");
+    return;
+  }else if(eventObservationTogglerInput == null) {
+    console.log("setEventCheckboxes() eventObservationTogglerInput is null");
     return;
   }
 
-  // set checkboxes to checked
-  eventDateCheckbox.checked = true;
-  eventTimeCheckbox.checked = true;
-  eventDurationCheckbox.checked = true;
-  eventLocationCheckbox.checked = true;
-  eventObservationsCheckbox.checked = true;
-  eventTotalCostCheckbox.checked = true;
+  // set checkboxes
+  if(eventTimeElement.textContent == "")
+    eventTimeCheckbox.disabled = true;
+  else   
+    eventTimeCheckbox.checked = true; 
+
+  if(eventDurationElement.textContent == "")
+    eventDurationCheckbox.disabled = true;
+  else  
+    eventDurationCheckbox.checked = true;
+
+  if(eventLocationElement.textContent == "")
+    eventLocationCheckbox.disabled = true;
+  else  
+    eventLocationCheckbox.checked = true;
+
+  if(eventObservationsElement.textContent == ""){
+    eventObservationsCheckbox.disabled = true;
+    eventObservationTogglerInput.disabled = true;
+  }else  
+    eventObservationsCheckbox.checked = true;
+
+  if(eventTotalCostElement.textContent == "")
+    eventTotalCostCheckbox.disabled = true;
+  else  
+    eventTotalCostCheckbox.checked = true;
+
 }
 
-function setServicesCheckboxes() {
-  let servicesContainer = document.getElementsByClassName("service-copy-container");
-  if (servicesContainer == null) {
-    console.log("servicesContainer is null");
+function setServiceCheckboxes(tempElement) {
+  console.log(tempElement);
+  // get parent elements for creating dinamic id for checkboxes
+  let serviceProviderCheckboxParent = tempElement.querySelector("#serviceProviderCheckboxParent");
+  let serviceTimeCheckboxParent = tempElement.querySelector("#serviceTimeCheckboxParent");
+  let serviceDurationCheckboxParent = tempElement.querySelector("#serviceDurationCheckboxParent");
+  let serviceCostCheckboxParent = tempElement.querySelector("#serviceCostCheckboxParent");
+  let serviceDescriptionCheckboxParent = tempElement.querySelector("#serviceDescriptionCheckboxParent");
+  let serviceObservationsCheckboxParent = tempElement.querySelector("#serviceObservationsCheckboxParent");
+  let serviceTotalCostCheckboxParent = tempElement.querySelector("#serviceTotalCostCheckboxParent");
+
+  // check if parent elements are null
+  if(serviceProviderCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceProviderCheckboxParent is null");
+    return;
+  }else if(serviceTimeCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceTimeCheckboxParent is null");
+    return;
+  }else if(serviceDurationCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceDurationCheckboxParent is null");
+    return;
+  }else if(serviceCostCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceCostCheckboxParent is null");
+    return;
+  }else if(serviceDescriptionCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceDescriptionCheckboxParent is null");
+    return;
+  }else if(serviceObservationsCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceObservationsCheckboxParent is null");
+    return;
+  }else if(serviceTotalCostCheckboxParent == null) {
+    console.log("setServiceCheckboxes() serviceTotalCostCheckboxParent is null");
     return;
   }
-  for(let i = 0; i < servicesContainer.length; i++) {
-    servicesContainer[i].querySelector("#serviceProviderCheckbox").checked = true;
-    servicesContainer[i].querySelector("#serviceProviderServiceCheckbox").checked = true;
-    servicesContainer[i].querySelector("#serviceTimeCheckbox").checked = true;
-    servicesContainer[i].querySelector("#serviceDurationCheckbox").checked = true;
-    servicesContainer[i].querySelector("#serviceCostCheckbox").checked = true;
-    servicesContainer[i].querySelector("#serviceDescriptionCheckbox").checked = true;
-    servicesContainer[i].querySelector("#serviceObservationsCheckbox").checked = true;
+
+  // create checkboxes
+  let serviceProviderCheckboxInput = document.createElement("input");
+  let serviceProviderCheckboxLabel = document.createElement("label");
+  serviceProviderCheckboxInput.type = "checkbox";
+  serviceProviderCheckboxInput.id = "serviceProviderCheckbox" + tempElement.id;
+  serviceProviderCheckboxInput.className = "copy-checkbox";
+  serviceProviderCheckboxLabel.className = "copy-label";
+  serviceProviderCheckboxLabel.htmlFor = "serviceProviderCheckbox" + tempElement.id;
+  serviceProviderCheckboxParent.appendChild(serviceProviderCheckboxInput);
+  serviceProviderCheckboxParent.appendChild(serviceProviderCheckboxLabel);
+
+  let serviceTimeCheckboxInput = document.createElement("input");
+  let serviceTimeCheckboxLabel = document.createElement("label");
+  serviceTimeCheckboxInput.type = "checkbox";
+  serviceTimeCheckboxInput.id = "serviceTimeCheckbox" + tempElement.id;
+  serviceTimeCheckboxInput.className = "copy-checkbox";
+  serviceTimeCheckboxLabel.className = "copy-label";
+  serviceTimeCheckboxLabel.htmlFor = "serviceTimeCheckbox" + tempElement.id;
+
+  let serviceDurationCheckboxInput = document.createElement("input");
+  let serviceDurationCheckboxLabel = document.createElement("label");
+  serviceDurationCheckboxInput.type = "checkbox";
+  serviceDurationCheckboxInput.id = "serviceDurationCheckbox" + tempElement.id;
+  serviceDurationCheckboxInput.className = "copy-checkbox";
+  serviceDurationCheckboxLabel.className = "copy-label";
+  serviceDurationCheckboxLabel.htmlFor = "serviceDurationCheckbox" + tempElement.id;
+
+  let serviceCostCheckboxInput = document.createElement("input");
+  let serviceCostCheckboxLabel = document.createElement("label");
+  serviceCostCheckboxInput.type = "checkbox";
+  serviceCostCheckboxInput.id = "serviceCostCheckbox" + tempElement.id;
+  serviceCostCheckboxInput.className = "copy-checkbox";
+  serviceCostCheckboxLabel.className = "copy-label";
+  serviceCostCheckboxLabel.htmlFor = "serviceCostCheckbox" + tempElement.id;
+
+  let serviceDescriptionCheckboxInput = document.createElement("input");
+  let serviceDescriptionCheckboxLabel = document.createElement("label");
+  serviceDescriptionCheckboxInput.type = "checkbox";
+  serviceDescriptionCheckboxInput.id = "serviceDescriptionCheckbox" + tempElement.id;
+  serviceDescriptionCheckboxInput.className = "copy-checkbox";
+  serviceDescriptionCheckboxLabel.className = "copy-label";
+  serviceDescriptionCheckboxLabel.htmlFor = "serviceDescriptionCheckbox" + tempElement.id;
+
+  let serviceObservationsCheckboxInput = document.createElement("input");
+  let serviceObservationsCheckboxLabel = document.createElement("label");
+  serviceObservationsCheckboxInput.type = "checkbox";
+  serviceObservationsCheckboxInput.id = "serviceObservationsCheckbox" + tempElement.id;
+  serviceObservationsCheckboxInput.className = "copy-checkbox";
+  serviceObservationsCheckboxLabel.className = "copy-label";
+  serviceObservationsCheckboxLabel.htmlFor = "serviceObservationsCheckbox" + tempElement.id;
+
+  let serviceTotalCostCheckboxInput = document.createElement("input");
+  let serviceTotalCostCheckboxLabel = document.createElement("label");
+  serviceTotalCostCheckboxInput.type = "checkbox";
+  serviceTotalCostCheckboxInput.id = "serviceTotalCostCheckbox" + tempElement.id;
+  serviceTotalCostCheckboxInput.className = "copy-checkbox";
+  serviceTotalCostCheckboxLabel.className = "copy-label";
+  serviceTotalCostCheckboxLabel.htmlFor = "serviceTotalCostCheckbox" + tempElement.id;
+
+  // get elements to check if they are empty
+  let serviceProviderElement = tempElement.querySelector("#serviceProvider");
+  let serviceTimeElement = tempElement.querySelector("#serviceTime"); 
+  let serviceDurationElement = tempElement.querySelector("#serviceDuration");
+  let serviceCostElement = tempElement.querySelector("#serviceCost");
+  let serviceTotalCostElement = tempElement.querySelector("#serviceTotalCost");
+  let serviceDescriptionElement = tempElement.querySelector("#serviceDescription");
+  let serviceObservationsElement = tempElement.querySelector("#serviceObservations");
+
+  let serviceDescriptionTogglerInput = serviceDescriptionElement.parentElement.querySelector(".show-more-input");
+  let serviceObservationsTogglerInput = serviceObservationsElement.parentElement.querySelector(".show-more-input");
+
+  let serviceObservationsTogglerLabel = serviceObservationsElement.parentElement.querySelector(".show-more-label");
+  let serviceDescriptionTogglerLabel = serviceDescriptionElement.parentElement.querySelector(".show-more-label");
+
+  
+
+  // check if elements are null
+  if(serviceProviderElement == null) {
+    console.log("setServiceCheckboxes() serviceProviderElement is null");
+    return;
+  }else if(serviceTimeElement == null) {
+    console.log("setServiceCheckboxes() serviceTimeElement is null");
+    return;
+  }else if(serviceDurationElement == null) {
+    console.log("setServiceCheckboxes() serviceDurationElement is null");
+    return;
+  }else if(serviceCostElement == null) {
+    console.log("setServiceCheckboxes() serviceCostElement is null");
+    return;
+  }else if(serviceDescriptionElement == null) {
+    console.log("setServiceCheckboxes() serviceDescriptionElement is null");
+    return;
+  }else if(serviceObservationsElement == null) {
+    console.log("setServiceCheckboxes() serviceObservationsElement is null");
+    return;
+  }else if(serviceTotalCostElement == null) {
+    console.log("setServiceCheckboxes() serviceTotalCostElement is null");
+    return;
+  }else if(serviceDescriptionTogglerInput == null) {
+    console.log("setServiceCheckboxes() serviceDescriptionTogglerInput is null");
+    return;
+  }else if(serviceObservationsTogglerInput == null) {
+    console.log("setServiceCheckboxes() serviceObservationsTogglerInput is null");
+    return;
+  }else if(serviceDescriptionTogglerLabel == null) {
+    console.log("setServiceCheckboxes() serviceDescriptionTogglerLabel is null");
+    return;
+  }else if(serviceObservationsTogglerLabel == null) {
+    console.log("setServiceCheckboxes() serviceObservationsTogglerLabel is null");
+    return;
+  } 
+
+  // set custom id's for toggler inputs, matching the lables
+  serviceDescriptionTogglerInput.id = "serviceDescriptionTogglerInput" + tempElement.id;
+  serviceObservationsTogglerInput.id = "serviceObservationsTogglerInput" + tempElement.id;
+  serviceDescriptionTogglerLabel.htmlFor = "serviceDescriptionTogglerInput" + tempElement.id;
+  serviceObservationsTogglerLabel.htmlFor = "serviceObservationsTogglerInput" + tempElement.id;
+
+
+  // check if elements are empty
+  if(serviceProviderElement.textContent == "")
+    serviceProviderCheckboxInput.disabled = true;
+  else 
+    serviceProviderCheckboxInput.checked = true;
+
+  if(serviceTimeElement.textContent == "")
+    serviceTimeCheckboxInput.disabled = true;
+  else
+    serviceTimeCheckboxInput.checked = true;
+
+  if(serviceDurationElement.textContent == "")
+    serviceDurationCheckboxInput.disabled = true;
+  else
+    serviceDurationCheckboxInput.checked = true;
+
+  if(serviceCostElement.textContent == "")
+    serviceCostCheckboxInput.disabled = true;
+  else
+    serviceCostCheckboxInput.checked = true;
+
+  if(serviceDescriptionElement.textContent == ""){
+    serviceDescriptionCheckboxInput.disabled = true;
+    serviceDescriptionTogglerInput.disabled = true;
+  } else {
+    serviceDescriptionCheckboxInput.checked = true;
   }
-}
+    
+  if(serviceObservationsElement.textContent == ""){
+    serviceObservationsCheckboxInput.disabled = true;
+    serviceObservationsTogglerInput.disabled = true;
+  }else {
+    serviceObservationsCheckboxInput.checked = true;
+  }
+
+  if(serviceTotalCostElement.textContent == "")
+    serviceTotalCostCheckboxInput.disabled = true;
+  else
+    serviceTotalCostCheckboxInput.checked = true;
+
+
+  // append checkboxes to parent
+  serviceProviderCheckboxParent.appendChild(serviceProviderCheckboxInput);
+  serviceProviderCheckboxParent.appendChild(serviceProviderCheckboxLabel);
+
+  serviceTimeCheckboxParent.appendChild(serviceTimeCheckboxInput);
+  serviceTimeCheckboxParent.appendChild(serviceTimeCheckboxLabel);
+
+  serviceDurationCheckboxParent.appendChild(serviceDurationCheckboxInput);
+  serviceDurationCheckboxParent.appendChild(serviceDurationCheckboxLabel);
+
+  serviceCostCheckboxParent.appendChild(serviceCostCheckboxInput);
+  serviceCostCheckboxParent.appendChild(serviceCostCheckboxLabel);
+
+  serviceDescriptionCheckboxParent.appendChild(serviceDescriptionCheckboxInput);
+  serviceDescriptionCheckboxParent.appendChild(serviceDescriptionCheckboxLabel);
+
+  serviceObservationsCheckboxParent.appendChild(serviceObservationsCheckboxInput);
+  serviceObservationsCheckboxParent.appendChild(serviceObservationsCheckboxLabel);
+
+  serviceTotalCostCheckboxParent.appendChild(serviceTotalCostCheckboxInput);
+  serviceTotalCostCheckboxParent.appendChild(serviceTotalCostCheckboxLabel);
+} 
 
 function copyClientDataToClipboard(clientButton) {
 
@@ -108,7 +361,6 @@ function copyClientDataToClipboard(clientButton) {
 }
 
 function copyEventDataToClipboard(eventButton) {
-
   let eventDateElement = eventButton.parentElement.parentElement.querySelector("#eventDate");
   let eventTimeElement = eventButton.parentElement.parentElement.querySelector("#eventTime");
   let eventDurationElement = eventButton.parentElement.parentElement.querySelector("#eventDuration");
@@ -116,7 +368,6 @@ function copyEventDataToClipboard(eventButton) {
   let eventObservationsElement = eventButton.parentElement.parentElement.querySelector("#eventObservations");
   let eventTotalCostElement = eventButton.parentElement.parentElement.querySelector("#eventTotalCost");
   
-  let eventDateCheckbox = eventButton.parentElement.parentElement.querySelector("#eventDateCheckbox");
   let eventTimeCheckbox = eventButton.parentElement.parentElement.querySelector("#eventTimeCheckbox");
   let eventDurationCheckbox = eventButton.parentElement.parentElement.querySelector("#eventDurationCheckbox");
   let eventLocationCheckbox = eventButton.parentElement.parentElement.querySelector("#eventLocationCheckbox");
@@ -131,7 +382,6 @@ function copyEventDataToClipboard(eventButton) {
     eventLocationElement == null ||
     eventObservationsElement == null ||
     eventTotalCostElement == null ||
-    eventDateCheckbox == null ||
     eventTimeCheckbox == null ||
     eventDurationCheckbox == null ||
     eventLocationCheckbox == null ||
@@ -144,21 +394,19 @@ function copyEventDataToClipboard(eventButton) {
     return;
   }
   // initialize clipboardText
-  let clipboardText = "Eveniment \n";
+  let clipboardText = "Eveniment \n" + 
+                      "Data: " + eventDateElement.textContent + "\n";
 
   // check if checkbox is checked and add to string
-  if (eventDateCheckbox.checked)
-    clipboardText += "Data: " + eventDateElement.textContent + "\n";
-  if (eventTimeCheckbox.checked)
-    clipboardText += "Ora: " + eventTimeElement.textContent + "\n";
-  if (eventDurationCheckbox.checked)
+  if (eventTimeCheckbox.checked && eventTimeElement.textContent != "")
+  clipboardText += "Ora: " + eventTimeElement.textContent + "\n";
+  if (eventDurationCheckbox.checked && eventDurationElement.textContent != "")
     clipboardText += "Durata: " + eventDurationElement.textContent + "\n";
-  if (eventLocationCheckbox.checked)
+  if (eventLocationCheckbox.checked && eventLocationElement.textContent != "")
     clipboardText += "Locatie: " + eventLocationElement.textContent + "\n";
-  if (eventObservationsCheckbox.checked)
-    clipboardText +=
-      "Observatii: " + eventObservationsElement.textContent + "\n";
-  if (eventTotalCostCheckbox.checked)
+  if (eventObservationsCheckbox.checked && eventObservationsElement.textContent != "")
+    clipboardText += "Observatii:\n" + eventObservationsElement.textContent + "\n";
+  if (eventTotalCostCheckbox.checked && eventTotalCostElement.textContent != "")
     clipboardText += "Cost total: " + eventTotalCostElement.textContent + "\n";
 
   console.log(clipboardText);
@@ -172,6 +420,7 @@ function copyEventDataToClipboard(eventButton) {
       console.log("copy to clipboard failed");
     }
   );
+  console.log(eventObservationsElement.textContent);
 }
 
 function copyServiceDataToClipboard(serviceButton) {
@@ -179,6 +428,7 @@ function copyServiceDataToClipboard(serviceButton) {
   newIcon.className = "bi bi-clipboard-check-fill";
   serviceButton.textContent = "";
   serviceButton.appendChild(newIcon);
+  let tempId = serviceButton.parentElement.parentElement.id;
   
   // get Elements
   let serviceProviderElement = serviceButton.parentElement.parentElement.querySelector("#serviceProvider");
@@ -190,54 +440,57 @@ function copyServiceDataToClipboard(serviceButton) {
   let serviceObservationsElement = serviceButton.parentElement.parentElement.querySelector("#serviceObservations");
 
   // get Checkboxes
-  let serviceProviderCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceProviderCheckbox");
-  let serviceProviderServiceCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceProviderServiceCheckbox");
-  let serviceTimeCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceTimeCheckbox");
-  let serviceDurationCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceDurationCheckbox");
-  let serviceCostCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceCostCheckbox");
-  let serviceDescriptionCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceDescriptionCheckbox");
-  let serviceObservationsCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceObservationsCheckbox");
+  let serviceProviderCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceProviderCheckbox"+ tempId);
+  let serviceTimeCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceTimeCheckbox"+ tempId);
+  let serviceDurationCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceDurationCheckbox"+ tempId);
+  let serviceCostCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceCostCheckbox"+ tempId);
+  let serviceDescriptionCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceDescriptionCheckbox"+ tempId);
+  let serviceObservationsCheckbox = serviceButton.parentElement.parentElement.querySelector("#serviceObservationsCheckbox"+ tempId);
   
   // check if elements are null
-  if (
-    serviceProviderElement == null ||
-    serviceProviderServiceElement == null ||
-    serviceTimeElement == null ||
-    serviceDurationElement == null ||
-    serviceCostElement == null ||
-    serviceDescriptionElement == null ||
-    serviceObservationsElement == null ||
-    serviceProviderCheckbox == null ||
-    serviceProviderServiceCheckbox == null ||
-    serviceTimeCheckbox == null ||
-    serviceDurationCheckbox == null ||
-    serviceCostCheckbox == null ||
-    serviceDescriptionCheckbox == null ||
-    serviceObservationsCheckbox == null
-  ) {
-    console.log(
-      "check the ids of the elements that i get, one of them is null"
-    );
-    return;
-  }
+if(serviceProviderElement == null)
+  console.log("serviceProviderElement is null");
+if(serviceProviderServiceElement == null)
+  console.log("serviceProviderServiceElement is null");
+if(serviceTimeElement == null)
+  console.log("serviceTimeElement is null");
+if(serviceDurationElement == null)
+  console.log("serviceDurationElement is null");
+if(serviceCostElement == null)
+  console.log("serviceCostElement is null");
+if(serviceDescriptionElement == null)
+  console.log("serviceDescriptionElement is null");
+if(serviceObservationsElement == null)
+  console.log("serviceObservationsElement is null");
+if(serviceProviderCheckbox == null)
+  console.log("serviceProviderCheckbox is null");
+if(serviceTimeCheckbox == null) 
+  console.log("serviceTimeCheckbox is null");
+if(serviceDurationCheckbox == null)
+  console.log("serviceDurationCheckbox is null");
+if(serviceCostCheckbox == null)
+  console.log("serviceCostCheckbox is null");
+if(serviceDescriptionCheckbox == null)
+  console.log("serviceDescriptionCheckbox is null");
+if(serviceObservationsCheckbox == null)
+  console.log("serviceObservationsCheckbox is null");
+
 
   // initialize clipboardText
   let clipboardText = "Serviciu \n";
   
   // check if checkbox is checked and add to string
-  if (serviceProviderCheckbox.checked)
+  if (serviceProviderCheckbox.checked && serviceProviderElement.childNodes.length != 0)
     clipboardText += "Furnizor: " + serviceProviderElement.textContent + "\n";
-  if (serviceProviderServiceCheckbox.checked)
-    clipboardText += "Serviciu: " + serviceProviderServiceElement.textContent + "\n";
-  if (serviceTimeCheckbox.checked)
+  if (serviceTimeCheckbox.checked && serviceTimeElement.childNodes.length != 0)
     clipboardText += "Ora: " + serviceTimeElement.textContent + "\n";
-  if (serviceDurationCheckbox.checked)  
+  if (serviceDurationCheckbox.checked && serviceDurationElement.childNodes.length != 0)  
     clipboardText += "Durata: " + serviceDurationElement.textContent + "\n";
-  if (serviceCostCheckbox.checked)
-    clipboardText += "Cost: " + serviceCostElement.textContent + "\n";
-  if (serviceDescriptionCheckbox.checked)
+  if (serviceCostCheckbox.checked && serviceCostElement.childNodes.length != 0)
+    clipboardText += "Tarif/ora: " + serviceCostElement.textContent + "\n";
+  if (serviceDescriptionCheckbox.checked && serviceDescriptionElement.childNodes.length != 0)
     clipboardText += "Descriere: " + serviceDescriptionElement.textContent + "\n";
-  if (serviceObservationsCheckbox.checked)
+  if (serviceObservationsCheckbox.checked && serviceObservationsElement.childNodes.length != 0)
     clipboardText += "Observatii: " + serviceObservationsElement.textContent + "\n";
     
   console.log(clipboardText);
@@ -251,8 +504,4 @@ function copyServiceDataToClipboard(serviceButton) {
       console.log("copy to clipboard failed");
     }
   );
-}
-
-function checkCheckbox(checkboxElement){
-  console.log(checkboxElement);
 }

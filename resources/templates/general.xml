@@ -3,104 +3,116 @@
 
 
 	<message id='client-copy-data-template'>
-		<div class="m-2">
-			<button class="btn btn-sm btn-outline-secondary" onClick="copyClientDataToClipboard(this)"><i class="bi bi-clipboard-fill"></i></button>
-			<p class="mb-2 text-decoration-underline d-inline-block">Client</p>
-			<div class="d-inline-block fw-bold ms-3 text-capitalize" id="clientName">${client-name}</div>
-			<div class="row m-0">
-				<div class="col-sm-3 fw-normal">Telefon:</div>
-				<div class="col-sm-9 d-flex justify-content-between d-flex justify-content-between">
-					<div class="fw-bold text-start d-inline-block" id="clientPhone">${client-phone}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="clientPhoneCheckbox"/><label for="clientPhoneCheckbox" class="copy-label">Selectat</label></div>
+		<div class=" copy-form-container">
+			<div class="row" style="margin-left: -10px;">
+				<div class="col-1">
+					<button class="btn btn-sm btn-outline-secondary cupy-button" onClick="copyClientDataToClipboard(this)" ><i class="bi bi-clipboard-fill"></i></button>
 				</div>
+				<div class="col-3 mb-2 text-decoration-underline" >Client</div>
+				<div class="col-7 text-decoration-underline text-capitalize fw-bold" id="clientName" >${client-name}</div>
+			</div>
+			<div class="row m-0">
+				<div class="col-1 p-0"><input class="copy-checkbox" type="checkbox" id="clientPhoneCheckbox"/><label for="clientPhoneCheckbox" class="copy-label"></label></div>
+				<div class="col-3 fw-normal">Telefon:</div>
+				<div class="col-8 fw-bold" id="clientPhone">${client-phone}</div>
 			</div>
 		</div>
+		<hr />
 	</message>
 
 	<message id='event-copy-data-template'>
-		<div class="m-2">
+		<div class="m-0 ">
 			<button class="btn btn-sm btn-outline-secondary" onClick="copyEventDataToClipboard(this)"><i class="bi bi-clipboard-fill"></i></button>
 			<p class="mb-2 text-decoration-underline d-inline-block">Eveniment</p>
-			<div class="row m-0">
-				<div class="col-sm-3 fw-normal">Data:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="eventDate">${event-date}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="eventDateCheckbox"/><label for="eventDateCheckbox" class="copy-label">Selectat</label></div>
-				</div>
-				<div class="col-sm-3 fw-normal">Ora:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="eventTime">${event-time}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="eventTimeCheckbox"/><label for="eventTimeCheckbox" class="copy-label">Selectat</label></div>
-				</div>
-				<div class="col-sm-3 fw-normal">Durata:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="eventDuration">${event-duration}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="eventDurationCheckbox"/><label for="eventDurationCheckbox" class="copy-label">Selectat</label></div>
-				</div>
-				<div class="col-sm-3 fw-normal">Locatie:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="eventLocation">${event-location}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="eventLocationCheckbox"/><label for="eventLocationCheckbox" class="copy-label">Selectat</label></div>
-				</div>
-				<div class="col-sm-3 fw-normal">Observatii:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="eventObservations">${event-observations}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="eventObservationsCheckbox"/><label for="eventObservationsCheckbox" class="copy-label">Selectat</label></div>
-				</div>
-				<div class="col-sm-3 fw-normal">Total:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="eventTotalCost">${event-total-cost}</div>
-					<div class="d-inline-block"><input class="copy-checkbox" type="checkbox" id="eventTotalCostCheckbox"/><label for="eventTotalCostCheckbox" class="copy-label">Selectat</label></div>
-				</div>
-				
+			<div class="d-inline-block text-decoration-underline fw-bold ms-3 text-center" id="eventDate">${event-date}</div>
+			<div class="container copy-form-container">
 
+				<div class="row m-0">
+					<div class="col-1"><input class="copy-checkbox" type="checkbox" id="eventTimeCheckbox" /><label for="eventTimeCheckbox" class="copy-label"></label></div>
+					<div class="col-3 fw-normal">Ora:</div>
+					<div class="col-8 fw-bold " id="eventTime">${event-time}</div>
+				</div>
+				<div class="row m-0">
+					<div class="col-1"><input class="copy-checkbox" type="checkbox" id="eventDurationCheckbox" /><label for="eventDurationCheckbox" class="copy-label"></label></div>
+					<div class="col-3 fw-normal">Durata:</div>
+					<div class="col-8 fw-bold " id="eventDuration">${event-duration}</div>
+				</div>
+				<div class="row m-0">
+					<div class="col-1"><input class="copy-checkbox" type="checkbox" id="eventLocationCheckbox" /><label for="eventLocationCheckbox" class="copy-label"></label></div>
+					<div class="col-3 fw-normal">Locatie:</div>
+					<div class="col-8 fw-bold " id="eventLocation">${event-location}</div>
+				</div>
+				<div class="row m-0">
+					<div class="col-1"><input class="copy-checkbox" type="checkbox" id="eventTotalCostCheckbox" /><label for="eventTotalCostCheckbox" class="copy-label"></label></div>
+					<div class="col-3 fw-normal">Total:</div>
+					<div class="col-8 fw-bold " id="eventTotalCost">${event-total-cost}</div>
+				</div>
+				<div class="row m-0">
+					<div class="col-1"><input class="copy-checkbox" type="checkbox" id="eventObservationsCheckbox" /><label for="eventObservationsCheckbox" class="copy-label"></label></div>
+					<div class="col-11 fw-normal">Observatii:</div> 
+					<div class="col-12 position-relative">
+						<input type="checkbox" id="eventShowObservations" class="show-more-input"/>
+						<label class="show-more-label position-absolute top-0 end-0" for="eventShowObservations"></label>
+						<div class="show-more-content" id="eventObservations">${event-observations}</div>
+					</div>
+				</div>
 			</div>
 		</div>
+		<hr />
 	</message>
-
+<!-- <i class="bi bi-clipboard-check-fill"></i> -->
 	<message id='service-copy-data-template'>
-		<div class="m-2 service-copy-container">
+		<div class="m-0 service-copy-container copy-form-container">
 			<button class="btn btn-sm btn-outline-secondary d-inline" onClick="copyServiceDataToClipboard(this)"><i class="bi bi-clipboard-fill"></i></button>
 			<p class="mb-2 text-decoration-underline d-inline">Serviciu</p>
-			<div class="row m-0">
-				<div class="col-sm-3 fw-normal">Providerul:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceProvider">${service-provider}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+			<div class="d-inline-block fw-bold ms-3 text-capitalize text-decoration-underline text-center" id="serviceProviderService">${service-provider-service}</div>
+			<div class="container">
+				<div class="row m-0">
+					<div class="col-1" id="serviceProviderCheckboxParent"></div>
+					<div class="col-3 fw-normal">Providerul:</div>
+					<div class="col-8 fw-bold " id="serviceProvider">${service-provider}</div>
 				</div>
-				<div class="col-sm-3 fw-normal">Serviciul:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceProviderService">${service-provider-service}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+				<div class="row m-0">
+					<div class="col-1" id="serviceTimeCheckboxParent"></div>
+					<div class="col-3 fw-normal">Ora:</div>
+					<div class="col-8 fw-bold " id="serviceTime">${service-time}</div>
 				</div>
-				<div class="col-sm-3 fw-normal">Ora:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceTime">${service-time}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+				<div class="row m-0">
+					<div class="col-1" id="serviceDurationCheckboxParent"></div>
+					<div class="col-3 fw-normal">Durata:</div>
+					<div class="col-8 fw-bold " id="serviceDuration">${service-duration}</div>
 				</div>
-				<div class="col-sm-3 fw-normal">Durata:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceDuration">${service-duration}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+				<div class="row m-0">
+					<div class="col-1" id="serviceCostCheckboxParent"></div>
+					<div class="col-3 fw-normal">Tariful/ora:</div>
+					<div class="col-8 fw-bold " id="serviceCost">${service-cost}</div>
 				</div>
-				<div class="col-sm-3 fw-normal">Tariful/ora:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceCost">${service-cost}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+				<div class="row m-0">
+					<div class="col-1" id="serviceTotalCostCheckboxParent"></div>
+					<div class="col-3 fw-normal">Total:</div>
+					<div class="col-8 fw-bold " id="serviceTotalCost">${service-total-cost}</div>
 				</div>
-				<div class="col-sm-3 fw-normal">Descriere:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceDescription">${service-description}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+				<div class="row m-0">
+					<div class="col-1" id="serviceDescriptionCheckboxParent"></div>
+					<div class="col-11 fw-normal">Descriere:</div>
+					<div class="col-12 position-relative">
+						<input type="checkbox" class="show-more-input"/>
+						<label class="show-more-label position-absolute top-0 end-0" ></label>
+						<div class="show-more-content" id="serviceDescription">${service-description}</div>
+					</div>
 				</div>
-				<div class="col-sm-3 fw-normal">Observatii:</div>
-				<div class="col-sm-9 d-flex justify-content-between">
-					<div class="d-inline-block fw-bold text-start" id="serviceObservations">${service-observations}</div>
-					<div class="d-inline-block input-lable-service-hook-class"></div>
+				<div class="row m-0">
+					<div class="col-1" id="serviceObservationsCheckboxParent"></div>
+					<div class="col-11 fw-normal">Observatii:</div>
+					<div class="col-12 position-relative">
+						<input type="checkbox" class="show-more-input"/>
+						<label class="show-more-label position-absolute top-0 end-0"></label>
+						<div class="show-more-content" id="serviceObservations">${service-observations}</div>
+					</div>
 				</div>
-				
-			</div>
+			</div>	
 		</div>
+		<hr />
 	</message>
 
 </messages>

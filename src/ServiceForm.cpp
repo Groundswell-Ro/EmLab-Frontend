@@ -90,8 +90,8 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
     setValidator(ServiceProviderServiceField, createMandatoryValidator());
     setValidator(ServiceDurationField, createDoubleValidator(0.5, 10.0));
     setValidator(ServiceCostField, createIntValidator(0, 100000));
-    setValidator(ServiceDescriptionField, createTextValidator(false, 0, 50));
-    setValidator(ServiceObservationsField, createTextValidator(false, 0, 300));
+    setValidator(ServiceDescriptionField, createTextValidator(false, 0, 500));
+    setValidator(ServiceObservationsField, createTextValidator(false, 0, 500));
 
     setValue(ServiceStartField, "12:00 PM");
     setValue(ServiceDurationField, "1");
@@ -594,7 +594,7 @@ void ServiceFormView::confirmServiceData(EventDataModule::ServiceField field)
             {
                 model_->setReadOnly(model_->ServiceDescriptionField, true);
                 updateViewField(model_.get(), model_->ServiceDescriptionField);
-                auto stringField = model_->valueText(model_->ServiceDescriptionField).toUTF8().c_str();
+                auto stringField = model_->valueText(model_->ServiceDescriptionField).toUTF8();
                 eventDataInterface->modifyServiceStringField(login_->userToken(), model_->id, field, stringField);
                 std::cout << "\n case description \n";
                 changeServiceDescriptionBtn_->setHidden(false);
@@ -604,7 +604,7 @@ void ServiceFormView::confirmServiceData(EventDataModule::ServiceField field)
             {
                 model_->setReadOnly(model_->ServiceObservationsField, true);
                 updateViewField(model_.get(), model_->ServiceObservationsField);
-                auto stringField = model_->valueText(model_->ServiceObservationsField).toUTF8().c_str();
+                auto stringField = model_->valueText(model_->ServiceObservationsField).toUTF8();
                 eventDataInterface->modifyServiceStringField(login_->userToken(), model_->id, field, stringField);
                 std::cout << "\n case observations \n";
                 changeServiceObservationsBtn_->setHidden(false);

@@ -20,33 +20,104 @@
     display: none;
     ~.copy-label {
         cursor: pointer;
-        padding: 0 0.5rem;
+        padding: 0 8px;
         border-radius: 12%;
-        margin-bottom: 0.5rem;
+        font-size: 18px;
+        margin-bottom: 2px;
     }
 
     ~.copy-label {
-        background-color: tint-color($danger, 70%);
+        background-color: tint-color($warning, 70%);
         &:before {
-            content: "✕";
-            padding-right: 5px;
+            content: "✗";
+         
         }
-        &:after {
-            content: "✕";
-            padding-left: 5px;
+        &:hover {
+            background-color: tint-color($success, 50%);
+            &:before {
+                content: "✓";
+            }
         }
+       
+
     }
 
     &:checked~.copy-label {
-        background-color: tint-color($success, 90%);
+        background-color: tint-color($success, 70%);
         &:before {
             content: "✓";
-            padding-right: 5px;
         }
-        &:after {
-            content: "✓";
-            padding-left: 5px;
+        &:hover {
+            background-color: tint-color($warning, 50%);
+            &:before {
+                content: "✗";
+            }
         }
     }
 
+    &:disabled~.copy-label {
+        background-color: $gray-300;
+        cursor: not-allowed;
+        &:before {
+            content: "ⓧ";
+        }
+    }
+}
+
+.show-more-input {
+    display: none;
+    ~.show-more-label {
+        margin-top: -24px;
+        text-decoration: underline;
+        &::before {
+            content: "Arata mai mult";
+            font-size: small;
+            color: rgba($color: #000000, $alpha: 0.475);
+        }
+    }
+
+    ~.show-more-content {
+        max-height: 35px;
+        overflow: hidden;
+        box-shadow: rgba(0, 0, 0, 0.175) 0px -50px 36px -28px inset;
+        border-radius: 0 0 7px 7px;
+        padding-left: 5px;
+        transition: max-height  0.5s ease-in-out, 
+                    box-shadow 0.3s 0.5s ease-in-out;
+
+
+    }
+
+    &:checked{
+        ~.show-more-label {
+            &::before {
+                content: "Arata mai putin";
+            }
+        }
+        ~.show-more-content {
+            max-height: 1000px;
+            border-bottom: 0;
+            border-bottom: 1px solid $gray-300;
+            box-shadow: none;
+            transition: max-height 1s ease-in-out,border-bottom 0.3s 0.5s ease-in-out;
+            
+        }
+    }
+    &:disabled{
+        ~.show-more-label {
+            &::before {
+                content: "";
+            }
+        }
+    }
+}
+
+.cupy-button {
+    // padding: 0 8px;
+}
+$copyFormContainerWidth: 400px;
+.copy-form-container {
+    min-width: $copyFormContainerWidth;
+    margin: 0;
+    padding: 0;
 }

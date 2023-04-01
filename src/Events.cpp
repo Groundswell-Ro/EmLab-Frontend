@@ -31,7 +31,7 @@ Events::Events(std::shared_ptr<Login> login)
 
 	eventsContentStack_ = addWidget(std::make_unique<Wt::WStackedWidget>());
 	eventsContentStack_->addStyleClass("events-content");
-	eventsContentStack_->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft, Wt::TimingFunction::Linear, 400), true);
+	eventsContentStack_->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft, Wt::TimingFunction::Linear, 4000));
 	// Navigation Header
 	auto navHeader = eventsNavContainer->addWidget(std::make_unique<Wt::WContainerWidget>());
 	navHeader->setStyleClass("events-nav-header");
@@ -98,11 +98,13 @@ void Events::addEventDialog()
 
 	addEventDialog->finished().connect(this, [=]()
 									   {
+					addEventDialog->animateHide(Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 400));
 					if (addEventDialog->result() == Wt::DialogCode::Accepted)
 					{
 						registerEvent(eventView->getData());
 					}
-					addEventDialog->removeFromParent(); });
+					addEventDialog->removeFromParent(); 
+					});
 
 	addEventDialog->animateShow(Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 400));
 }
@@ -195,15 +197,23 @@ void Events::addEventToList(EventDataModule::EventDataPack eventDataPack, bool a
 							   {
 		int curentItemIndex = eventsContentStack_->currentIndex();
 		int clickedItemIndex = eventsMenu_->indexOf(navItem);
-
+		std::cout << "\n\n Item = " << curentItemIndex << "\n\n";
+		std::cout << "\n\n Stack = " << clickedItemIndex << "\n\n";
 		if (curentItemIndex == clickedItemIndex)
 		{
 			return;
 		}
-
+		std::cout << "\n\n stack classes = " << eventsContentStack_->currentWidget()->id() << "\n\n";
+		if(eventsContentStack_->currentWidget()->hasStyleClass("slide in")){
+			std::cout << "\n\n process should stop here \n\n";
+		}
 		eventsContentStack_->setCurrentIndex(clickedItemIndex);
 		eventsMenu_->widget(curentItemIndex)->removeStyleClass("active");
-		eventsMenu_->widget(clickedItemIndex)->addStyleClass("active"); });
+		eventsMenu_->widget(clickedItemIndex)->addStyleClass("active"); 
+
+		std::cout << "\n\n final index of stack = " << eventsContentStack_->currentIndex() << "\n\n";
+
+		});
 
 	auto popupMenu = std::make_unique<Wt::WPopupMenu>();
 	popupMenu->addStyleClass("dropdown-menu-dark");
@@ -352,19 +362,22 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 {
 	auto dialog = addChild(std::make_unique<Wt::WDialog>());
 	dialog->setResizable(true);
-	dialog->setMinimumSize(850, 600);
+	dialog->setMinimumSize(Wt::WLength(95, Wt::LengthUnit::ViewportWidth), 600);
 	dialog->titleBar()->addStyleClass("bg-primary text-light text-center");
-	auto closeBtn = dialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("esc"));
+	auto closeBtn = dialog->titleBar()->insertBefore(std::make_unique<Wt::WPushButton>("esc"), dialog->titleBar()->children().at(0));
+	closeBtn->setStyleClass("btn btn-sm btn-outline-danger");
 	closeBtn->clicked().connect(dialog, &Wt::WDialog::reject);
 	dialog->rejectWhenEscapePressed();
+	auto copyAllBtn = dialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("Copiaza tot<i class=\"bi bi-clipboard-fill\"></i>", Wt::TextFormat::XHTML));
+	copyAllBtn->setStyleClass("btn btn-sm btn-outline-success text-light ");
 	dialog->setWindowTitle("Datele evenimentului");
-	dialog->contents()->setStyleClass("d-flex p-3");
+	dialog->contents()->setStyleClass("d-flex");
 
 	auto eventDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
 	auto servicesDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
 
-	eventDataWrapper->setStyleClass("flex-grow-1");
-	servicesDataWrapper->setStyleClass("flex-grow-1");
+	eventDataWrapper->setStyleClass("w-50");
+	servicesDataWrapper->setStyleClass("w-50");
 
 	auto clientTemp = eventDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("client-copy-data-template")));
 	auto eventTemp = eventDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("event-copy-data-template")));
@@ -381,20 +394,7 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 	if (minutes == 0)
 		minutesString = "00";
 	auto durationString = Wt::WString(std::to_string(hours) + ":" + minutesString + " H");
-
-	clientTemp->bindString("client-name", eventDataPack.clientData.name);
-	clientTemp->bindString("client-phone", eventDataPack.clientData.phone);
-
-	eventTemp->bindString("event-date", dateString);
-	eventTemp->bindString("event-time", timeString);
-	eventTemp->bindString("event-duration", durationString);
-	eventTemp->bindString("event-location", eventDataPack.eventData.location);
-	eventTemp->bindString("event-observations", eventDataPack.eventData.observations);
-	eventTemp->bindString("event-total-cost", "ajungem si aici");
-
-	auto copyClientDataBtn = clientTemp->bindWidget("copy-client-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
-	auto copyEventDataBtn = eventTemp->bindWidget("copy-event-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
-
+	int totalPrice = 0;
 	for (auto service : eventDataPack.seqServices)
 	{
 		auto serviceDateTime = Wt::WDateTime().fromString(service.dateTime, "dd/MM/yyyy HH:mm AP");
@@ -406,6 +406,8 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 		if (minutes == 0)
 			minutesString = "00";
 		auto durationString = Wt::WString(std::to_string(hours) + ":" + minutesString + " H");
+		int serviceCost = (int)(service.cost * service.duration);
+		totalPrice += serviceCost;
 
 		auto serviceTemp = servicesDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("service-copy-data-template")));
 		serviceTemp->bindString("service-provider", service.providerIdentity);
@@ -416,17 +418,32 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 		serviceTemp->bindString("service-cost", std::to_string(service.cost) + " RON");
 		serviceTemp->bindString("service-description", service.description);
 		serviceTemp->bindString("service-observations", service.observations);
-		serviceTemp->bindString("service-total-cost", "ajungem si aici");
-		
-		Wt::WString copyServicesJsFunc = Wt::WString("setServicesCheckboxes(") + serviceTemp->id() + Wt::WString(")");
+		serviceTemp->bindString("service-total-cost", std::to_string(serviceCost) + " Ron");
+
+		Wt::WString copyServicesJsFunc = Wt::WString("setServiceCheckboxes(") + serviceTemp->id() + Wt::WString(")");
 		serviceTemp->doJavaScript(copyServicesJsFunc.toUTF8());
 	}
+
+	clientTemp->bindString("client-name", eventDataPack.clientData.name);
+	clientTemp->bindString("client-phone", eventDataPack.clientData.phone);
+
+	eventTemp->bindString("event-date", dateString);
+	eventTemp->bindString("event-time", timeString);
+	eventTemp->bindString("event-duration", durationString);
+	eventTemp->bindString("event-location", eventDataPack.eventData.location);
+	eventTemp->bindString("event-observations", eventDataPack.eventData.observations);
+	eventTemp->bindString("event-total-cost", std::to_string(totalPrice) + " Ron");
+
+	auto copyClientDataBtn = clientTemp->bindWidget("copy-client-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
+	auto copyEventDataBtn = eventTemp->bindWidget("copy-event-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
+
+
 	clientTemp->doJavaScript("setClientCheckboxes()");
 	eventTemp->doJavaScript("setEventCheckboxes()");
-	
 
-	dialog->finished().connect([=]()
-							   { removeChild(dialog); });
+	dialog->finished()
+		.connect([=]()
+				 { removeChild(dialog); });
 
-		dialog->show();
+	dialog->show();
 }

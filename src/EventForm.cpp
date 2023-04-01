@@ -66,7 +66,7 @@ EventFormModel::EventFormModel()
     setValidator(EventStartField, createTimeValidator()); // "h:mm AP"
     setValidator(EventDurationField, createDoubleValidator(1, 10.0));
     setValidator(EventLocationField, createTextValidator(false, 0, 100));
-    setValidator(EventObservationsField, createTextValidator(false, 1, 300));
+    setValidator(EventObservationsField, createTextValidator(false, 1, 500));
 
     setValue(EventDateField, Wt::WDate::currentServerDate().addDays(0));
     setValue(EventDurationField, "1");
