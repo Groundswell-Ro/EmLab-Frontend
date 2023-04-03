@@ -10,12 +10,14 @@ EventView::EventView(std::shared_ptr<Login> login)
     : WContainerWidget(),
       login_(login)
 {
-    setStyleClass("d-flex overflow-auto h-100");
+    setStyleClass("d-flex align-items-start");
     eventFormWrapper_ = addWidget(std::make_unique<Wt::WContainerWidget>());
     servicesWrapper_ = addWidget(std::make_unique<Wt::WContainerWidget>());
 
+    eventFormWrapper_->setStyleClass("position-sticky top-0 start-0");
+    servicesWrapper_->setStyleClass("mb-5");
     clientForm_ = eventFormWrapper_->addWidget(std::make_unique<ClientFormView>(login));
-    eventFormWrapper_->addWidget(std::make_unique<Wt::WText>("<hr />", Wt::TextFormat::XHTML));
+    eventFormWrapper_->addWidget(std::make_unique<Wt::WText>("<hr class=\"mb-4\" />", Wt::TextFormat::XHTML));
     eventForm_ = eventFormWrapper_->addWidget(std::make_unique<EventFormView>(login));
 
     servicesWrapper_->setStyleClass("flex-grow-1 accordion overflow-auto");

@@ -1,6 +1,6 @@
 #include "include/AuthWidget.h"
 #include <Wt/WPushButton.h>
-
+#include <Wt/WApplication.h>
 #include <iostream>
 #include <fstream>
 
@@ -11,7 +11,8 @@ AuthWidget::AuthWidget(std::shared_ptr<Login> login)
 	titleBar()->setStyleClass("d-flex justify-content-center align-items-center");
 
 	setMinimumSize(Wt::WLength(767, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
-	// setMaximumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
+
+	Wt::WApplication::instance()->setInternalPath("/Authentification");
 
 	setMovable(false);
 	contents()->setStyleClass("d-flex justify-content-center align-items-center");

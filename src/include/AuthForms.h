@@ -30,8 +30,8 @@ public:
 	std::shared_ptr<LoginFormModel> model_;
 	std::shared_ptr<Login> login_;
 
-private:
 	void process();
+private:
 };
 
 // Registration Form Model Definition

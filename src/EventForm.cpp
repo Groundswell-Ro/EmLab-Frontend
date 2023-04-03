@@ -100,9 +100,9 @@ std::string EventFormModel::getDateTime()
 EventFormView::EventFormView(std::shared_ptr<Login> login)
     : login_(login)
 {
-    setMinimumSize(Wt::WLength(280, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
-    setMaximumSize(Wt::WLength(350, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
-
+    setMinimumSize(Wt::WLength(320, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
+    setMaximumSize(Wt::WLength(380, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
+    
     model_ = std::make_shared<EventFormModel>();
     setTemplateText(tr("event-form-template"));
     addFunction("id", &WTemplate::Functions::id);
@@ -112,7 +112,7 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
      */
     auto eventDateWidget = std::make_unique<Wt::WDateEdit>();
     eventDateWidget->setReadOnly(true);
-    eventDateWidget->setPlaceholderText("this is needed for input desighn animation");
+    eventDateWidget->setPlaceholderText("nu este setata nici o data");
     eventDateWidget->setFormat(model_->dateFormat_);
     eventDate_ = eventDateWidget.get();
     setFormWidget(model_->EventDateField, std::move(eventDateWidget));
@@ -141,7 +141,7 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
      * Event Location Widget
      */
     auto eventLocationWidget = std::make_unique<Wt::WLineEdit>();
-    eventLocationWidget->setPlaceholderText("this is needed for input desighn animation");
+    eventLocationWidget->setPlaceholderText("nu este setata nici o locatie");
     eventLocation_ = eventLocationWidget.get();
     setFormWidget(model_->EventLocationField, std::move(eventLocationWidget));
 
@@ -151,6 +151,10 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
     auto observationsWidget = std::make_unique<Wt::WTextArea>();
     eventObservations_ = observationsWidget.get();
     setFormWidget(model_->EventObservationsField, std::move(observationsWidget));
+    eventObservations_->setHeight(Wt::WLength::Auto);
+    eventObservations_->focussed().connect(this, [=]() {
+        eventObservations_->setHeight(Wt::WLength(250));
+    });
     bindString("submit-info", Wt::WString(""));
 
     changeDateBtn_ = bindWidget("event-date-btn-change", std::make_unique<Wt::WPushButton>("x"));
@@ -175,18 +179,6 @@ void EventFormView::setFieldsSignals()
 {
     hideEventChangeBtns(false);
     setReadOnlyAll(true);
-
-    // // Event Fields Signals
-    // eventDate_->changed().connect(this, [=]()
-    //                               { confirmEventData(EventDataModule::EventField::date); });
-    // eventStart_->changed().connect(this, [=]()
-    //                                { confirmEventData(EventDataModule::EventField::time); });
-    // eventDuration_->changed().connect(this, [=]()
-    //                                   { confirmEventData(EventDataModule::EventField::duration); });
-    eventLocation_->enterPressed().connect(this, [=]()
-                                           { confirmEventData(EventDataModule::EventField::location); });
-    eventObservations_->enterPressed().connect(this, [=]()
-                                               { confirmEventData(EventDataModule::EventField::observations); });
 
     // Change Buttons Signals
     changeDateBtn_->clicked().connect(this, [=]()
@@ -331,6 +323,7 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, field, stringField);
                 changeObservationsBtn_->setHidden(false);
                 confirmObservationsBtn_->setHidden(true);
+                eventObservations_->setHeight(Wt::WLength::Auto);
             }
             else
             {

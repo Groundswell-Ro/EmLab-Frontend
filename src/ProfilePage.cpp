@@ -42,17 +42,16 @@ void ProfilePage::setProfileData()
     setServicesMenu();
     setWorkHistoryMenu();
 
-    auto updateInfoBtn = description_->bindWidget("copy-button-widget", std::make_unique<Wt::WPushButton>("Edit Service"));
+    auto updateInfoBtn = description_->bindWidget("copy-button-widget", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-pencil-square\"></i>", Wt::TextFormat::XHTML));
     updateInfoBtn->clicked().connect(this, &ProfilePage::modifyServiceDialog);
 
     header_->bindString("profile-name", Wt::WString(login_->user().name));
     header_->bindEmpty("profile-link-one");
     header_->bindEmpty("profile-link-two");
 
-    auto headerBtns = header_->bindWidget("settings-button-widget", std::make_unique<Wt::WTemplate>(tr("settings-button-template")));
-    auto settingsBtn = headerBtns->bindWidget("settings-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-gear-fill\"></i>", Wt::TextFormat::XHTML));
-    auto profileBtn = headerBtns->bindWidget("profile-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-person-circle\"></i>", Wt::TextFormat::XHTML));
-    headerBtns->bindEmpty("preview-profile-btn");
+    auto settingsBtn = header_->bindWidget("settings-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-gear-fill\"></i>", Wt::TextFormat::XHTML));
+    auto profileBtn = header_->bindWidget("profile-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-person-circle\"></i>", Wt::TextFormat::XHTML));
+    header_->bindEmpty("preview-profile-btn");
 
     settingsBtn->clicked().connect(this, [=]()
                                    {
@@ -61,7 +60,7 @@ void ProfilePage::setProfileData()
                                        description_->hide();
                                        settings_profile_->show();
                                        settings_profile_menu_->show(); });
-
+    
     profileBtn->clicked().connect(this, [=]()
                                   {
         menu_->show();
@@ -69,15 +68,19 @@ void ProfilePage::setProfileData()
         description_->show();
         settings_profile_->hide();
         settings_profile_menu_->hide(); });
+    
+    settingsBtn->setStyleClass("btn btn-lg btn-outline-secondary border-0");
+    profileBtn->setStyleClass("btn btn-lg btn-outline-secondary border-0");
+
 }
 
 void ProfilePage::setServicesMenu()
 {
 
-    auto addServiceBtn = menu_->bindWidget("add-service-button", std::make_unique<Wt::WPushButton>("&#43;", Wt::TextFormat::XHTML));
-    addServiceBtn->addStyleClass("btn-sm fs-5");
+    auto addServiceBtn = menu_->bindWidget("add-service-button", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-journal-plus\"></i>", Wt::TextFormat::XHTML));
     addServiceBtn->clicked().connect(this, &ProfilePage::addServiceDialog);
-
+    addServiceBtn->setStyleClass("btn btn-outline-secondary border-0");
+    
     for (int i = 0; i <= 9; ++i)
     {
         auto serviceString = Wt::WString("services-nav-item-" + std::to_string(i));
@@ -96,7 +99,7 @@ void ProfilePage::setServicesMenu()
         {
             serviceNavItem->addStyleClass("active");
             description_->bindString("service-title", Wt::WString(userServices.at(i).title));
-            description_->bindString("service-description", Wt::WString(userServices.at(i).description));
+            description_->bindString("service-description", Wt::WString(userServices.at(i).description), Wt::TextFormat::Plain);
         }
 
         serviceNavItem->clicked().connect([=]()
@@ -119,8 +122,8 @@ void ProfilePage::setServicesMenu()
                         }
                     }
                     serviceNavItem->addStyleClass("active");
-                    description_->bindString("service-title", Wt::WString(service.title));
-                    description_->bindString("service-description", Wt::WString(service.description)); });
+                    description_->bindString("service-title", Wt::WString(service.title), Wt::TextFormat::Plain);
+                    description_->bindString("service-description", Wt::WString(service.description), Wt::TextFormat::Plain); });
     }
 }
 

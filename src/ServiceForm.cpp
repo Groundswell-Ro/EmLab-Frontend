@@ -204,8 +204,8 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
       login_(login),
       eventModel_(eventModel)
 {
-    setMinimumSize(Wt::WLength(280, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
-    setMaximumSize(Wt::WLength(350, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
+    setMinimumSize(Wt::WLength(320, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
+    setMaximumSize(Wt::WLength(380, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
 
     model_ = std::make_shared<ServiceFormModel>(eventModel, login_);
     setTemplateText(tr("service-form-template"));
@@ -288,6 +288,10 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     auto serviceDescriptionWidget = std::make_unique<Wt::WTextArea>();
     serviceDescription_ = serviceDescriptionWidget.get();
     setFormWidget(model_->ServiceDescriptionField, std::move(serviceDescriptionWidget));
+    serviceDescription_->setHeight(Wt::WLength::Auto);
+    
+    serviceDescription_->focussed().connect(this, [=](){ serviceDescription_->setHeight(250);
+                                                        serviceDescription_->setWidth(500); });
 
     /*
      *  Observations Textarea Widget
@@ -295,6 +299,10 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     auto observationsWidget = std::make_unique<Wt::WTextArea>();
     serviceObservations_ = observationsWidget.get();
     setFormWidget(model_->ServiceObservationsField, std::move(observationsWidget));
+    serviceObservations_->setHeight(Wt::WLength::Auto);
+    serviceObservations_->focussed().connect(this, [=](){ serviceObservations_->setHeight(250);
+                                                        serviceObservations_->setWidth(500); });
+
 
     bindString("submit-info", Wt::WString(""));
 
@@ -325,22 +333,6 @@ void ServiceFormView::setFieldsSignals()
     setReadOnlyAll(true);
     hideServiceChangeBtns(false);
 
-    // signals for fields
-    providerIdentity_->enterPressed().connect(this, [=]()
-                                              { changeServiceData(EventDataModule::ServiceField::providerIdentity); });
-    providerService_->enterPressed().connect(this, [=]()
-                                             { changeServiceData(EventDataModule::ServiceField::providerService); });
-    // serviceStart_->changed().connect(this, [=]()
-    //                                  { changeServiceData(EventDataModule::ServiceField::dateTime); });
-    // serviceDuration_->changed().connect(this, [=]()
-    //                                     { changeServiceData(EventDataModule::ServiceField::duration); });
-    // serviceCost_->changed().connect(this, [=]()
-    //                                 { changeServiceData(EventDataModule::ServiceField::cost); });
-    serviceDescription_->enterPressed().connect(this, [=]()
-                                                { changeServiceData(EventDataModule::ServiceField::description); });
-    serviceObservations_->enterPressed().connect(this, [=]()
-                                                 { changeServiceData(EventDataModule::ServiceField::observations); });
-
     // signals for change data buttons
     changeProviderIdentityBtn_->clicked().connect(this, [=]()
                                                   { changeServiceData(EventDataModule::ServiceField::providerIdentity); });
@@ -358,7 +350,6 @@ void ServiceFormView::setFieldsSignals()
                                                      { changeServiceData(EventDataModule::ServiceField::observations); });
 
     // signals for confirm data buttons
-
     confirmProviderIdentityBtn_->clicked().connect(this, [=]()
                                                    { confirmServiceData(EventDataModule::ServiceField::providerIdentity); });
     confirmProviderServiceBtn_->clicked().connect(this, [=]()

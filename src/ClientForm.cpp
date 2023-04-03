@@ -61,7 +61,7 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
      * Client Name Widget
      */
     auto clientNameWidget = std::make_unique<Wt::WLineEdit>();
-    clientNameWidget->setPlaceholderText("this is needed for input desighn animation");
+    clientNameWidget->setPlaceholderText("(min 3 caractere)");
     clientName_ = clientNameWidget.get();
     setFormWidget(model_->ClientNameField, std::move(clientNameWidget));
     clientNameSugestion_->forEdit(clientName_);
@@ -73,12 +73,12 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
     clientPhoneNumberWidget->setMaxLength(10);
     clientPhoneNumberWidget->setInputMask("9999999999");
     clientPhone_ = clientPhoneNumberWidget.get();
-    clientPhoneNumberWidget->setPlaceholderText("this is needed for input desighn animation");
+    clientPhoneNumberWidget->setPlaceholderText("(10 cifre)");
     setFormWidget(model_->ClientPhoneNumberField, std::move(clientPhoneNumberWidget));
     clientPhoneSugestion_->forEdit(clientPhone_);
 
-    confirmBtn_ = bindWidget("confirm-client-btn", std::make_unique<Wt::WPushButton>("confirm"));
-    clearBtn_ = bindWidget("clear-client-btn", std::make_unique<Wt::WPushButton>("change client"));
+    confirmBtn_ = bindWidget("confirm-client-btn", std::make_unique<Wt::WPushButton>("Confirm"));
+    clearBtn_ = bindWidget("clear-client-btn", std::make_unique<Wt::WPushButton>("Schimba"));
     bindEmpty("submit-info");
 
     clearBtn_->hide();
@@ -232,7 +232,7 @@ void ClientFormView::process()
     {
         return;
     }
-
+    bindEmpty("submit-info");
     auto clientData = model_->getData();
     // Ice communication for registering client
     try
@@ -263,8 +263,9 @@ bool ClientFormView::validate()
     updateModel(model_.get());
     if (model_->validate())
     {
-        return true;
         updateView(model_.get());
+        
+        return true;
     }
     else if (!model_->validateField(model_->ClientNameField))
     {

@@ -104,7 +104,6 @@ function setEventCheckboxes() {
 }
 
 function setServiceCheckboxes(tempElement) {
-  console.log(tempElement);
   // get parent elements for creating dinamic id for checkboxes
   let serviceProviderCheckboxParent = tempElement.querySelector("#serviceProviderCheckboxParent");
   let serviceTimeCheckboxParent = tempElement.querySelector("#serviceTimeCheckboxParent");
@@ -321,46 +320,33 @@ function setServiceCheckboxes(tempElement) {
   serviceTotalCostCheckboxParent.appendChild(serviceTotalCostCheckboxLabel);
 } 
 
-function copyClientDataToClipboard(clientButton) {
-
+function getClientData(clientButton){
   let clientNameElement = clientButton.parentElement.parentElement.querySelector("#clientName");
   let clientPhoneElement = clientButton.parentElement.parentElement.querySelector("#clientPhone");
 
   let clientPhoneCheckbox = clientButton.parentElement.parentElement.querySelector("#clientPhoneCheckbox");
 
   // check if elements are null
-  if (
-    clientNameElement == null ||
-    clientPhoneElement == null ||
-    clientPhoneCheckbox == null
-  ) {
-    console.log(
-      "check the ids of the elements that i get, one of them is null"
-    );
+  if(clientNameElement == null) {
+    console.log("getClientData() clientNameElement is null");
+    return; 
+  }else if(clientPhoneElement == null) {
+    console.log("getClientData() clientPhoneElement is null");
+    return;
+  }else if(clientPhoneCheckbox == null) {
+    console.log("getClientData() clientPhoneCheckbox is null");
     return;
   }
 
-  // initialize strings
-  let clipboardText = "Client \n";
+  let clipboardText = "Client \n" + "Nume: " + clientNameElement.textContent + "\n";
 
-  // check if checkbox is checked and add to string
-  clipboardText += "Nume: " + clientNameElement.textContent + "\n";
-  if (clientPhoneCheckbox.checked)
-    clipboardText += "Telefon: " + clientPhoneElement.textContent + "\n";
-
-  console.log(clipboardText);
-
-  navigator.clipboard.writeText(clipboardText).then(
-    function () {
-      console.log("copy to clipboard successful");
-    },
-    function () {
-      console.log("copy to clipboard failed");
-    }
-  );
+   // check if checkbox is checked and add to string
+   if (clientPhoneCheckbox.checked)
+   clipboardText += "Telefon: " + clientPhoneElement.textContent + "\n\n";
+  return clipboardText;
 }
 
-function copyEventDataToClipboard(eventButton) {
+function getEventData(eventButton){
   let eventDateElement = eventButton.parentElement.parentElement.querySelector("#eventDate");
   let eventTimeElement = eventButton.parentElement.parentElement.querySelector("#eventTime");
   let eventDurationElement = eventButton.parentElement.parentElement.querySelector("#eventDuration");
@@ -393,6 +379,7 @@ function copyEventDataToClipboard(eventButton) {
     );
     return;
   }
+
   // initialize clipboardText
   let clipboardText = "Eveniment \n" + 
                       "Data: " + eventDateElement.textContent + "\n";
@@ -407,23 +394,12 @@ function copyEventDataToClipboard(eventButton) {
   if (eventObservationsCheckbox.checked && eventObservationsElement.textContent != "")
     clipboardText += "Observatii:\n" + eventObservationsElement.textContent + "\n";
   if (eventTotalCostCheckbox.checked && eventTotalCostElement.textContent != "")
-    clipboardText += "Cost total: " + eventTotalCostElement.textContent + "\n";
+    clipboardText += "Cost total: " + eventTotalCostElement.textContent + "\n\n";
 
-  console.log(clipboardText);
-
-  // copy to clipboard
-  navigator.clipboard.writeText(clipboardText).then(
-    function () {
-      console.log("copy to clipboard successful");
-    },
-    function () {
-      console.log("copy to clipboard failed");
-    }
-  );
-  console.log(eventObservationsElement.textContent);
+    return clipboardText;
 }
 
-function copyServiceDataToClipboard(serviceButton) {
+function getServiceData(serviceButton) {
   let newIcon = document.createElement("i");
   newIcon.className = "bi bi-clipboard-check-fill";
   serviceButton.textContent = "";
@@ -477,7 +453,7 @@ if(serviceObservationsCheckbox == null)
 
 
   // initialize clipboardText
-  let clipboardText = "Serviciu \n";
+  let clipboardText = "Serviciu: " + serviceProviderServiceElement.textContent + "\n";
   
   // check if checkbox is checked and add to string
   if (serviceProviderCheckbox.checked && serviceProviderElement.childNodes.length != 0)
@@ -491,17 +467,83 @@ if(serviceObservationsCheckbox == null)
   if (serviceDescriptionCheckbox.checked && serviceDescriptionElement.childNodes.length != 0)
     clipboardText += "Descriere: " + serviceDescriptionElement.textContent + "\n";
   if (serviceObservationsCheckbox.checked && serviceObservationsElement.childNodes.length != 0)
-    clipboardText += "Observatii: " + serviceObservationsElement.textContent + "\n";
+    clipboardText += "Observatii: " + serviceObservationsElement.textContent + "\n\n";
     
+  return clipboardText;
+}
+
+function copyClientDataToClipboard(clientButton) {
+  let clipboardText = getClientData(clientButton);
+  console.log(clipboardText);
+
+  navigator.clipboard.writeText(clipboardText).then(
+    function () {
+      console.log("Copy cl V");
+    },
+    function () {
+      console.log("Copy cl X");
+    }
+  );
+}
+
+function copyEventDataToClipboard(eventButton) {
+  let clipboardText = getEventData(eventButton)
   console.log(clipboardText);
 
   // copy to clipboard
   navigator.clipboard.writeText(clipboardText).then(
     function () {
-      console.log("copy to clipboard successful");
+      console.log("Copy ev V");
     },
     function () {
-      console.log("copy to clipboard failed");
+      console.log("Copy ev X");
     }
+  );
+}
+
+function copyServiceDataToClipboard(serviceButton) {
+  let clipboardText = getServiceData(serviceButton);
+  console.log(clipboardText);
+  
+  // copy to clipboard
+  navigator.clipboard.writeText(clipboardText).then(
+    function () {
+      console.log("Copy serv V");
+    },
+    function () {
+      console.log("Copy serv X");
+    }
+  );
+}
+
+function copyAllEventData() {
+  let clientCopyBtn = document.getElementById("clientCopyBtn");
+  let eventCopyBtn = document.getElementById("eventCopyBtn");
+  let servicesBtns = document.querySelectorAll(".serviceCopyBtn");
+
+  if(clientCopyBtn == null)
+    console.log("clientCopyBtn is null"); 
+  if(eventCopyBtn == null)
+    console.log("eventCopyBtn is null");
+  if(servicesBtns == null)
+    console.log("servicesBtns is null");
+
+  let clipboardText;
+  clipboardText += getClientData(clientCopyBtn);
+  clipboardText += getEventData(eventCopyBtn);
+
+  for (let i = 0; i < servicesBtns.length; i++) { 
+    clipboardText += getServiceData(servicesBtns[i]);
+  }
+  
+  console.log(clipboardText);
+
+  navigator.clipboard.writeText(clipboardText).then(
+    function () {
+      console.log("Copy all V");
+    },
+    function () {
+      console.log("Copy all X");
+    } 
   );
 }

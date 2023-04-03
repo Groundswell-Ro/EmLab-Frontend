@@ -21,7 +21,8 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/EventData");
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/Authentification");
 	app->require("resources/Js/CopyToClipboard.js");
-
+	app->require("resources/Js/Utility.js");
+	
 	// Application content
 	app->root()->addWidget(std::make_unique<EventManagerLab>());
 

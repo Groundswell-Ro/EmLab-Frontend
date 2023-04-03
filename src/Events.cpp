@@ -31,7 +31,7 @@ Events::Events(std::shared_ptr<Login> login)
 
 	eventsContentStack_ = addWidget(std::make_unique<Wt::WStackedWidget>());
 	eventsContentStack_->addStyleClass("events-content");
-	eventsContentStack_->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft, Wt::TimingFunction::Linear, 4000));
+	eventsContentStack_->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft, Wt::TimingFunction::EaseInOut, 100));
 	// Navigation Header
 	auto navHeader = eventsNavContainer->addWidget(std::make_unique<Wt::WContainerWidget>());
 	navHeader->setStyleClass("events-nav-header");
@@ -73,8 +73,9 @@ void Events::addEventDialog()
 	addEventDialog->setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportHeight), Wt::Side::Top);
 	addEventDialog->setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportHeight), Wt::Side::Bottom);
 
-	addEventDialog->contents()->setStyleClass("p-0");
+	addEventDialog->contents()->setStyleClass("p-0 overflow-auto");
 	addEventDialog->setMovable(false);
+
 	auto addServiceBtn = addEventDialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("Adauga Serviciu"));
 	addServiceBtn->setStyleClass("btn btn-outline-primary ms-auto");
 
@@ -84,7 +85,6 @@ void Events::addEventDialog()
 	addEventDialog->rejectWhenEscapePressed();
 
 	auto eventView = addEventDialog->contents()->addWidget(std::make_unique<EventView>(login_));
-
 	addServiceBtn->clicked().connect(this, [=]()
 									 { eventView->addService(); });
 
@@ -361,23 +361,32 @@ void Events::registerEvent(EventDataModule::EventDataPack eventDataPack)
 void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 {
 	auto dialog = addChild(std::make_unique<Wt::WDialog>());
-	dialog->setResizable(true);
-	dialog->setMinimumSize(Wt::WLength(95, Wt::LengthUnit::ViewportWidth), 600);
-	dialog->titleBar()->addStyleClass("bg-primary text-light text-center");
+	dialog->setMinimumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
+	dialog->setMaximumSize(Wt::WLength(98, Wt::LengthUnit::ViewportWidth), Wt::WLength(98, Wt::LengthUnit::ViewportHeight));
+
+	dialog->setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportWidth), Wt::Side::Left);
+	dialog->setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportWidth), Wt::Side::Right);
+	dialog->setOffsets(Wt::WLength(1, Wt::LengthUnit::ViewportHeight), Wt::Side::Top);
+
+	dialog->setResizable(false);
+	dialog->setMovable(false);
+
+	dialog->titleBar()->addStyleClass("bg-primary p-0 d-flex justify-content-between align-items-center text-light");
 	auto closeBtn = dialog->titleBar()->insertBefore(std::make_unique<Wt::WPushButton>("esc"), dialog->titleBar()->children().at(0));
-	closeBtn->setStyleClass("btn btn-sm btn-outline-danger");
+	closeBtn->setStyleClass("btn btn-lg btn-danger");
 	closeBtn->clicked().connect(dialog, &Wt::WDialog::reject);
 	dialog->rejectWhenEscapePressed();
-	auto copyAllBtn = dialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("Copiaza tot<i class=\"bi bi-clipboard-fill\"></i>", Wt::TextFormat::XHTML));
-	copyAllBtn->setStyleClass("btn btn-sm btn-outline-success text-light ");
+	auto copyAllBtn = dialog->titleBar()->addWidget(std::make_unique<Wt::WPushButton>("Copiaza tot<i class=\" ms-2 bi bi-clipboard-fill\"></i>", Wt::TextFormat::XHTML));
+	copyAllBtn->setStyleClass("btn btn-lg btn-success text-light ");
 	dialog->setWindowTitle("Datele evenimentului");
-	dialog->contents()->setStyleClass("d-flex");
+	dialog->contents()->setStyleClass("d-sm-flex overflow-auto px-1 py-2 dialog-contents");
 
 	auto eventDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
+	// add hr 
+	dialog->contents()->addWidget(std::make_unique<Wt::WBreak>())->setStyleClass("dialog-content-spacer");
 	auto servicesDataWrapper = dialog->contents()->addWidget(std::make_unique<Wt::WContainerWidget>());
 
-	eventDataWrapper->setStyleClass("w-50");
-	servicesDataWrapper->setStyleClass("w-50");
+	eventDataWrapper->setStyleClass("dialog-event-data-wrapper");
 
 	auto clientTemp = eventDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("client-copy-data-template")));
 	auto eventTemp = eventDataWrapper->addWidget(std::make_unique<Wt::WTemplate>(tr("event-copy-data-template")));
@@ -416,8 +425,8 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 		serviceTemp->bindString("service-time", serviceDateTime.toString("HH:mm AP"));
 		serviceTemp->bindString("service-duration", durationString);
 		serviceTemp->bindString("service-cost", std::to_string(service.cost) + " RON");
-		serviceTemp->bindString("service-description", service.description);
-		serviceTemp->bindString("service-observations", service.observations);
+		serviceTemp->bindString("service-description", service.description, Wt::TextFormat::Plain);
+		serviceTemp->bindString("service-observations", service.observations, Wt::TextFormat::Plain);
 		serviceTemp->bindString("service-total-cost", std::to_string(serviceCost) + " Ron");
 
 		Wt::WString copyServicesJsFunc = Wt::WString("setServiceCheckboxes(") + serviceTemp->id() + Wt::WString(")");
@@ -431,7 +440,7 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 	eventTemp->bindString("event-time", timeString);
 	eventTemp->bindString("event-duration", durationString);
 	eventTemp->bindString("event-location", eventDataPack.eventData.location);
-	eventTemp->bindString("event-observations", eventDataPack.eventData.observations);
+	eventTemp->bindString("event-observations", eventDataPack.eventData.observations, Wt::TextFormat::Plain);
 	eventTemp->bindString("event-total-cost", std::to_string(totalPrice) + " Ron");
 
 	auto copyClientDataBtn = clientTemp->bindWidget("copy-client-data-btn", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-clipboard\"></i>", Wt::TextFormat::XHTML));
@@ -440,7 +449,7 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 
 	clientTemp->doJavaScript("setClientCheckboxes()");
 	eventTemp->doJavaScript("setEventCheckboxes()");
-
+	copyAllBtn->clicked().connect(this, [=](){ this->doJavaScript("copyAllEventData()"); });
 	dialog->finished()
 		.connect([=]()
 				 { removeChild(dialog); });

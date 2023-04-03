@@ -7,19 +7,20 @@
 #include <Wt/WAnimation.h>
 #include <iostream>
 #include <Wt/WNavigationBar.h>
+#include <Wt/WApplication.h>
 
 // Application is a containerWidget
 EventManagerLab::EventManagerLab()
 	: WContainerWidget(),
 	  login_(std::make_shared<Login>())
 {
-
 	addStyleClass("application");
 
 	authWidget_ = addChild(std::make_unique<AuthWidget>(login_));
 
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
+	authWidget_->loginFormView_->process();
 }
 
 void EventManagerLab::handleUserAuth()
@@ -33,6 +34,7 @@ void EventManagerLab::handleUserAuth()
 	else
 	{
 		authWidget_->animateHide(Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop));
+		Wt::WApplication::instance()->setInternalPath("/");
 		createApp();
 	}
 }
@@ -48,9 +50,10 @@ void EventManagerLab::createApp()
 
 	contentsStack_ = addWidget(std::make_unique<Wt::WStackedWidget>());
 	contentsStack_->addStyleClass("content");
-	contentsStack_->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromRight, Wt::TimingFunction::Linear, 400), true);
+
 	auto leftMenu_ = navigation_->addMenu(std::make_unique<Wt::WMenu>(contentsStack_));
 	leftMenu_->addStyleClass("me-auto");
+	leftMenu_->setInternalPathEnabled();
 
 	// event menu content here
 	auto eventsContentItem = std::make_unique<Events>(login_);
@@ -58,8 +61,15 @@ void EventManagerLab::createApp()
 
 	auto profileContentsItem = std::make_unique<ProfilePage>(login_);
 
-	leftMenu_->addItem("Events", std::move(eventsContentItem))->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/events"));
-	leftMenu_->addItem("Profile", std::move(profileContentsItem))->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/profile"));
+	auto events = leftMenu_->addItem("Events", std::move(eventsContentItem));
+	auto profile = leftMenu_->addItem("Profile", std::move(profileContentsItem));
+
+	profile->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/profile"));
+	events->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/events"));
+
+
+	Wt::WApplication::instance()->setInternalPath("/events`", true);
+
 
 	auto logoutBtn = navigation_->addWidget(std::make_unique<Wt::WPushButton>("Logout"));
 	logoutBtn->addStyleClass("btn btn-outline-secondary");
