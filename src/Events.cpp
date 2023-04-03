@@ -246,7 +246,7 @@ void Events::addEventToList(EventDataModule::EventDataPack eventDataPack, bool a
 		messageBox->show(); });
 
 	eventSettingsBtn->setMenu(std::move(popupMenu));
-	eventSettingsBtn->setStyleClass("btn btn-outline-dark btn-sm rounded-circle");
+	eventSettingsBtn->setStyleClass("btn btn-outline-secondary btn-sm rounded-circle");
 }
 
 // remove current active event from the view and backend
@@ -285,8 +285,11 @@ void Events::eventDateChanged(Wt::WDate eventDate, int eventId)
 
 	auto navItem = static_cast<Wt::WTemplate *>(eventsMenu_->find(navItem_name.toUTF8()));
 	auto eventView = static_cast<EventView *>(eventsContentStack_->find(eventView_name.toUTF8()));
-	auto dateFormat = eventView->eventForm_->model_->dateFormat_;
-	navItem->bindString("event-date", eventDate.toString(dateFormat));
+	if(eventDate.year() == Wt::WDate().currentDate().year()){
+		navItem->bindString("event-date", eventDate.toString("dd/MMM"));
+	}else {
+		navItem->bindString("event-date", eventDate.toString("dd/MMM/yy"));
+	}
 }
 
 void Events::addServiceToEventDialog(int eventId)

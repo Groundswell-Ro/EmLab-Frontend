@@ -32,6 +32,15 @@ std::shared_ptr<Wt::WValidator> createUserNameValidator()
 	return v;
 }
 
+std::shared_ptr<Wt::WValidator> createTextValidator(bool mandatory, int min, int max)
+{
+    auto v = std::make_shared<Wt::WLengthValidator>();
+    v->setMandatory(mandatory);
+    v->setMinimumLength(min);
+    v->setMaximumLength(max);
+    return v;
+}
+
 // Login Form Model Implementation
 LoginFormModel::LoginFormModel()
 	: WFormModel()
@@ -146,6 +155,7 @@ void LoginFormView::process()
 // registration form fields
 const Wt::WFormModel::Field RegistrationFormModel::UserName = "user-name";
 const Wt::WFormModel::Field RegistrationFormModel::UserEmail = "user-email";
+const Wt::WFormModel::Field RegistrationFormModel::UserPhone = "user-phone";
 const Wt::WFormModel::Field RegistrationFormModel::UserPassword = "user-password";
 const Wt::WFormModel::Field RegistrationFormModel::UserPasswordRepeat = "user-password-repeat";
 
@@ -156,25 +166,28 @@ RegistrationFormModel::RegistrationFormModel()
 	// add Line Edit field, Validator, and some value to the input if you want
 	addField(UserName);
 	addField(UserEmail);
+	addField(UserPhone);
 	addField(UserPassword);
 	addField(UserPasswordRepeat);
 
 	setValidator(UserName, createUserNameValidator());
 	setValidator(UserEmail, createUserEmailValidator());
+	setValidator(UserPhone, createTextValidator(true, 10, 10));
 	setValidator(UserPassword, createUserPasswordValidator());
-	// setValidator(UserPasswordRepeat, createUserPasswordRepeatValidator());
 
-	setValue(UserName, "Croitoriu Alexandru Dan");
-	setValue(UserEmail, "croitoriu.93@gmail.com");
-	setValue(UserPassword, "asdfghj1");
-	setValue(UserPasswordRepeat, "asdfghj1");
+	// setValue(UserName, "Croitoriu Alexandru Dan");
+	// setValue(UserEmail, "croitoriu.93@gmail.com");
+	// setValue(UserPassword, "asdfghj1");
+	// setValue(UserPasswordRepeat, "asdfghj1");
 }
 
 AuthModule::RegistrationInfo RegistrationFormModel::getData()
 {
 	AuthModule::RegistrationInfo registrationInfo;
+
 	registrationInfo.name = valueText(UserName).toUTF8();
 	registrationInfo.email = valueText(UserEmail).toUTF8();
+	registrationInfo.phone = valueText(UserPhone).toUTF8();
 	registrationInfo.password = valueText(UserPassword).toUTF8();
 
 	return registrationInfo;
@@ -186,7 +199,6 @@ RegistrationFormView::RegistrationFormView(std::shared_ptr<Login> login)
 	// add model to view
 	model_ = std::make_shared<RegistrationFormModel>();
 
-	// link xml template <message id='template-name'> to the FormView
 	setTemplateText(Wt::WString::tr("registration-form-template"));
 
 	auto facebookBtn = bindWidget("social-facebook-registration", std::make_unique<Wt::WTemplate>(tr("facebook-svg")));
@@ -199,27 +211,26 @@ RegistrationFormView::RegistrationFormView(std::shared_ptr<Login> login)
 
 	// link Form Model Fields to FormWidget and set up the view
 	auto userNameLineEdit = std::make_unique<Wt::WLineEdit>();
-	userNameLineEdit->setPlaceholderText("User Name");
-
+	userNameLineEdit->setPlaceholderText("Nume");
 	setFormWidget(RegistrationFormModel::UserName, std::move(userNameLineEdit));
 
 	auto userEmailLineEdit = std::make_unique<Wt::WLineEdit>();
 	userEmailLineEdit->setPlaceholderText("Email");
-
 	setFormWidget(RegistrationFormModel::UserEmail, std::move(userEmailLineEdit));
+
+	auto userPhoneLineEdit = std::make_unique<Wt::WLineEdit>();
+	userPhoneLineEdit->setPlaceholderText("Telefon");
+	userPhoneLineEdit->setInputMask("9999999999");
+	setFormWidget(RegistrationFormModel::UserPhone, std::move(userPhoneLineEdit));
 
 	auto userPasswordLineEdit = std::make_unique<Wt::WLineEdit>();
 	userPasswordLineEdit->setEchoMode(Wt::EchoMode::Password);
 	userPasswordLineEdit->setPlaceholderText("Password");
-
 	setFormWidget(RegistrationFormModel::UserPassword, std::move(userPasswordLineEdit));
 
 	auto userPasswordRepeatLineEdit = std::make_unique<Wt::WLineEdit>();
 	userPasswordRepeatLineEdit->setEchoMode(Wt::EchoMode::Password);
 	userPasswordRepeatLineEdit->setPlaceholderText("Repeat Password");
-
-	// auto v = std::make_shared<Wt::WValidator>(true);
-	// userPasswordRepeatLineEdit->setValidator(std::move(v));
 	setFormWidget(RegistrationFormModel::UserPasswordRepeat, std::move(userPasswordRepeatLineEdit));
 
 	// Login Btn

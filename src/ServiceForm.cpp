@@ -63,7 +63,7 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
       eventModel_(eventModel),
       login_(login)
 {
-    auto userName = login_->user().name;
+    auto userEmail = login_->user().email;
     ServiceMap serviceMap;
     // {{userName, {"Kids Entertainer", "Magician", "Ballons Workshop", "Ballon modeling artist"}}};
 
@@ -74,7 +74,7 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
     {
         services.push_back(service.title);
     }
-    serviceMap.insert({userName, services});
+    serviceMap.insert({userEmail, services});
 
     initializeModels();
 
@@ -86,7 +86,6 @@ ServiceFormModel::ServiceFormModel(std::shared_ptr<EventFormModel> eventModel, s
     addField(ServiceDescriptionField);
     addField(ServiceObservationsField);
 
-    setValidator(ServiceProviderIdentityField, createMandatoryValidator());
     setValidator(ServiceProviderServiceField, createMandatoryValidator());
     setValidator(ServiceDurationField, createDoubleValidator(0.5, 10.0));
     setValidator(ServiceCostField, createIntValidator(0, 100000));
@@ -117,7 +116,8 @@ void ServiceFormModel::initializeModels()
 {
     // provider code should be user phone number
     auto userName = login_->user().name;
-    providersMap = {{userName, {"Tu esti providerul"}}};
+    auto userEmail = login_->user().email;
+    providersMap = {{userEmail, {userName}}};
     auto userServices = login_->user().servicesInfoSq;
 
     std::vector<std::string> services;
@@ -125,7 +125,7 @@ void ServiceFormModel::initializeModels()
     {
         services.push_back(service.title);
     }
-    servicesMap.insert({userName, services});
+    servicesMap.insert({userEmail, services});
 
     providerModel_ = std::make_shared<Wt::WStandardItemModel>(providersMap.size(), 1);
 
@@ -303,8 +303,13 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     serviceObservations_->focussed().connect(this, [=](){ serviceObservations_->setHeight(250);
                                                         serviceObservations_->setWidth(500); });
 
-
-    bindString("submit-info", Wt::WString(""));
+    bindEmpty("provider-info");
+    bindEmpty("service-info");
+    bindEmpty("time-info");
+    bindEmpty("duration-info");
+    bindEmpty("cost-info");
+    bindEmpty("description-info");
+    bindEmpty("observations-info");
 
     changeProviderIdentityBtn_ = bindWidget("service-provider-identity-btn-change", std::make_unique<Wt::WPushButton>("x"));
     changeProviderServiceBtn_ = bindWidget("service-provider-service-btn-change", std::make_unique<Wt::WPushButton>("x"));
@@ -509,7 +514,7 @@ void ServiceFormView::confirmServiceData(EventDataModule::ServiceField field)
 {
     if (model_->id != 0 && validate())
     {
-        bindEmpty("submit-info");
+       
         // Ice comunication for update service field
         try
         {
@@ -646,11 +651,17 @@ void ServiceFormView::setData(EventDataModule::ServiceData serviceData)
 
 bool ServiceFormView::validate()
 {
-
     updateModel(model_.get());
     if (model_->validate())
     {
-
+        bindEmpty("provider-info");
+        bindEmpty("service-info");
+        bindEmpty("time-info");
+        bindEmpty("duration-info");
+        bindEmpty("cost-info");
+        bindEmpty("description-info");
+        bindEmpty("observations-info");
+        updateView(model_.get());
         return true;
     }
     else
@@ -659,37 +670,37 @@ bool ServiceFormView::validate()
         if (!model_->validateField(model_->ServiceProviderIdentityField))
         {
             setFocus(model_->ServiceProviderIdentityField);
-            bindString("submit-info", "provider Identity is not valid");
+            bindString("provider-info", "camp obligatoriu");
         }
         else if (!model_->validateField(model_->ServiceProviderServiceField))
         {
             setFocus(model_->ServiceProviderServiceField);
-            bindString("submit-info", "provider Service is not valid");
+            bindString("service-info", "camp obligatoriu");
         }
         else if (!model_->validateField(model_->ServiceStartField))
         {
             setFocus(model_->ServiceStartField);
-            bindString("submit-info", "service Start is not valid");
+            bindString("time-info", "camp obligatoriu");
         }
         else if (!model_->validateField(model_->ServiceDurationField))
         {
             setFocus(model_->ServiceDurationField);
-            bindString("submit-info", "service Duration is not valid");
+            bindString("duration-info", "camp obligatoriu");
         }
         else if (!model_->validateField(model_->ServiceCostField))
         {
             setFocus(model_->ServiceCostField);
-            bindString("submit-info", "service Cost is not valid");
+            bindString("cost-info", "camp obligatoriu");
         }
         else if (!model_->validateField(model_->ServiceDescriptionField))
         {
             setFocus(model_->ServiceDescriptionField);
-            bindString("submit-info", "service Description is not valid");
+            bindString("description-info", "camp obligatoriu");
         }
         else if (!model_->validateField(model_->ServiceObservationsField))
         {
             setFocus(model_->ServiceObservationsField);
-            bindString("submit-info", "service Observations is not valid");
+            bindString("observations-info", "camp obligatoriu");
         }
         return false;
     }
@@ -705,7 +716,7 @@ ServiceFormWidget::ServiceFormWidget(std::shared_ptr<Login> login, std::shared_p
 
     setStyleClass("accordion-item");
     headerToggler_ = bindWidget("service-header-toggler", std::make_unique<Wt::WTemplate>(tr("service-header-toggler-template")));
-    headerToggler_->setStyleClass("accordion-button collapsed");
+    headerToggler_->setStyleClass("accordion-button collapsed p-0");
     serviceForm_ = bindWidget("service-form", std::make_unique<ServiceFormView>(login_, eventModel));
 
     headerToggler_->setAttributeValue("data-bs-toggle", "collapse");
@@ -727,8 +738,16 @@ ServiceFormWidget::ServiceFormWidget(std::shared_ptr<Login> login, std::shared_p
     serviceForm_->serviceStart_->changed().connect([=]
                                                    { headerToggler_->bindString("service-start", serviceForm_->serviceStart_->valueText()); });
 
-    serviceForm_->serviceDuration_->changed().connect([=]
-                                                      { headerToggler_->bindString("service-duration", serviceForm_->serviceDuration_->valueText()); });
+    serviceForm_->serviceDuration_->changed().connect([=] { 
+                auto duration = std::atof(serviceForm_->model_->valueText(ServiceFormModel::ServiceDurationField).toUTF8().c_str());
+                auto hours = (int)duration;
+                auto minutes = (int)((duration - hours) * 60);
+                auto minutesString = std::to_string(minutes);
+                if (minutes == 0)
+                    minutesString = "00";
+                auto durationString = Wt::WString(std::to_string(hours) + ":" + minutesString);
+                headerToggler_->bindString("service-duration", durationString); 
+                });
 
     serviceForm_->serviceCost_->changed().connect([=]
                                                   { headerToggler_->bindString("service-cost", serviceForm_->serviceCost_->valueText()); });

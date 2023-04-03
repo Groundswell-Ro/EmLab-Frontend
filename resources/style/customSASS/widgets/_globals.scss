@@ -175,5 +175,26 @@ $copyFormContainerWidth: 400px;
         position: absolute;
         left: 0;
         top: -24px;
+        font-weight: 500;
+        color: $gray-400;
     }
 }
+
+.service-header-toggler-container {
+    color: black;
+    padding: 16px 10px;
+    &:first-child {
+        text-transform: capitalize;
+    }
+    &:nth-child(2) {
+        text-transform: capitalize;
+    }
+
+
+
+
+}
+.accordion-button::after {
+    display: none !important;
+}
+

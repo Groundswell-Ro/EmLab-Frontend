@@ -155,7 +155,12 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
     eventObservations_->focussed().connect(this, [=]() {
         eventObservations_->setHeight(Wt::WLength(250));
     });
-    bindString("submit-info", Wt::WString(""));
+
+    bindEmpty("date-info");
+    bindEmpty("time-info");
+    bindEmpty("duration-info");
+    bindEmpty("location-info");
+    bindEmpty("observations-info");
 
     changeDateBtn_ = bindWidget("event-date-btn-change", std::make_unique<Wt::WPushButton>("x"));
     changeStartBtn_ = bindWidget("event-start-btn-change", std::make_unique<Wt::WPushButton>("x"));
@@ -426,6 +431,11 @@ bool EventFormView::validate()
     updateModel(model_.get());
     if (model_->validate())
     {
+        bindEmpty("date-info");
+        bindEmpty("time-info");
+        bindEmpty("duration-info");
+        bindEmpty("location-info");
+        bindEmpty("observations-info");
         return true;
     }
     else
@@ -433,27 +443,27 @@ bool EventFormView::validate()
         if (!model_->validateField(model_->EventDateField))
         {
             setFocus(model_->EventDateField);
-            bindString("submit-info", "Date is not valid");
+            bindString("date-info", "Data obligatorie");
         }
         else if (!model_->validateField(model_->EventStartField))
         {
             setFocus(model_->EventStartField);
-            bindString("submit-info", "Start time is not valid");
+            bindString("start-info", "Ora obligatorie");
         }
         else if (!model_->validateField(model_->EventDurationField))
         {
             setFocus(model_->EventDurationField);
-            bindString("submit-info", "Duration is not valid");
+            bindString("duration-info", "Durata obligatorie");
         }
         else if (!model_->validateField(model_->EventLocationField))
         {
             setFocus(model_->EventLocationField);
-            bindString("submit-info", "Location is not valid");
+            bindString("location-info", "Locatie obligatorie");
         }
         else if (!model_->validateField(model_->EventObservationsField))
         {
             setFocus(model_->EventObservationsField);
-            bindString("submit-info", "Observations is not valid");
+            bindString("observations-info", "Observatii obligatorii");
         }
         return false;
     }

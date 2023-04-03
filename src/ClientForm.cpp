@@ -79,7 +79,8 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
 
     confirmBtn_ = bindWidget("confirm-client-btn", std::make_unique<Wt::WPushButton>("Confirm"));
     clearBtn_ = bindWidget("clear-client-btn", std::make_unique<Wt::WPushButton>("Schimba"));
-    bindEmpty("submit-info");
+    bindEmpty("info-name");
+    bindEmpty("info-phone");
 
     clearBtn_->hide();
 
@@ -229,10 +230,8 @@ void ClientFormView::process()
     std::cout << "\n\n process \n\n ";
     // update model
     if (!validate())
-    {
         return;
-    }
-    bindEmpty("submit-info");
+    
     auto clientData = model_->getData();
     // Ice communication for registering client
     try
@@ -264,24 +263,26 @@ bool ClientFormView::validate()
     if (model_->validate())
     {
         updateView(model_.get());
-        
+        bindEmpty("info-name");
+        bindEmpty("info-phone");
         return true;
     }
     else if (!model_->validateField(model_->ClientNameField))
     {
         clientName_->setFocus();
         updateViewField(model_.get(), model_->ClientNameField);
-        bindString("submit-info", Wt::WString("Client name is required"));
+        auto validationResult = model_->validation(model_->ClientNameField);
+        if(validationResult.state() == Wt::ValidationState::Invalid)
+            bindString("info-name", Wt::WString("intre 3 si 30 caractere"));
+        else if(validationResult.state() == Wt::ValidationState::InvalidEmpty){
+            bindString("info-name", Wt::WString("Nume gol"));
+        }
     }
     else if (!model_->validateField(model_->ClientPhoneNumberField))
     {
+        bindEmpty("info-name");
         clientPhone_->setFocus();
-        updateViewField(model_.get(), model_->ClientPhoneNumberField);
-        bindString("submit-info", Wt::WString("Client phone is required"));
-    }
-    else
-    {
-        bindString("submit-info", Wt::WString("something went wrong"));
+        bindString("info-phone", Wt::WString("Telefon incorect"));
     }
     return false;
 }

@@ -3,3 +3,10 @@
   -webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+@mixin infoElemTint($color, $tint) {
+  border-radius: 30px;
+  padding: 2px 10px;
+  font-weight: 400;
+  background-color: tint-color($color, $tint);
+}

@@ -65,8 +65,10 @@
 				<a class="a-auth">
 					${social-google-registration}
 				</a>
-			</div> ${user-name class="input-auth"} 
+			</div> 
+			${user-name class="input-auth"} 
 			${user-email class="input-auth"} 
+			${user-phone class="input-auth"} 
 			${user-password class="input-auth"}
 			${user-password-repeat class="input-auth mb-2"} 
 			${submit-info class="text-danger"}

@@ -40,6 +40,7 @@ class RegistrationFormModel : public Wt::WFormModel
 public:
 	static const Field UserName;
 	static const Field UserEmail;
+	static const Field UserPhone;
 	static const Field UserPassword;
 	static const Field UserPasswordRepeat;
 
