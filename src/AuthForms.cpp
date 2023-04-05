@@ -52,8 +52,8 @@ LoginFormModel::LoginFormModel()
 	setValidator(UserEmail, createUserEmailValidator());
 	setValidator(UserPassword, createUserPasswordValidator());
 
-	setValue(UserEmail, "croitoriu.93@gmail.com");
-	setValue(UserPassword, "asdfghj1");
+	// setValue(UserEmail, "croitoriu.93@gmail.com");
+	// setValue(UserPassword, "asdfghj1");
 }
 
 AuthModule::LoginInfo LoginFormModel::getData()
