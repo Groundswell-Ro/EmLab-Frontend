@@ -280,7 +280,6 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
 
                 std::cout << "\n\n case date \n\n";
                 model_->setReadOnly(model_->EventDateField, true);
-                updateViewField(model_.get(), model_->EventDateField);
                 auto stringField = model_->getDateTime();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, EventDataModule::EventField::dateTime, stringField);
                 changeDateBtn_->setHidden(false);
@@ -292,7 +291,6 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
             {
                 std::cout << "\n\n case time \n\n";
                 model_->setReadOnly(model_->EventStartField, true);
-                updateViewField(model_.get(), model_->EventStartField);
                 auto stringField = model_->getDateTime();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, EventDataModule::EventField::dateTime, stringField);
                 changeStartBtn_->setHidden(false);
@@ -302,7 +300,6 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
             {
                 std::cout << "\n\n case duration \n\n";
                 model_->setReadOnly(model_->EventDurationField, true);
-                updateViewField(model_.get(), model_->EventDurationField);
                 auto doubleField = ::atof(model_->valueText(model_->EventDurationField).toUTF8().c_str());
                 eventsDataInterface->modifyEventDoubleField(login_->userToken(), eventId, field, doubleField);
                 changeDurationBtn_->setHidden(false);
@@ -310,10 +307,8 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
             }
             else if (field == EventDataModule::EventField::location)
             {
-
                 std::cout << "\n\n case location \n\n";
                 model_->setReadOnly(model_->EventLocationField, true);
-                updateViewField(model_.get(), model_->EventLocationField);
                 auto stringField = model_->valueText(model_->EventLocationField).toUTF8();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, field, stringField);
                 changeLocationBtn_->setHidden(false);
@@ -323,7 +318,6 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
             {
                 std::cout << "\n\n case observations \n\n";
                 model_->setReadOnly(model_->EventObservationsField, true);
-                updateViewField(model_.get(), model_->EventObservationsField);
                 auto stringField = model_->valueText(model_->EventObservationsField).toUTF8();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, field, stringField);
                 changeObservationsBtn_->setHidden(false);
@@ -401,7 +395,6 @@ void EventFormView::setReadOnlyAll(bool readOnly)
         model_->setReadOnly(model_->EventLocationField, false);
         model_->setReadOnly(model_->EventObservationsField, false);
     }
-    updateView(model_.get());
 }
 
 void EventFormView::setData(EventDataModule::EventData eventData)
@@ -443,26 +436,31 @@ bool EventFormView::validate()
         if (!model_->validateField(model_->EventDateField))
         {
             setFocus(model_->EventDateField);
+            updateViewField(model_.get(), model_->EventDateField);
             bindString("date-info", "Data obligatorie");
         }
         else if (!model_->validateField(model_->EventStartField))
         {
             setFocus(model_->EventStartField);
+            updateViewField(model_.get(), model_->EventStartField);
             bindString("start-info", "Ora obligatorie");
         }
         else if (!model_->validateField(model_->EventDurationField))
         {
             setFocus(model_->EventDurationField);
+            updateViewField(model_.get(), model_->EventDurationField);
             bindString("duration-info", "Durata obligatorie");
         }
         else if (!model_->validateField(model_->EventLocationField))
         {
             setFocus(model_->EventLocationField);
+            updateViewField(model_.get(), model_->EventLocationField);
             bindString("location-info", "Locatie obligatorie");
         }
         else if (!model_->validateField(model_->EventObservationsField))
         {
             setFocus(model_->EventObservationsField);
+            updateViewField(model_.get(), model_->EventObservationsField);
             bindString("observations-info", "Observatii obligatorii");
         }
         return false;

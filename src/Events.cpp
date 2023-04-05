@@ -38,14 +38,23 @@ Events::Events(std::shared_ptr<Login> login)
 
 	auto prevBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-arrow-bar-left fs-3 \"></i>", Wt::TextFormat::XHTML));
 	prevBtn->setStyleClass("btn btn-light me-auto");
+	prevBtn->clicked().connect(this, [this] {
+		currentDiplayDate_ = currentDiplayDate_.addDays(-1);
+		displayEventsData();
+	});
 
 	auto title = navHeader->addWidget(std::make_unique<Wt::WText>("Azi"));
+	title->setStyleClass("fs-5");
 	// title->setStyleClass("events-nav-header");
 
-	auto nextBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-arrow-bar-right fs-4 \"></i>", Wt::TextFormat::XHTML));
+	auto nextBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-arrow-bar-right fs-5 \"></i>", Wt::TextFormat::XHTML));
 	nextBtn->setStyleClass("btn btn-light ms-auto");
+	nextBtn->clicked().connect(this, [this] {
+		currentDiplayDate_ = currentDiplayDate_.addDays(1);
+		displayEventsData();
+	});
 
-	auto addEventBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-journal-plus fs-4 \"></i>", Wt::TextFormat::XHTML));
+	auto addEventBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-journal-plus fs-5 \"></i>", Wt::TextFormat::XHTML));
 	addEventBtn->setStyleClass("btn btn-success ms-auto");
 
 	// tooltip for add event button
@@ -59,6 +68,7 @@ Events::Events(std::shared_ptr<Login> login)
 	eventsMenu_ = eventsNavContainer->addWidget(std::make_unique<Wt::WContainerWidget>());
 
 	eventsMenu_->setStyleClass("events-nav-item-list");
+
 	displayEventsData();
 }
 
@@ -131,9 +141,9 @@ void Events::displayEventsData()
 		{
 			throw std::runtime_error("Invalid proxy");
 		}
-
+		auto date = currentDiplayDate_.toString(dateFormat).toUTF8();
 		// get events data
-		seqEventDataPack = eventsDataInterface->getEventsData(login_->userToken());
+		seqEventDataPack = eventsDataInterface->getTenEvents(login_->userToken(), date, 0);
 	}
 	catch (const std::exception &e)
 	{

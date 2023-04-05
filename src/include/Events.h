@@ -2,6 +2,7 @@
 #include <Wt/WContainerWidget.h>
 #include <Wt/WStackedWidget.h>
 #include "LoginObj.h"
+#include <Wt/WDate.h>
 
 class Events : public Wt::WContainerWidget
 {
@@ -13,6 +14,8 @@ public:
     Wt::WStackedWidget *eventsContentStack_;
     void addEventDialog();
 
+    Wt::WDate currentDiplayDate_ = Wt::WDate::currentServerDate();
+    std::string dateFormat = "dd/MM/yyyy";
 private:
     void addServiceToEventDialog(int eventId);
     void copyEventDataDialog(EventDataModule::EventDataPack eventDataPack);
@@ -22,4 +25,5 @@ private:
     void eventClientChanged(Wt::WString clientName, int eventId);
     void eventDateChanged(Wt::WDate eventDate, int eventId);
     void registerEvent(EventDataModule::EventDataPack eventDataPack);
+    
 };

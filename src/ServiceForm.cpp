@@ -289,9 +289,7 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     serviceDescription_ = serviceDescriptionWidget.get();
     setFormWidget(model_->ServiceDescriptionField, std::move(serviceDescriptionWidget));
     serviceDescription_->setHeight(Wt::WLength::Auto);
-    
-    serviceDescription_->focussed().connect(this, [=](){ serviceDescription_->setHeight(250);
-                                                        serviceDescription_->setWidth(500); });
+    serviceDescription_->focussed().connect(this, [=](){ serviceDescription_->setHeight(250); });
 
     /*
      *  Observations Textarea Widget
@@ -300,8 +298,7 @@ ServiceFormView::ServiceFormView(std::shared_ptr<Login> login, std::shared_ptr<E
     serviceObservations_ = observationsWidget.get();
     setFormWidget(model_->ServiceObservationsField, std::move(observationsWidget));
     serviceObservations_->setHeight(Wt::WLength::Auto);
-    serviceObservations_->focussed().connect(this, [=](){ serviceObservations_->setHeight(250);
-                                                        serviceObservations_->setWidth(500); });
+    serviceObservations_->focussed().connect(this, [=](){ serviceObservations_->setHeight(250); });
 
     bindEmpty("provider-info");
     bindEmpty("service-info");
@@ -595,6 +592,7 @@ void ServiceFormView::confirmServiceData(EventDataModule::ServiceField field)
                 std::cout << "\n case description \n";
                 changeServiceDescriptionBtn_->setHidden(false);
                 confirmServiceDescriptionBtn_->setHidden(true);
+                serviceDescription_->setHeight(Wt::WLength::Auto);
             }
             else if (field == EventDataModule::ServiceField::observations)
             {
@@ -605,6 +603,7 @@ void ServiceFormView::confirmServiceData(EventDataModule::ServiceField field)
                 std::cout << "\n case observations \n";
                 changeServiceObservationsBtn_->setHidden(false);
                 confirmServiceObservationsBtn_->setHidden(true);
+                serviceObservations_->setHeight(Wt::WLength::Auto);
             }
         }
         catch (const std::exception &e)

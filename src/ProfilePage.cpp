@@ -80,11 +80,12 @@ void ProfilePage::setServicesMenu()
     auto addServiceBtn = menu_->bindWidget("add-service-button", std::make_unique<Wt::WPushButton>("<i class=\"bi bi-journal-plus\"></i>", Wt::TextFormat::XHTML));
     addServiceBtn->clicked().connect(this, &ProfilePage::addServiceDialog);
     addServiceBtn->setStyleClass("btn btn-outline-secondary border-0");
-    
+    auto userServices = login_->user().servicesInfoSq;
+    description_->bindEmpty("service-title");
+    description_->bindEmpty("service-description");
     for (int i = 0; i <= 9; ++i)
     {
         auto serviceString = Wt::WString("services-nav-item-" + std::to_string(i));
-        auto userServices = login_->user().servicesInfoSq;
         if (i >= userServices.size())
         {
             menu_->bindEmpty("services-nav-item-" + std::to_string(i));
