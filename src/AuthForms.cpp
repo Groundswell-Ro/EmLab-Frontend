@@ -52,8 +52,8 @@ LoginFormModel::LoginFormModel()
 	setValidator(UserEmail, createUserEmailValidator());
 	setValidator(UserPassword, createUserPasswordValidator());
 
-	// setValue(UserEmail, "croitoriu.93@gmail.com");
-	// setValue(UserPassword, "asdfghj1");
+	setValue(UserEmail, "croitoriu.93@gmail.com");
+	setValue(UserPassword, "asdfghj1");
 }
 
 AuthModule::LoginInfo LoginFormModel::getData()
@@ -174,11 +174,6 @@ RegistrationFormModel::RegistrationFormModel()
 	setValidator(UserEmail, createUserEmailValidator());
 	setValidator(UserPhone, createTextValidator(true, 10, 10));
 	setValidator(UserPassword, createUserPasswordValidator());
-
-	// setValue(UserName, "Croitoriu Alexandru Dan");
-	// setValue(UserEmail, "croitoriu.93@gmail.com");
-	// setValue(UserPassword, "asdfghj1");
-	// setValue(UserPasswordRepeat, "asdfghj1");
 }
 
 AuthModule::RegistrationInfo RegistrationFormModel::getData()

@@ -49,15 +49,14 @@ bool Login::isLoggedIn()
 void Login::getConnectionStrings()
 {
 	//  Get connection strings from files
-	std::ifstream authCommFile("comm-auth.txt");
-	std::ifstream eventCommFile("comm-event.txt");
+	std::ifstream authCommFile("/etc/evntmgr/comm-auth.txt");
+	std::ifstream eventCommFile("/etc/evntmgr/comm-event.txt");
 
 	if (!eventCommFile || !authCommFile)
 	{
 		std::cout << "\n\n - ERROR - Give me the EVENT and AUTH COMUNICATION FILES and i will work :) - \n\n";
 		return;
 	}
-
 	getline(authCommFile, authConnString_);
 	getline(eventCommFile, eventConnString_);
 }

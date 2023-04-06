@@ -20,7 +20,7 @@ EventManagerLab::EventManagerLab()
 
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
-	authWidget_->loginFormView_->process();
+	// authWidget_->loginFormView_->process();
 }
 
 void EventManagerLab::handleUserAuth()
