@@ -1,0 +1,3 @@
+*.d
+/src/obj/*o
+frontend
