@@ -4,9 +4,9 @@
         0 10px 10px rgba(0, 0, 0, 0.22);
 
     .overlay {
-        background-image: linear-gradient(60deg, #14184e, transparent 65%),
-            linear-gradient(20deg, #854cc4 40%, transparent),
-            linear-gradient(90deg, #1f32d9 30%, #6f85e2);
+        background-image: linear-gradient(60deg, $gray-800, transparent 65%),
+            linear-gradient(20deg, $purple 40%, transparent),
+            linear-gradient(90deg, $blue 30%, cyan);
         color: #FFFFFF;
 
     }
@@ -21,8 +21,8 @@
 }
 
 .button-login {
-    border: 1px solid $color-12;
-    background-color: lighten($color-09, 30%);
+    // border: 1px solid $color-12;
+    // background-color: lighten($color-09, 30%);
     color: #FFFFFF;
 
     &.ghost {
@@ -42,136 +42,3 @@
 }
 
 
-
-
-// tags
-
-
-
-.tag-blue-t60 {
-    @include infoElemTint($blue, 60%);
-}
-.tag-indigo-t60 {
-    @include infoElemTint($indigo, 60%);
-}
-.tag-purple-t60 {
-    @include infoElemTint($purple, 60%);
-}
-.tag-pink-t60 {
-    @include infoElemTint($pink, 60%);
-}
-.tag-red-t60 {
-    @include infoElemTint($red, 60%);
-}
-.tag-orange-t60 {
-    @include infoElemTint($orange, 60%);
-}  
-.tag-yellow-t60 {
-    @include infoElemTint($yellow, 60%);
-}
-.tag-green-t60 {
-    @include infoElemTint($green, 60%);
-}
-.tag-teal-t60 {
-    @include infoElemTint($teal, 60%);
-}
-.tag-cyan-t60 {
-    @include infoElemTint($cyan, 60%);
-}
-
-
-.tag-blue-t70 {
-    @include infoElemTint($blue, 70%);
-}
-.tag-indigo-t70 {
-    @include infoElemTint($indigo, 70%);
-}
-.tag-purple-t70 {
-    @include infoElemTint($purple, 70%);
-}
-.tag-pink-t70 {
-    @include infoElemTint($pink, 70%);
-}
-.tag-red-t70 {
-    @include infoElemTint($red, 70%);
-}
-.tag-orange-t70 {
-    @include infoElemTint($orange, 70%);
-}  
-.tag-yellow-t70 {
-    @include infoElemTint($yellow, 70%);
-}
-.tag-green-t70 {
-    @include infoElemTint($green, 70%);
-}
-.tag-teal-t70 {
-    @include infoElemTint($teal, 70%);
-}
-.tag-cyan-t70 {
-    @include infoElemTint($cyan, 70%);
-}
-
-
-.tag-blue-t80 {
-    @include infoElemTint($blue, 80%);
-}
-.tag-indigo-t80 {
-    @include infoElemTint($indigo, 80%);
-}
-.tag-purple-t80 {
-    @include infoElemTint($purple, 80%);
-}
-.tag-pink-t80 {
-    @include infoElemTint($pink, 80%);
-}
-.tag-red-t80 {
-    @include infoElemTint($red, 80%);
-}
-.tag-orange-t80 {
-    @include infoElemTint($orange, 80%);
-}  
-.tag-yellow-t80 {
-    @include infoElemTint($yellow, 80%);
-}
-.tag-green-t80 {
-    @include infoElemTint($green, 80%);
-}
-.tag-teal-t80 {
-    @include infoElemTint($teal, 80%);
-}
-.tag-cyan-t80 {
-    @include infoElemTint($cyan, 80%);
-}
-
-
-
-.tag-blue-t90 {
-    @include infoElemTint($blue, 90%);
-}
-.tag-indigo-t90 {
-    @include infoElemTint($indigo, 90%);
-}
-.tag-purple-t90 {
-    @include infoElemTint($purple, 90%);
-}
-.tag-pink-t90 {
-    @include infoElemTint($pink, 90%);
-}
-.tag-red-t90 {
-    @include infoElemTint($red, 90%);
-}
-.tag-orange-t90 {
-    @include infoElemTint($orange, 90%);
-}  
-.tag-yellow-t90 {
-    @include infoElemTint($yellow, 90%);
-}
-.tag-green-t90 {
-    @include infoElemTint($green, 90%);
-}
-.tag-teal-t90 {
-    @include infoElemTint($teal, 90%);
-}
-.tag-cyan-t90 {
-    @include infoElemTint($cyan, 90%);
-}

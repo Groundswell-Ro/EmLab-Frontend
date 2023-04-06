@@ -193,6 +193,7 @@ void EventView::removeServiceDialog(EventDataModule::ServiceData serviceData)
     serviceFormView->hideServiceChangeBtns(true);
     auto delBtn = dialog->footer()->addWidget(std::make_unique<Wt::WPushButton>("Delete"));
     auto closeBtn = dialog->footer()->addWidget(std::make_unique<Wt::WPushButton>("Close"));
+    dialog->rejectWhenEscapePressed();
 
     delBtn->clicked().connect(dialog, &Wt::WDialog::accept);
     closeBtn->clicked().connect(dialog, &Wt::WDialog::reject);
