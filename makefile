@@ -1,6 +1,6 @@
 # Compiler settings
 CC = g++
-CXXFLAGS = -std=c++14 -I. -I../comunication -DICE_CPP11_MAPPING -DENABLE_SSL:BOOL=ON
+CXXFLAGS = -std=c++14 -I. -I../comunication -DICE_CPP11_MAPPING
 
 # Makefile settings
 APPNAME = frontend
