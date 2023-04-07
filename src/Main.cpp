@@ -11,9 +11,11 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	// Set up application resourses and settings
 	app->setTitle("Event Manager Lab");
 	app->setTheme(std::make_shared<Theme>());
+	// meta tags
+	// app->addMetaHeader("viewport", "width=device-width, initial-scale=1", "en");
+	app->addMetaHeader("viewport", "width=device-width, initial-scale=1");
+	
 	// import resources
-	// app->useStyleSheet("resources/styles/css/style.css");
-
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/general");
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/svgs");
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/ProfilePage");

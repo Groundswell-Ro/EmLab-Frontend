@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class=""><head>
+
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Event Manager Lab</title>
+  <!--[if gte IE 6]>
+  <style type="text/css">
+  v\:* { behavior:url(#default#VML); position:absolute }
+  </style>
+  <script id="ie-deferred-loader" defer="defer" src="//:"></script>
+  <![endif]-->
+  <script>
+  /*<![CDATA[*/
+  window.onresize=function(){};function loadScript(e){const t=document.getElementsByTagName("head")[0],n=navigator.userAgent.toLowerCase(),o=/firefox\/(\d+)\./.exec(n);if(o&&o[1]>=20){const n=new XMLHttpRequest;n.open("GET",e,!0);n.onreadystatechange=function(){if(4===n.readyState){const e=document.createElement("script");e.type="text/javascript";e.innerHTML=n.responseText;t.appendChild(e)}};n.send(null)}else{const n=document.createElement("script");n.setAttribute("src",e);t.appendChild(n)}};setTimeout((function(){const e=document,t=window;try{e.execCommand("BackgroundImageCache",!1,!0)}catch(e){}function n(e){t.location.replace?t.location.replace(e):t.location.href=e}function o(){let e=window.location.search;e.length>1&&"?"===e.charAt(0)&&(e=e.substring(1));return e.split("&")}t.opera&&t.opera.setOverrideHistoryNavigationMode("compatible");const i='';let c=t.location.pathname;t.opera||(c=decodeURIComponent(c));if(i.length>0){const e=c.lastIndexOf(i);-1!==e&&(c=c.substring(0,e)+c.substring(e+i.length))}const a="&deployPath="+encodeURIComponent(c),l=t.XMLHttpRequest||t.ActiveXObject;let s=true;const _=new Date;_.setTime(_.getTime()+1e3);;const r="jscookietest=valid;SameSite=Lax";e.cookie=r;s=s||false&&-1!==e.cookie.indexOf(r);e.cookie=r+";expires=Thu, 01 Jan 1970 00:00:00 GMT;SameSite=Lax";e.cookie="WtTestCookie=ok;path=/;expires="+_.toGMTString()+";SameSite=Lax";;let d=t.location.hash;d.length>0&&(d=d.substring(1));const u=d.indexOf("?");-1!==u&&(d=d.substring(0,u));const $=navigator.userAgent.toLowerCase();-1!==$.indexOf("gecko")&&-1===$.indexOf("webkit")||(d=unescape(d));let f="";screen.deviceXDPI!==screen.logicalXDPI&&(f="&scale="+screen.deviceXDPI/screen.logicalXDPI);;if(window.WebGLRenderingContext){const e=document.createElement("canvas");let t=null;try{t=e.getContext("webgl",{antialias:!0})}catch(e){}if(null===t)try{t=e.getContext("experimental-webgl")}catch(e){}null!==t&&(f+="&webGL=true")};f+="&scrW="+screen.width+"&scrH="+screen.height;let p='?wtd=qlpf6uHJFhOogAbJ'+"&sid="+3036012165;const m=!(!window.history||!window.history.pushState),h=m?"&htmlHistory=true":"";f+="&tz="+-(new Date).getTimezoneOffset();"object"==typeof Intl&&"function"==typeof Intl.DateTimeFormat&&"function"==typeof Intl.DateTimeFormat().resolvedOptions&&Intl.DateTimeFormat().resolvedOptions().timeZone&&(f+="&tzS="+encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone));let g=!s||!l;g&&"qlpf6uHJFhOogAbJ"===function(e){const t=o();for(let n=0,o=t.length;n<o;n++){const o=t[n].split("=");if(o.length>=2&&o[0]===e)return unescape(o[1])}return null}("wtd")&&(g=!1);if(g)if(m)n(function(e,t){let n=!1;const i=o();for(let o=0,c=i.length;o<c;o++){const c=i[o].split("=");if(c.length>=2&&c[0]===e){c[1]=escape(t);i[o]=c.join("=");n=!0;break}}n||i.push(e+"="+escape(t));return"?"+i.join("&")+window.location.hash}("wtd","qlpf6uHJFhOogAbJ"));else{let e;e=d.length>1&&"/"===d.charAt(0)?d:'/events`';e.length>0&&(p+="#"+e);n(p)}else if(l){let t='#/events`',o="";if(!m&&t.length>1){;"#"===t.charAt(0)&&(t="../"+t);n(t)}else{if(d.length>1&&"/"===d.charAt(0)){o="&_="+encodeURIComponent(d);};loadScript(p+(o+f+h+a)+"&request=script&rand="+(Math.round(1e6*Math.random())+1304214955))}}}),0);
+  /* ]]> */
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=?_=/events%60&amp;wtd=qlpf6uHJFhOogAbJ&amp;js=no"></noscript>
+  <style type="text/css" id="Wt-inline-css"></style>
+  <script src="?wtd=qlpf6uHJFhOogAbJ&amp;sid=3036012165&amp;webGL=true&amp;scrW=1920&amp;scrH=1080&amp;tz=180&amp;tzS=Europe%2FBucharest&amp;htmlHistory=true&amp;deployPath=%2F&amp;request=script&amp;rand=1304793752"></script><script src="/resources/themes/bootstrap/5/bootstrap.bundle.min.js"></script><script src="/resources/Js/CopyToClipboard.js"></script><script src="/resources/Js/Utility.js"></script></head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" defer></script>
+  <body class="Wt-ltr" dir="LTR" data-new-gr-c-s-check-loaded="14.1103.0" data-gr-ext-installed="" style="cursor: auto;">
+  <!--[if lt IE 8]>
+  <iframe id="Wt-history-iframe" src="?wtd=qlpf6uHJFhOogAbJ&amp;request=resource&amp;resource=blank"
+   style="position:absolute;top:0;left:0;width:1px;height:1px;visibility:hidden;">
+  </iframe>
+  <![endif]-->
+  <input id="Wt-history-field" type="hidden">
+  <noscript>
+    <a href="?_=/events%60&amp;wtd=qlpf6uHJFhOogAbJ&amp;js=no">Load basic HTML</a>
+  
+  <link href="?wtd=qlpf6uHJFhOogAbJ&amp;request=style&amp;page=1&amp;js=no" rel="stylesheet"
+        type="text/css" >
+  
+  </noscript>
+  
+  <link href="?wtd=qlpf6uHJFhOogAbJ&amp;request=style&amp;page=1" rel="stylesheet" type="text/css">
+  
+  <!--[if gte IE 6]>
+  <script type="text/javascript">
+  document.namespaces.add("v","urn:schemas-microsoft-com:vml","#default#VML");
+  </script>
+  <![endif]-->
+  
+  
+  <div id="o1uk8y01" class="Wt-domRoot" style="height: 100%;"><div id="Wt-timers" style="position:absolute;height:0.0px;"></div><div id="o1uk8y03" style="height:100.0%;"><div id="o1uk8y0r" class="application"><div id="o1uk8y1v" data-object-name="navigation" class="navbar navbar-dark bg-dark navbar-expand-sm">
+      <div class="container-fluid">
+        <a id="o1uk8y1y" class="navbar-brand"><span id="o1uk8y1z">Event Manager Lab</span></a>
+        <button id="o1uk8y1x" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}(function(o){let navbarCollapse = o.parentElement.querySelector('.navbar-collapse');if (typeof navbarCollapse === 'null') return;new bootstrap.Collapse(navbarCollapse);})(o,e);" class="navbar-toggler btn">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+        <div id="o1uk8y1w" class="navbar-collapse collapse"><ul id="o1uk8y22" class="navbar-nav me-auto"><li id="o1uk8y74" class="nav-item"><a id="o1uk8y76" href="/?_=/events" onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(){Wt._p_.setHash('/events',true);};f(o,e);}Wt4_9_1.cancelEvent(e,0x2);Wt._p_.update(o,'s14d',e,true);}" class="nav-link"><span id="o1uk8y77"><span id="o1uk8y78" style="white-space:nowrap;">Events</span></span></a></li><li id="o1uk8y7f" class="nav-item active"><a id="o1uk8y7h" href="/?_=/profile" onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(){Wt._p_.setHash('/profile',true);};f(o,e);}Wt4_9_1.cancelEvent(e,0x2);Wt._p_.update(o,'s156',e,true);}" class="nav-link active"><span id="o1uk8y7i"><span id="o1uk8y7j" style="white-space:nowrap;">Profile</span></span></a></li></ul><div id="o1uk8y7l"><button id="o1uk8y7k" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s153',e,true);" class="btn btn-outline-secondary">Logout</button></div></div>
+      </div>
+    </div><div id="o1uk8y20" class="Wt-stack content" style="overflow-x:hidden;overflow-y:hidden;"><div id="o1uk8y75" style="height: 100%; display: none;"><div id="o1uk8y23" class="events position-relative"><div id="o1uk8y24" class="events-nav"><div id="o1uk8y27" class="events-nav-header"><button id="o1uk8y28" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s52',e,true);" class="btn btn-light me-auto"><i class="bi bi-arrow-bar-left fs-3 "></i></button><span id="o1uk8y29" class="fs-5">Azi</span><button id="o1uk8y2a" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s55',e,true);" class="btn btn-light ms-auto"><i class="bi bi-arrow-bar-right fs-5 "></i></button><button id="o1uk8y2b" data-bs-placement="right" data-bs-toggle="tooltip" title="Adauga eveniment" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s57',e,true);" class="btn btn-success ms-auto"><i class="bi bi-journal-plus fs-5 "></i></button></div><div id="o1uk8y2c" class="events-nav-item-list"><div id="o1uk8y2d" data-object-name="3_event_nav_item" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s10e',e,true);" class="events-nav-item active">
+      <div class="events-nav-item-head">
+        <div class="events-nav-item-head-client">brenda smit</div>
+        <div class="events-nav-item-head-date">07/Apr</div>
+      </div>
+      <div class="events-nav-item-description"><button id="o1uk8y2f" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s118',e,true);" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="bi bi-gear"></i></button></div>  
+    </div></div></div><div id="o1uk8y25" class="event-divider"></div><div id="o1uk8y26" class="Wt-stack events-content Wt-animated" style="overflow-x:hidden;overflow-y:hidden;"><div id="o1uk8y2e"><div id="o1uk8y2g" data-object-name="3_event_data" class="d-flex align-items-start"><div id="o1uk8y2h" class="position-sticky top-0 start-0"><div id="o1uk8y2j" style="min-width:280.0px;min-height:0px;max-width:350.0px;">
+      <div class="">
+        <form class="form-inline mt-4 mx-2 flex-grow-1">
+          <div class="event-form-field mb-4"> <input id="o1uk8y2r" name="o1uk8y2r" size="10" title="" type="text" oninput="var e=event||window.event,o=this;Wt._p_.update(o,'s73',e,true);" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2l');if (o &amp;&amp; o.wtObj) o.wtObj.editKeyUp(obj, event);})(o,e);{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2l');if (o &amp;&amp; o.wtObj) o.wtObj.editKeyDown(obj, event);})(o,e);}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2l');if (o &amp;&amp; o.wtObj) o.wtObj.editKeyDown(obj, event);})(o,e);" onblur="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2l');if (o &amp;&amp; o.wtObj) o.wtObj.delayHide(obj, event);})(o,e);" value="brenda smit" disabled="disabled" class="Wt-suggest-onedit disabled form-control" placeholder="(min 3 caractere)"> 
+            <label for="o1uk8y2r" class="event-forms-label">Nume client <span class="help-inline text-danger mx-2 p-0"></span></label>
+          </div>
+          <div class="event-form-field"> <input id="o1uk8y2s" maxlength="10" name="o1uk8y2s" size="10" title="" type="text" oninput="var e=event||window.event,o=this;Wt._p_.update(o,'s74',e,true);" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y2s');if (o &amp;&amp; o.wtLObj) o.wtLObj.clicked(lobj, event);})(o,e);" onkeyup="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2o');if (o &amp;&amp; o.wtObj) o.wtObj.editKeyUp(obj, event);})(o,e);{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2o');if (o &amp;&amp; o.wtObj) o.wtObj.editKeyDown(obj, event);})(o,e);(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y2s');if (o &amp;&amp; o.wtLObj) o.wtLObj.keyPressed(lobj, event);})(o,e);}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2o');if (o &amp;&amp; o.wtObj) o.wtObj.editKeyDown(obj, event);})(o,e);(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y2s');if (o &amp;&amp; o.wtLObj) o.wtLObj.keyDown(lobj, event);})(o,e);" onblur="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y2o');if (o &amp;&amp; o.wtObj) o.wtObj.delayHide(obj, event);})(o,e);(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y2s');if (o &amp;&amp; o.wtLObj) o.wtLObj.blurred(lobj, event);})(o,e);" onfocus="var e=event||window.event,o=this;(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y2s');if (o &amp;&amp; o.wtLObj) o.wtLObj.focussed(lobj, event);})(o,e);" value="0775684416" disabled="disabled" class="Wt-suggest-onedit disabled form-control" placeholder="(10 cifre)"> 
+            <label for="o1uk8y2s" class="event-forms-label">Telefon client <span class="help-inline text-danger mx-2 p-0"></span></label>
+          </div>
+        </form>
+        <div class="w-100 p-2">
+          <button id="o1uk8y2u" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s76',e,true);" class="btn btn-outline-secondary w-100">Schimba</button>
+          <button id="o1uk8y2t" type="button" class="btn btn-success w-100" style="display: none;">Confirm</button>
+        </div>
+        
+      </div>
+    </div><div id="o1uk8y2x"><hr class=""></div><div id="o1uk8y2y" style="min-width:320.0px;min-height:0px;max-width:380.0px;">
+      <form class="form-inline m-2 mt-4">
+        <div class="mb-4 d-flex event-form-field"> 
+          <input id="o1uk8y30" name="o1uk8y30" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'s7d',e,true);" onmousemove="var e=event||window.event,o=this;(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y30');if (o &amp;&amp; o.wtDObj) o.wtDObj.mouseMove(dobj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y30');if (o &amp;&amp; o.wtDObj) o.wtDObj.mouseOut(dobj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y30');if (o &amp;&amp; o.wtDObj) o.wtDObj.mouseUp(dobj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y30');if (o &amp;&amp; o.wtDObj) o.wtDObj.mouseDown(dobj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeydown="var e=event||window.event,o=this;if(e.keyCode &amp;&amp; (e.keyCode == 27)){Wt._p_.update(o,'s142',e,true);}" value="07/04/2023" readonly="readonly" class="form-control Wt-dateedit" placeholder="nu este setata nici o data"> 
+          <label for="o1uk8y30" class="event-forms-label">Data <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y3q" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sb3',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y3v" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+  
+        </div>
+        <div class=" mb-4 d-flex event-form-field"> 
+          <input id="o1uk8y3f" name="o1uk8y3f" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'s90',e,true);" onmousemove="var e=event||window.event,o=this;(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y3f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseMove(dobj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y3f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseOut(dobj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y3f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseUp(dobj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y3f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseDown(dobj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeydown="var e=event||window.event,o=this;if(e.keyCode &amp;&amp; (e.keyCode == 27)){Wt._p_.update(o,'s147',e,true);}" value="12:00 PM" readonly="readonly" class="form-control Wt-timeedit">
+          <label for="o1uk8y3f" class="event-forms-label">Ora <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y3r" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sb4',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y3w" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+  
+        <div class=" mb-4 d-flex event-form-field"> 
+          <input id="o1uk8y3n" name="o1uk8y3n" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3n');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3n');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="1.0" class="form-control Wt-spinbox"> 
+          <label for="o1uk8y3n" class="event-forms-label">Durata \ H <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y3s" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sb5',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y3x" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+        <div class=" mb-4 d-flex event-form-field"> 
+          <input id="o1uk8y3o" name="o1uk8y3o" size="10" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" class="form-control pt-1" placeholder="nu este setata nici o locatie" title=""> 
+          <label for="o1uk8y3o" class="event-forms-label">Locatia <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y3t" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sb6',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y3y" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+        <div class="mb-4 d-flex event-form-field"> 
+          <textarea id="o1uk8y3p" cols="20" name="o1uk8y3p" rows="5" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onfocus="var e=event||window.event,o=this;Wt._p_.update(o,'sa7',e,true);" class="form-control pt-1 " title=""></textarea> 
+          <label for="o1uk8y3p" class="event-forms-label">Observatii <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y3u" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sb7',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y3z" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+      </form>
+    </div></div><div id="o1uk8y2i" class="flex-grow-1 accordion overflow-auto"><div id="o1uk8y45" class="accordion-item" style="min-width:412.0px;min-height:0px;">
+      <div class="accordion-item d-flex">
+        <button id="o1uk8y5c" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s10c',e,true);" class="btn btn-outline-dark btn-sm btn btn-outline-secondary"><i class="bi bi-three-dots-vertical"></i></button>
+        <div class="accordion-header flex-grow-1">
+          <div id="o1uk8y46" aria-expanded="false" data-bs-target="#o1uk8y47" data-bs-toggle="collapse" class="accordion-button collapsed p-0">
+      <div class="service-header-toggler-container">
+        <span class="tag-yellow-t90">Alex</span> / 
+        <span class="tag-yellow-t90">Animator</span> / 
+        <span class="tag-yellow-t90">12:00 PM</span> / 
+        <span class="tag-yellow-t90">1:00 H</span> / 
+        <span class="tag-yellow-t90">0 Ron</span>
+      </div>
+    </div>
+        </div>
+      </div>
+      <div id="o1uk8y47" class="px-2 accordion-collapse collapse" style="min-width:320.0px;min-height:0px;max-width:380.0px;">
+      <form class="form-inline m-1 mt-4">
+        <div class="event-form-field mb-4 d-flex"> 
+          <select id="o1uk8y4b" name="o1uk8y4b" onchange="var e=event||window.event,o=this;Wt._p_.update(o,'sf3',e,true);" onkeydown="var e=event||window.event,o=this;Wt.sf20(o,e);" onblur="var e=event||window.event,o=this;Wt.sf20(o,e);" onfocus="var e=event||window.event,o=this;Wt.sf20(o,e);" disabled="disabled" class="disabled form-control form-select" placeholder="this is needed for input desighn animation" title=""><option value="0" selected="selected">Alex</option></select> 
+          <label for="o1uk8y4b" class="event-forms-label">Furnizorul <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y4r" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sfb',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y4y" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+        <div class="event-form-field mb-4 d-flex"> 
+          <select id="o1uk8y4d" name="o1uk8y4d" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'se6',e,true);" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeydown="var e=event||window.event,o=this;Wt.sf21(o,e);" onblur="var e=event||window.event,o=this;Wt.sf21(o,e);" onfocus="var e=event||window.event,o=this;Wt.sf21(o,e);Wt._p_.update(o,'sc2',e,true);" disabled="disabled" class="disabled form-control form-select" placeholder="this is needed for input desighn animation" title=""><option value="0" selected="selected">Animator</option><option value="1">Magician</option><option value="2">serviciu test</option></select> 
+          <label for="o1uk8y4b" class="event-forms-label">Serviciul <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y4s" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sfc',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y4z" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+  
+        <div class="event-form-field mb-4 d-flex"> 
+          <input id="o1uk8y4f" name="o1uk8y4f" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'sc6',e,true);" onmousemove="var e=event||window.event,o=this;(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y4f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseMove(dobj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y4f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseOut(dobj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y4f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseUp(dobj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(dobj, event) {var o = Wt4_9_1.$('o1uk8y4f');if(o &amp;&amp; o.wtDObj) o.wtDObj.mouseDown(dobj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeydown="var e=event||window.event,o=this;if(e.keyCode &amp;&amp; (e.keyCode == 27)){Wt._p_.update(o,'s14c',e,true);}" value="12:00 PM" disabled="disabled" class="disabled form-control Wt-timeedit"> 
+          <label for="o1uk8y4f" class="event-forms-label">Ora <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y4t" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sfd',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y50" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+  
+        <div class="event-form-field mb-4 d-flex"> 
+          <input id="o1uk8y4n" name="o1uk8y4n" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'sdb',e,true);" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4n');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4n');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4n');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="1.0" disabled="disabled" class="disabled form-control Wt-spinbox"> 
+          <label for="o1uk8y4n" class="event-forms-label">Durata <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y4u" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sfe',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y51" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+  
+        <div class="event-form-field mb-4 d-flex"> 
+          <input id="o1uk8y4o" name="o1uk8y4o" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'sdf',e,true);" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4o');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4o');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4o');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4o');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4o');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;{var f=function(o,e){Wt4_9_1.filter(o,e,'[-+0-9]')};f(o,e);}}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4o');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="0" disabled="disabled" class="disabled form-control Wt-spinbox"> 
+          <label for="o1uk8y4o" class="event-forms-label">Tarif / ora <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y4v" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'sff',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y52" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+        <div class="event-form-field mb-4 d-flex"> 
+          <textarea id="o1uk8y4p" cols="20" name="o1uk8y4p" rows="5" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onfocus="var e=event||window.event,o=this;Wt._p_.update(o,'se2',e,true);" disabled="disabled" class="disabled form-control" title=""></textarea> 
+          <label for="o1uk8y4p" class="event-forms-label">Descriere serviciu <span class="help-inline text-danger"></span></label>
+          <button id="o1uk8y4w" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s100',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+          <button id="o1uk8y53" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+        <div class="event-form-field mb-4 d-flex">
+           <textarea id="o1uk8y4q" cols="20" name="o1uk8y4q" rows="5" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onfocus="var e=event||window.event,o=this;Wt._p_.update(o,'se3',e,true);" disabled="disabled" class="disabled form-control" title=""></textarea> 
+           <label for="o1uk8y4q" class="event-forms-label">Observatii <span class="help-inline text-danger"></span></label>
+           <button id="o1uk8y4x" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s101',e,true);" class="btn btn-sm btn-outline-secondary">x</button>
+           <button id="o1uk8y54" type="button" class="btn btn-sm btn-primary" style="display: none;">✔</button>
+        </div>
+        
+      </form>
+    </div>
+    </div></div></div></div></div></div></div><div id="o1uk8y7g" style="height: 100%;"><div id="o1uk8y65" class="profile">
+      <div id="o1uk8y66" class="profile-header">
+      <div class="profile-identity">
+        <div class="profile-image">
+          <img class="profile-avatar" src="resources/images/alex.jpg" alt="user photo">
+          <div class="dot online"></div>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">Alex</div>
+          <div class="profile-websites">
+          <a href=""></a>
+          <a href=""></a>
+          </div>
+        </div>
+        </div>
+        <div>
+          <button id="o1uk8y72" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s13a',e,true);" class="btn btn-lg btn-outline-secondary border-0"><i class="bi bi-gear-fill"></i></button>
+          <button id="o1uk8y73" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s13b',e,true);" class="btn btn-lg btn-outline-secondary border-0"><i class="bi bi-person-circle"></i></button>
+          
+        </div>
+    </div>
+      
+      
+      <div class="profile-body">
+        <div class="profile-body-left">
+          <div id="o1uk8y68" class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-count">148</div>
+        <div class="profile-stat-name">events</div>
+        </div>
+        <div class="profile-stat">
+        <div class="profile-stat-count">275</div>
+        <div class="profile-stat-name">total hours</div>
+        </div>
+        <div class="profile-stat">
+        <div class="profile-stat-count">28</div>
+        <div class="profile-stat-name">stat 3</div>
+        </div>
+    </div>
+          <div id="o1uk8y67" class="profile-menu">
+      <div class="d-flex align-items-center" style="margin-left: -30px;">
+        <button id="o1uk8y6u" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s130',e,true);" class="btn btn-outline-secondary border-0"><i class="bi bi-journal-plus"></i></button>
+        <div class="profile-menu-heading">Services</div>
+      </div>
+  
+      <div class="services-nav">
+        <div id="o1uk8y6v" data-object-name="services-Animator" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s133',e,true);" class="active services-nav-item">
+      <a class="services-nav-link" href="#">Animator</a>
+    </div>
+        <div id="o1uk8y6w" data-object-name="services-Magician" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s134',e,true);" class="services-nav-item">
+      <a class="services-nav-link" href="#">Magician</a>
+    </div>
+        <div id="o1uk8y6x" data-object-name="services-serviciu test" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s135',e,true);" class="services-nav-item">
+      <a class="services-nav-link" href="#">serviciu test</a>
+    </div>
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+          <div id="o1uk8y6b" class="profile-menu" style="display: none;">
+      <div class="profile-menu-heading">Settings</div>
+      <div class="services-nav">
+        <div id="o1uk8y6s" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s12e',e,true);" class="services-nav-item active">
+      <a class="services-nav-link" href="#">Profile</a>
+    </div>
+        <div id="o1uk8y6t" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s12f',e,true);" class="services-nav-item">
+      <a class="services-nav-link" href="#">Other</a>
+    </div>
+  
+      </div>
+    </div>
+        </div>
+        <div class="profile-body-right">
+          <div id="o1uk8y69" class="profile-service-description">
+      <div class="profile-service-description-heading">
+        <button id="o1uk8y71" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s139',e,true);" class="btn btn-outline-info border-0"><i class="bi bi-pencil-square"></i></button>
+        <div class="profile-service-description-heading-title">
+        Animator
+        </div>
+        </div>
+        <div class="profile-service-description-body">descrierea serviciului<br>aceasta este o descriere foarte elaborata a serviciului de Animator<br><br>descrierea serviciului<br>aceasta este o descriere foarte elaborata a serviciului de Animator</div>
+    </div>
+          <div id="o1uk8y6a" class="profile-service-work" style="display: none;">
+      <div class="profile-service-work-heading">
+        <div class="work-title">All Work History</div>
+         </div>
+          <div class="work-nav">
+          <div id="o1uk8y6y" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s136',e,true);" class="work-nav-item active">
+      <a class="work-nav-item-link">Photos(42)</a>
+    </div>
+          <div id="o1uk8y6z" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s137',e,true);" class="work-nav-item">
+      <a class="work-nav-item-link">Videos(5)</a>
+    </div>
+          <div id="o1uk8y70" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s138',e,true);" class="work-nav-item">
+      <a class="work-nav-item-link">Reviews(72)</a>
+    </div>
+        </div>
+  
+  
+        <div class="work-body">
+        <div class="work-body-card"></div>
+        </div>
+    </div>
+          <div id="o1uk8y6c" style="display: none;">
+      
+      <div id="o1uk8y6d" class="profile-settings">
+      <div class="profile-settings-heading">
+        <div class="settings-title">Profile Settings</div>
+      </div>
+      <div class="settings-nav">
+        <div id="o1uk8y6f" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s12c',e,true);" class="settings-nav-item active">
+      <a class="settings-nav-item-link">User Data</a>
+    </div>
+      </div>
+      <div class="settings-body">
+              <div class="settings-body-title">User Data</div>
+        <div class="settings-body-content">
+          <div id="o1uk8y6h" style="min-width:280.0px;min-height:0px;max-width:350.0px;">
+      <h4 class="mb-3">Change Password</h4>
+          <form class="form-inline">
+        <div class="form-floating mb-1"> <input id="o1uk8y6j" name="o1uk8y6j" size="10" type="password" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" disabled="disabled" class="disabled form-control is-invalid" placeholder="old password" title="This field cannot be empty"> <label for="o1uk8y6j"> Last Password</label>
+        </div>
+        <div class="form-floating mb-1"> <input id="o1uk8y6k" name="o1uk8y6k" size="10" type="password" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" disabled="disabled" class="disabled form-control is-invalid" placeholder="new password" title="This field cannot be empty"> <label for="o1uk8y6k"> New Password</label>
+        </div>
+              <div class="form-floating mb-1"> <input id="o1uk8y6l" name="o1uk8y6l" size="10" type="password" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" disabled="disabled" class="disabled form-control is-invalid" placeholder="repeat new password" title="This field cannot be empty"> <label for="o1uk8y6l"> Repeat new Password</label>
+        </div>
+          <button id="o1uk8y6m" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s11b',e,true);" class="btn btn-success" style="display:none;">Submit</button>
+          <button id="o1uk8y6n" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s11c',e,true);" class="btn btn-outline-warning">Change</button>
+        <span class="help-inline text-danger"></span>
+      </form>
+    </div>
+        </div>
+      </div>
+    </div>
+      <div id="o1uk8y6e" class="profile-settings" style="display:none;">
+      <div class="profile-settings-heading">
+        <div class="settings-title">Other Settings</div>
+      </div>
+      <div class="settings-nav">
+        <div id="o1uk8y6r" class="settings-nav-item active">
+      <a class="settings-nav-item-link">menu one</a>
+    </div>
+      </div>
+      <div class="settings-body">
+              <div class="settings-body-title">User Data</div>
+        <div class="settings-body-content">
+          ??change-password-widget??
+        </div>
+      </div>
+    </div>
+    </div>
+        </div>
+      </div>
+    </div></div></div></div></div><div id="o1uk8y0n" class="Wt-loading" style="display: none;">Loading...</div><div id="o1uk8y0s" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}(function(o,e) {  if (Wt4_9_1.WPopupWidget &amp;&amp; o.wtPopup) {Wt4_9_1.WPopupWidget.popupClicked = o;document.dispatchEvent(new MouseEvent('click', e));Wt4_9_1.WPopupWidget.popupClicked = null; }})(o,e);Wt4_9_1.cancelEvent(e,0x1);" class="Wt-popup modal Wt-dialog" style="position: fixed; z-index: 1100; min-width: 767px; min-height: 0px; margin: 0px; left: 577px; top: 171px; visibility: visible; display: none;">
+      <div class="modal-dialog">
+        <div id="o1uk8y0v" class="modal-content dialog-layout" style="min-width:767.0px;min-height:0px;max-width:999999.0px;display:flex;flex-flow:column;-webkit-flex-flow:column;"><div id="o1uk8y0y" flg="0" class="d-flex justify-content-center align-items-center" style="flex: 0 0 auto; overflow: hidden;"><div id="o1uk8y0z">
+      <h4 class="modal-title">Autentificare</h4>
+    </div></div><div id="o1uk8y10" class="d-flex justify-content-center align-items-center" style="flex: 1 1 auto; overflow: hidden;"><div id="o1uk8y13" class="auth-container">
+      <div class="form-container sign-up-container">
+        <div class="form-auth">
+          <h1 class="h1-auth">Create Account</h1>
+            <span class="span-login">or use your email for registration</span>
+            <div id="o1uk8y1f" class="w-100">
+  
+      <form>
+        <div class="social-container">
+          <a class="a-auth">
+            <div id="o1uk8y1h" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c',e,true);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+      </svg>
+    </div>
+          </a>
+          <a class="a-auth">
+            <div id="o1uk8y1i" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1d',e,true);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"></path>
+      </svg>
+    </div>
+          </a>
+        </div> 
+        <input id="o1uk8y1j" name="o1uk8y1j" size="10" title="This field cannot be empty" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" class="input-auth form-control is-invalid" placeholder="Nume"> 
+        <input id="o1uk8y1k" name="o1uk8y1k" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" class="input-auth form-control" placeholder="Email"> 
+        <input id="o1uk8y1l" name="o1uk8y1l" size="10" title="This field cannot be empty" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y1l');if (o &amp;&amp; o.wtLObj) o.wtLObj.clicked(lobj, event);})(o,e);" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y1l');if (o &amp;&amp; o.wtLObj) o.wtLObj.keyPressed(lobj, event);})(o,e);}" onkeydown="var e=event||window.event,o=this;(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y1l');if (o &amp;&amp; o.wtLObj) o.wtLObj.keyDown(lobj, event);})(o,e);" onblur="var e=event||window.event,o=this;(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y1l');if (o &amp;&amp; o.wtLObj) o.wtLObj.blurred(lobj, event);})(o,e);" onfocus="var e=event||window.event,o=this;(function(lobj, event) {var o = Wt4_9_1.$('o1uk8y1l');if (o &amp;&amp; o.wtLObj) o.wtLObj.focussed(lobj, event);})(o,e);" class="input-auth form-control is-invalid" placeholder="Telefon"> 
+        <input id="o1uk8y1m" name="o1uk8y1m" size="10" title="" type="password" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" class="input-auth form-control" placeholder="Password">
+        <input id="o1uk8y1n" name="o1uk8y1n" size="10" type="password" class="input-auth mb-2 form-control" placeholder="Repeat Password" title=""> 
+        
+        <button id="o1uk8y1o" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1e',e,true);" class="button-login mt-2 btn btn-secondary">Register</button> 
+      </form>
+  
+    </div> 
+          </div>
+      </div>
+      <div class="form-container sign-in-container">
+        <div class="form-auth">
+          <h1 class="h1-auth">Sign in</h1>
+            <span class="span-login">or use your account</span> <div id="o1uk8y16" class="w-100">
+  
+      <form>
+        <div class="social-container">
+          <a class="a-auth">
+            <div id="o1uk8y18" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s11',e,true);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+      </svg>
+    </div>
+          </a>
+          <a class="a-auth">
+            <div id="o1uk8y19" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s12',e,true);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"></path>
+      </svg>
+    </div>
+          </a>
+        </div> 
+        <input id="o1uk8y1a" name="o1uk8y1a" size="10" title="" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" class="input-auth form-control" placeholder="Email"> 
+        <input id="o1uk8y1b" name="o1uk8y1b" size="10" title="" type="password" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" class="input-auth mb-2 form-control" placeholder="Password"> 
+         
+        <button id="o1uk8y1c" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s13',e,true);" class="button-login mt-1 btn btn-secondary">Login</button> 
+      </form>
+    </div> <a class="a-auth">Forgot your password?</a>
+        </div>
+      </div>
+  
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1 class="h1-auth">Welcome Back!</h1>
+            <p class="p-login">
+            We need to identify you somehow, so we require a minimum of 
+            information, or just login if you have an account
+            </p> 
+            <button id="o1uk8y14" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s32',e,true);" class="ghost button-login btn btn-secondary">Login</button> 
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1 class="h1-auth">Hello, Friend!</h1>
+              <p class="p-login">First Login or register a new accout if you dont have one </p> 
+              <button id="o1uk8y15" type="button" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s33',e,true);" class="ghost button-login btn btn-secondary">Create Account</button> 
+          </div>
+        </div>
+      </div>
+    </div></div></div>
+      </div>
+    </div><ul id="o1uk8y2l" class="Wt-popup dropdown-menu typeahead" style="display: none; overflow: auto; position: absolute; z-index: 2200;"></ul><ul id="o1uk8y2o" class="Wt-popup dropdown-menu typeahead" style="display: none; overflow: auto; position: absolute; z-index: 3300;"></ul><ul id="o1uk8y5e" class="Wt-popup dropdown-menu-dark dropdown-menu" style="z-index: 110000; display: none;"><li id="o1uk8y5g"><a id="o1uk8y5h" onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s193',e,true);}" class="dropdown-item"><span id="o1uk8y5i"><span id="o1uk8y5j" style="white-space:nowrap;">Delete Service</span></span></a></li></ul><ul id="o1uk8y5l" class="Wt-popup dropdown-menu-dark dropdown-menu" style="z-index: 111100; display: none;"><li id="o1uk8y5m" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s115',e,true);"><a id="o1uk8y5n" onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s195',e,true);}" class="dropdown-item"><span id="o1uk8y5o" class="Wt-icon" style="background-image:url(&quot;/resources/Icons/myIcons/file-earmark-plus.svg&quot;);"> </span><span id="o1uk8y5q"><span id="o1uk8y5r" style="white-space:nowrap;">Adauga serviciu</span></span></a></li><li id="o1uk8y5s" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s116',e,true);"><a id="o1uk8y5t" onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s197',e,true);}" class="dropdown-item"><span id="o1uk8y5u" class="Wt-icon" style="background-image:url(&quot;/resources/Icons/myIcons/clipboard-check.svg&quot;);"> </span><span id="o1uk8y5w"><span id="o1uk8y5x" style="white-space:nowrap;">Copiaza datele</span></span></a></li><li id="o1uk8y5y" class="dropdown-divider"></li><li id="o1uk8y5z" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s117',e,true);"><a id="o1uk8y60" onclick="var e=event||window.event,o=this;if(e.ctrlKey||e.metaKey||(Wt4_9_1.button(e) > 1))return true;else{if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s19a',e,true);}" class="dropdown-item"><span id="o1uk8y61" class="Wt-icon" style="background-image:url(&quot;/resources/Icons/myIcons/trash3.svg&quot;);"> </span><span id="o1uk8y63"><span id="o1uk8y64" style="white-space:nowrap;">Sterge evenimetul</span></span></a></li></ul><div id="o1uk8y79" class="Wt-popup Wt-datepicker dropdown-menu" style="position: absolute; z-index: 4400; display: none;"><div id="o1uk8y32" onselectstart="return false;" unselectable="on" class="Wt-cal Wt-calendar unselectable"><table class="days d3" cellspacing="0" cellpadding="0"><tbody><tr><th class="caption"><span id="o1uk8y33" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s80',e,true);" class="Wt-cal-navbutton">«</span></th><th class="caption" colspan="5"><select id="o1uk8y35" name="o1uk8y35" onchange="var e=event||window.event,o=this;Wt._p_.update(o,'s1d3',e,true);" class="form-select"><option value="0">January</option><option value="1">February</option><option value="2">March</option><option value="3" selected="selected">April</option><option value="4">May</option><option value="5">June</option><option value="6">July</option><option value="7">August</option><option value="8">September</option><option value="9">October</option><option value="10">November</option><option value="11">December</option></select> <span id="o1uk8y38" class="Wt-cal-year Wt-in-place-edit"><span id="o1uk8y39" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s84',e,true);" style="cursor:default;">2023</span><span id="o1uk8y3b" style="display:none;"><input id="o1uk8y3c" name="o1uk8y3c" size="4" type="text" onkeydown="var e=event||window.event,o=this;if(e.keyCode &amp;&amp; (e.keyCode == 13)){Wt4_9_1.cancelEvent(e,0x1);var g=this.onchange;this.onchange=function(){this.onchange=g;};Wt._p_.update(o,'s85',e,true);}if(e.keyCode &amp;&amp; (e.keyCode == 27)){Wt4_9_1.cancelEvent(e,0x1);Wt._p_.update(o,'s86',e,true);}" onblur="var e=event||window.event,o=this;Wt._p_.update(o,'s8b',e,true);" value="2023" class="form-control"></span></span></th><th class="caption"><span id="o1uk8y34" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s82',e,true);" class="Wt-cal-navbutton">»</span></th></tr><tr><th title="Monday" scope="col">Mon</th><th title="Tuesday" scope="col">Tue</th><th title="Wednesday" scope="col">Wed</th><th title="Thursday" scope="col">Thu</th><th title="Friday" scope="col">Fri</th><th title="Saturday" scope="col">Sat</th><th title="Sunday" scope="col">Sun</th></tr><tr><td><div id="o1uk8y7m" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s19d',e,true);" class=" Wt-cal-oom">27</div></td><td><div id="o1uk8y7n" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s19f',e,true);" class=" Wt-cal-oom">28</div></td><td><div id="o1uk8y7o" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a1',e,true);" class=" Wt-cal-oom">29</div></td><td><div id="o1uk8y7p" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a3',e,true);" class=" Wt-cal-oom">30</div></td><td><div id="o1uk8y7q" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a5',e,true);" class=" Wt-cal-oom">31</div></td><td><div id="o1uk8y7r" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a6',e,true);">1</div></td><td><div id="o1uk8y7s" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a7',e,true);">2</div></td></tr><tr><td><div id="o1uk8y7t" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a8',e,true);">3</div></td><td><div id="o1uk8y7u" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1a9',e,true);">4</div></td><td><div id="o1uk8y7v" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1aa',e,true);">5</div></td><td><div id="o1uk8y7w" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1ab',e,true);">6</div></td><td><div id="o1uk8y7x" title="Today" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1ad',e,true);" class=" Wt-cal-now">7</div></td><td><div id="o1uk8y7y" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1ae',e,true);">8</div></td><td><div id="o1uk8y7z" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1af',e,true);">9</div></td></tr><tr><td><div id="o1uk8y80" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b0',e,true);">10</div></td><td><div id="o1uk8y81" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b1',e,true);">11</div></td><td><div id="o1uk8y82" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b2',e,true);">12</div></td><td><div id="o1uk8y83" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b3',e,true);">13</div></td><td><div id="o1uk8y84" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b4',e,true);">14</div></td><td><div id="o1uk8y85" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b5',e,true);">15</div></td><td><div id="o1uk8y86" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b6',e,true);">16</div></td></tr><tr><td><div id="o1uk8y87" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b7',e,true);">17</div></td><td><div id="o1uk8y88" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b8',e,true);">18</div></td><td><div id="o1uk8y89" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1b9',e,true);">19</div></td><td><div id="o1uk8y8a" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1ba',e,true);">20</div></td><td><div id="o1uk8y8b" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1bb',e,true);">21</div></td><td><div id="o1uk8y8c" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1bc',e,true);">22</div></td><td><div id="o1uk8y8d" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1bd',e,true);">23</div></td></tr><tr><td><div id="o1uk8y8e" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1be',e,true);">24</div></td><td><div id="o1uk8y8f" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1bf',e,true);">25</div></td><td><div id="o1uk8y8g" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c0',e,true);">26</div></td><td><div id="o1uk8y8h" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c1',e,true);">27</div></td><td><div id="o1uk8y8i" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c2',e,true);">28</div></td><td><div id="o1uk8y8j" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c3',e,true);">29</div></td><td><div id="o1uk8y8k" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c4',e,true);">30</div></td></tr><tr><td><div id="o1uk8y8l" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c6',e,true);" class=" Wt-cal-oom">1</div></td><td><div id="o1uk8y8m" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1c8',e,true);" class=" Wt-cal-oom">2</div></td><td><div id="o1uk8y8n" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1ca',e,true);" class=" Wt-cal-oom">3</div></td><td><div id="o1uk8y8o" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1cc',e,true);" class=" Wt-cal-oom">4</div></td><td><div id="o1uk8y8p" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1ce',e,true);" class=" Wt-cal-oom">5</div></td><td><div id="o1uk8y8q" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1d0',e,true);" class=" Wt-cal-oom">6</div></td><td><div id="o1uk8y8r" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.update(o,'s1d2',e,true);" class=" Wt-cal-oom">7</div></td></tr></tbody></table></div></div><div id="o1uk8y7b" class="Wt-popup Wt-timepicker dropdown-menu" style="position: absolute; z-index: 5500; display: none;"><div id="o1uk8y3h" class="d-flex">
+      <input id="o1uk8y3i" name="o1uk8y3i" size="10" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'s95',e,true);" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3i');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;{var f=function(o,e){Wt4_9_1.filter(o,e,'[-+0-9]')};f(o,e);}}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3i');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="12" class="form-control Wt-spinbox" style="width:70.0px;" title=""><input id="o1uk8y3j" name="o1uk8y3j" size="10" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'s9a',e,true);" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3j');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;{var f=function(o,e){Wt4_9_1.filter(o,e,'[-+0-9]')};f(o,e);}}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y3j');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="0" class="form-control Wt-spinbox" style="width:70.0px;" title=""><select id="o1uk8y3l" name="o1uk8y3l" onchange="var e=event||window.event,o=this;Wt._p_.update(o,'sa2',e,true);" class="form-select" style="width:90.0px;"><option value="0">AM</option><option value="1" selected="selected">PM</option></select>
+    </div></div><div id="o1uk8y7d" class="Wt-popup Wt-timepicker dropdown-menu" style="position: absolute; z-index: 6600; display: none;"><div id="o1uk8y4h" class="d-flex">
+      <input id="o1uk8y4i" name="o1uk8y4i" size="10" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'scb',e,true);" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4i');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4i');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;{var f=function(o,e){Wt4_9_1.filter(o,e,'[-+0-9]')};f(o,e);}}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4i');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="12" class="form-control Wt-spinbox" style="width:70.0px;" title=""><input id="o1uk8y4j" name="o1uk8y4j" size="10" type="text" onchange="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}Wt._p_.update(o,'sd0',e,true);" onmousemove="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseMove(obj, event);})(o,e);" onmouseout="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseOut(obj, event);})(o,e);" onmouseup="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt4_9_1.mouseUp(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseUp(obj, event);})(o,e);" onmousedown="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}Wt._p_.saveDownPos(event);Wt4_9_1.capture(this);Wt4_9_1.mouseDown(e);(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4j');if (o &amp;&amp; o.wtObj) o.wtObj.mouseDown(obj, event);})(o,e);" onclick="var e=event||window.event,o=this;if(o.classList.contains('disabled')){Wt4_9_1.cancelEvent(e);return;}{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}" onkeyup="var e=event||window.event,o=this;{var f=function(o){Wt4_9_1.validate(o)};f(o,e);}(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4j');if (o &amp;&amp; o.wtObj) o.wtObj.keyUp(obj, event);})(o,e);" onkeypress="if (Wt4_9_1.isKeyPress(event)){var e=event||window.event,o=this;{var f=function(o,e){Wt4_9_1.filter(o,e,'[-+0-9]')};f(o,e);}}" onkeydown="var e=event||window.event,o=this;(function(obj, event) {var o = Wt4_9_1.$('o1uk8y4j');if (o &amp;&amp; o.wtObj) o.wtObj.keyDown(obj, event);})(o,e);" value="0" class="form-control Wt-spinbox" style="width:70.0px;" title=""><select id="o1uk8y4l" name="o1uk8y4l" onchange="var e=event||window.event,o=this;Wt._p_.update(o,'sd8',e,true);" class="form-select" style="width:90.0px;"><option value="0">AM</option><option value="1" selected="selected">PM</option></select>
+    </div></div></div></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
