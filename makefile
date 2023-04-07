@@ -1,6 +1,6 @@
 # Compiler settings
 CC = g++
-CXXFLAGS = -std=c++14 -I. -I../comunication -DICE_CPP11_MAPPING -g
+CXXFLAGS = -std=c++14 -I. -I../comunication -DICE_CPP11_MAPPING
 
 # Makefile settings
 APPNAME = frontend
@@ -10,7 +10,7 @@ CMMDIR = ../comunication
 OBJDIR = ./src/obj
 
 # Linking lib
-LDFLAGS =  -lwthttp -lwt -lwtdbo -lIce++11 -lpthread
+LDFLAGS =  -lwthttp -lwt -lwtdbo -lIce++11 -lpthread -lssl -lcrypto
 
 # Runtime lib
 RLIB = --docroot . --http-address 0.0.0.0 --http-port 9090
