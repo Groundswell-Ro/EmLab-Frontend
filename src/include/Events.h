@@ -13,9 +13,11 @@ public:
     Wt::WContainerWidget *eventsMenu_;
     Wt::WStackedWidget *eventsContentStack_;
     void addEventDialog();
+    Wt::WText *eventsMenuTitle_;
 
     Wt::WDate currentDiplayDate_ = Wt::WDate::currentServerDate();
     std::string dateFormat = "dd/MM/yyyy";
+    std::string dateFormat_presentation = "dd-MMMM";
 private:
     void addServiceToEventDialog(int eventId);
     void copyEventDataDialog(EventDataModule::EventDataPack eventDataPack);

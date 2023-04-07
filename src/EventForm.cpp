@@ -386,6 +386,7 @@ void EventFormView::setReadOnlyAll(bool readOnly)
         model_->setReadOnly(model_->EventDurationField, true);
         model_->setReadOnly(model_->EventLocationField, true);
         model_->setReadOnly(model_->EventObservationsField, true);
+    updateView(model_.get());
     }
     else
     {
@@ -394,6 +395,7 @@ void EventFormView::setReadOnlyAll(bool readOnly)
         model_->setReadOnly(model_->EventDurationField, false);
         model_->setReadOnly(model_->EventLocationField, false);
         model_->setReadOnly(model_->EventObservationsField, false);
+    updateView(model_.get());
     }
 }
 

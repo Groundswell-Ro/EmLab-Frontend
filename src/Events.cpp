@@ -35,22 +35,27 @@ Events::Events(std::shared_ptr<Login> login)
 	// Navigation Header
 	auto navHeader = eventsNavContainer->addWidget(std::make_unique<Wt::WContainerWidget>());
 	navHeader->setStyleClass("events-nav-header");
+	
+	auto eventsMenuTitle = std::make_unique<Wt::WText>(currentDiplayDate_.toString(dateFormat_presentation));
+	eventsMenuTitle_ = eventsMenuTitle.get();
+	// eventsMenuTitle_->setStyleClass("fs-5");
+	// eventsMenuTitle_->setStyleClass("events-nav-header");
 
-	auto prevBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-arrow-bar-left fs-3 \"></i>", Wt::TextFormat::XHTML));
-	prevBtn->setStyleClass("btn btn-light me-auto");
+	auto prevBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-chevron-double-left\"></i>", Wt::TextFormat::XHTML));
+	prevBtn->setStyleClass("btn btn-sm btn-outline-dark fs-6 me-1");
 	prevBtn->clicked().connect(this, [this] {
 		currentDiplayDate_ = currentDiplayDate_.addDays(-1);
+		eventsMenuTitle_->setText(currentDiplayDate_.toString(dateFormat_presentation));
 		displayEventsData();
 	});
+	
+	navHeader->addWidget(std::move(eventsMenuTitle));
 
-	auto title = navHeader->addWidget(std::make_unique<Wt::WText>("Azi"));
-	title->setStyleClass("fs-5");
-	// title->setStyleClass("events-nav-header");
-
-	auto nextBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-arrow-bar-right fs-5 \"></i>", Wt::TextFormat::XHTML));
-	nextBtn->setStyleClass("btn btn-light ms-auto");
+	auto nextBtn = navHeader->addWidget(std::make_unique<Wt::WPushButton>("<i class=\"bi bi-chevron-double-right\"></i>" , Wt::TextFormat::XHTML));
+	nextBtn->setStyleClass("btn btn-sm btn-outline-dark fs-6 ms-1");
 	nextBtn->clicked().connect(this, [this] {
 		currentDiplayDate_ = currentDiplayDate_.addDays(1);
+		eventsMenuTitle_->setText(currentDiplayDate_.toString(dateFormat_presentation));
 		displayEventsData();
 	});
 
@@ -427,6 +432,7 @@ void Events::copyEventDataDialog(EventDataModule::EventDataPack eventDataPack)
 		auto minutesString = std::to_string(minutes);
 		if (minutes == 0)
 			minutesString = "00";
+
 		auto durationString = Wt::WString(std::to_string(hours) + ":" + minutesString + " H");
 		int serviceCost = (int)(service.cost * service.duration);
 		totalPrice += serviceCost;
