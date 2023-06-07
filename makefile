@@ -47,7 +47,7 @@ $(OBJDIR)/%.o: $(CMMDIR)/%$(EXT)
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 ################## Run #################
-r:
+run:
 	./$(APPNAME) $(RLIB)
 
 runTrace:
@@ -61,6 +61,19 @@ dbg:
 .PHONY: clean
 clean:
 	$(RM) $(APPNAME) $(DEP) $(OBJ)
+
+################### Tailwind commands ###################
+startTailwind: buildTailwindModules
+	cd resources/themes/tailwind && npx tailwindcss -i ./src/input.css -o ./dist/tailwind.css --watch
+
+
+buildTailwindModules:
+ifneq ("$(wildcard ./resources/tailwind/node_modules)","")
+	@echo "Tailwind modules already installed"
+else
+	@echo "Installing Tailwind modules"
+	cd resources/themes/tailwind && npm install
+endif
 
 ################### Display variables ###################
 displayVariables:

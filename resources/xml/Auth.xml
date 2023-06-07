@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+
+	<message id="auth">
+		<div class="max-w-2xl bg-body mx-auto px-4 py-10">
+			${header class="text-center text-3xl font-bold mb-5"}
+			<hr class="border-gray-50 dark:border-gray-900" />
+			${content class="mb-5 mt-5 max-w-md mx-auto space-y-5"}
+		</div>
+	</message>
+
+	<message id='login-content'>
+		<!-- Logo -->
+		<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
+			<img class="h-32 w-full rounded-full object-cover" src="./resources/images/blank-profile-picture.png" alt="profile photo" />
+		</div>
+		<!-- Email -->
+		<div>
+			<div class="mb-1 font-bold">Email</div>
+			<div class="relative flex flex-col justify-stretch">
+				${email-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${user-email class="input-rounded"}
+			</div>
+		</div>
+		<!-- Password -->
+		<div>
+			<div class="mb-1 font-bold">Password</div>
+			<div class="relative flex flex-col justify-stretch">
+				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${user-password class="input-rounded"}
+				${user-password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
+			</div>
+		</div>
+		<!-- Buttons -->
+		<div class="flex justify-between">
+			${sign-up-button class="btn btn-seccondary px-3 py-2 m-0"}
+			${login-button class="btn btn-primary px-3 py-2 m-0"}
+		</div>
+		<!-- Submit Info -->
+		${submit-info class="text-red-500"}
+
+	</message>
+
+	<message id='sign-up-content'>
+		<!-- Photo -->
+		<div>
+			<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
+				<img class="h-32 w-full rounded-full object-cover" src="./resources/images/blank-profile-picture.png" alt="profile photo" />
+			</div>
+
+			<button class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none">
+				<svg xmlns="http://www.w3.org/2000/svg" class="-mt-1 mr-1 inline-flex h-6 w-6 flex-shrink-0" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+					<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+					<path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+					<circle cx="12" cy="13" r="3" />
+				</svg>
+           				Browse Photo
+			</button>
+
+			<div class="mx-auto w-48 text-center text-xs text-gray-400">
+            			Click to add profile picture
+			</div>
+		</div>
+		<!-- UserName -->
+		<div>
+			<div for="text" class="mb-1 font-bold">Username</div>
+			<div class="relative flex flex-col justify-stretch">
+						${human-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+						${user-name class="input-rounded"}
+			</div>
+		</div>
+		<!-- Phone -->
+		<div>
+			<div class="mb-1 font-bold">Phone</div>
+			<div class="relative flex flex-col justify-stretch">
+				${phone-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${user-phone class="input-rounded"}
+			</div>
+		</div>
+		<!-- Email -->
+		<div>
+			<div class="mb-1 font-bold">Email</div>
+			<div class="relative flex flex-col justify-stretch">
+						${email-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+						${user-email class="input-rounded"}
+			</div>
+		</div>
+		${password-requirments class="mb-4 mt-2 text-gray-600"}
+		<div>
+			<!-- Password -->
+			<div class="mb-1 font-bold">Password</div>
+			<div class="relative flex flex-col justify-stretch">
+				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${user-password class="input-rounded"}
+				${password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
+			</div>
+		</div>
+		<!-- Repeat Password -->
+		<div class="mb-4">
+			<div class="mb-1 font-bold">Repeat Password</div>
+			<div class="relative flex flex-col justify-stretch">
+				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${user-password-repeat class="input-rounded"}
+				${password-repeat-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
+			</div>
+		</div>
+		<!-- Buttons -->
+		<div class="w-full flex justify-between">
+				${back-to-login class="btn btn-seccondary w-32 px-5 py-2"}
+				${sign-up-btn class="btn btn-primary w-32 px-5 py-2"}
+		</div>
+		${submit-info class="text-red-500"}
+	
+	</message>
+
+	<message id="password-requirments">
+		<div class="font-bold">
+		The password should respect the below criteria:
+		</div>
+		<ul class="ml-4 ms-0 mt-2 list-disc ps-3 text-sm">
+			<li>at least 6 characters long</li>
+			<li>lowercase letters</li>
+			<li>numbers</li>
+		</ul>
+	</message>
+
+</messages>

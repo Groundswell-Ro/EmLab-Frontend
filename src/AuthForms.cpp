@@ -1,6 +1,9 @@
 #include "include/AuthForms.h"
 #include <Wt/WLengthValidator.h>
 #include <Wt/WRegExpValidator.h>
+#include <Wt/WEmailValidator.h>
+#include <Wt/WEmailEdit.h>
+
 #include <Wt/WLineEdit.h>
 #include <Wt/WPushButton.h>
 
@@ -11,16 +14,18 @@
 const Wt::WFormModel::Field LoginFormModel::UserEmail = "user-email";
 const Wt::WFormModel::Field LoginFormModel::UserPassword = "user-password";
 
-std::shared_ptr<Wt::WValidator> createUserEmailValidator()
+std::shared_ptr<Wt::WEmailValidator> createUserEmailValidator()
 {
-	auto v = std::make_shared<Wt::WRegExpValidator>("([a-zA-Z0-9\\d\\.-]+)@([a-zA-Z0-9\\d-]+)\\.([a-zA-Z0-9]{2,8})(\\.[a-zA-Z0-9]{2,8})?");
+	auto v = std::make_shared<Wt::WEmailValidator>();
 	v->setMandatory(true);
+	v->setPattern("(?!(^[.-].*|[^@]*[.-]@|.*\\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~.-]+@)(?!-.*|.*-\\.)([a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,15}");
+	v->setInvalidNotAnEmailAddressText("Invalid email address");
 	return v;
 }
 
 std::shared_ptr<Wt::WValidator> createUserPasswordValidator()
 {
-	auto v = std::make_shared<Wt::WRegExpValidator>("[a-zA-Z0-9!@#$&()\\-`.+,/\"]{4,20}");
+	auto v = std::make_shared<Wt::WRegExpValidator>("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
 	v->setMandatory(true);
 	return v;
 }
@@ -64,41 +69,43 @@ AuthModule::LoginInfo LoginFormModel::getData()
 	return loginInfo;
 }
 
-LoginFormView::LoginFormView(std::shared_ptr<Login> login)
-	: login_(login)
+LoginFormView::LoginFormView(std::string temp_str, std::shared_ptr<Login> login)
+	: Wt::WTemplateFormView (tr(temp_str)),
+	model_(std::make_shared<LoginFormModel>()),
+	login_(login)
 {
-	// add model to view
-	model_ = std::make_shared<LoginFormModel>();
+	// decoration icons
+    bindWidget("email-svg", std::make_unique<Wt::WText>(tr("email-svg")));
+    bindWidget("key-svg", std::make_unique<Wt::WText>(tr("key-svg")));
 
-	// link xml template <message id='template-name'> to the FormView
-	setTemplateText(Wt::WString::tr("login-form-template"));
-
-	auto facebookBtn = bindWidget("social-facebook-login", std::make_unique<Wt::WTemplate>(tr("facebook-svg")));
-	auto googleBtn = bindWidget("social-google-login", std::make_unique<Wt::WTemplate>(tr("google-svg")));
-
-	facebookBtn->clicked().connect(this, [=]()
-								   { bindWidget("submit-info", std::make_unique<Wt::WText>("<p class='text-danger'>facebook login not implemented yet</p>", Wt::TextFormat::XHTML)); });
-	googleBtn->clicked().connect(this, [=]()
-								 { bindWidget("submit-info", std::make_unique<Wt::WText>("<p class='text-danger'>google login not implemented yet</p>", Wt::TextFormat::XHTML)); });
-
-	// link Form Model Fields to FormWidget and set up the view
-	auto userEmailLineEdit = std::make_unique<Wt::WLineEdit>();
-	userEmailLineEdit->setPlaceholderText("Email");
+	// Email field
+    auto userEmailLineEdit = std::make_unique<Wt::WEmailEdit>();
+	userEmailLineEdit->setPlaceholderText("Enter Your Email");
+	std::cout << "\n\n email patter: " << userEmailLineEdit->pattern() << "\n\n";
 	setFormWidget(LoginFormModel::UserEmail, std::move(userEmailLineEdit));
 
-	auto userPasswordLineEdit = std::make_unique<Wt::WLineEdit>();
+	// Password field
+    auto userPasswordLineEdit = std::make_unique<Wt::WLineEdit>();
 	userPasswordLineEdit->setEchoMode(Wt::EchoMode::Password);
-	userPasswordLineEdit->setPlaceholderText("Password");
+	userPasswordLineEdit->setPlaceholderText("Enter Your Password");
+	auto password = userPasswordLineEdit.get();
+	auto eye_btn = bindWidget("user-password-eye", std::make_unique<Wt::WTemplate>(tr("eye-crossed-svg")));
+	eye_btn->clicked().connect(this, [=](){
+        if(password->echoMode() == Wt::EchoMode::Password)
+        {
+            password->setEchoMode(Wt::EchoMode::Normal);
+            eye_btn->setTemplateText(tr("eye-svg"));
+                }else {
+            password->setEchoMode(Wt::EchoMode::Password);
+            eye_btn->setTemplateText(tr("eye-crossed-svg"));
+        }
+    });
 	setFormWidget(LoginFormModel::UserPassword, std::move(userPasswordLineEdit));
 
 	// Login Btn
-	auto loginSubmitBtn = std::make_unique<Wt::WPushButton>("Login");
-	loginSubmitBtn->clicked().connect(this, &LoginFormView::process);
-	bindWidget("submit-button", std::move(loginSubmitBtn));
-
-	// submit info
+    auto login_btn  = bindWidget("login-button", std::make_unique<Wt::WPushButton>("Login"));
+    login_btn->clicked().connect(this, &LoginFormView::process);
 	bindEmpty("submit-info");
-
 	updateView(model_.get());
 }
 
@@ -110,7 +117,7 @@ void LoginFormView::process()
 	// Validate Model to send data to Authentification Server
 	if (model_->validate())
 	{
-
+		std::cout << "\n\n model VALID \n\n";
 		// Ice communication for loging in a user starts here
 		try
 		{
@@ -147,6 +154,19 @@ void LoginFormView::process()
 		{
 			std::cerr << e.what() << std::endl;
 		}
+	}else {
+		std::cout << "\n\n model NOT Valid \n\n";
+		
+		if(!model_->validateField(LoginFormModel::UserEmail))
+		{
+			std::cout << "\n\n Email NOT valid \n\n";
+			bindWidget("submit-info", std::make_unique<Wt::WText>("Try a propper email addres example@mail.com"));
+		}
+		if(!model_->validateField(LoginFormModel::UserPassword))
+		{
+			std::cout << "\n\n Password NOT valid \n\n";
+			auto password_requirments = bindWidget("submit-info", std::make_unique<Wt::WTemplate>(tr("password-requirments")));
+		}
 	}
 }
 
@@ -172,6 +192,7 @@ RegistrationFormModel::RegistrationFormModel()
 	setValidator(UserEmail, createUserEmailValidator());
 	setValidator(UserPhone, createTextValidator(true, 10, 10));
 	setValidator(UserPassword, createUserPasswordValidator());
+	setValidator(UserPasswordRepeat, createUserPasswordValidator());
 }
 
 AuthModule::RegistrationInfo RegistrationFormModel::getData()
@@ -186,50 +207,79 @@ AuthModule::RegistrationInfo RegistrationFormModel::getData()
 	return registrationInfo;
 }
 
-RegistrationFormView::RegistrationFormView(std::shared_ptr<Login> login)
-	: login_(login)
+RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr<Login> login)
+	: Wt::WTemplateFormView(tr(temp_str)),
+	model_(std::make_shared<RegistrationFormModel>()),
+	login_(login)
 {
-	// add model to view
-	model_ = std::make_shared<RegistrationFormModel>();
-
-	setTemplateText(Wt::WString::tr("registration-form-template"));
-
-	auto facebookBtn = bindWidget("social-facebook-registration", std::make_unique<Wt::WTemplate>(tr("facebook-svg")));
-	auto googleBtn = bindWidget("social-google-registration", std::make_unique<Wt::WTemplate>(tr("google-svg")));
-
-	facebookBtn->clicked().connect(this, [=]()
-								   { bindWidget("submit-info", std::make_unique<Wt::WText>("facebook registration not implemented yet", Wt::TextFormat::XHTML)); });
-	googleBtn->clicked().connect(this, [=]()
-								 { bindWidget("submit-info", std::make_unique<Wt::WText>("google registration not implemented yet", Wt::TextFormat::XHTML)); });
+	bindWidget("human-svg", std::make_unique<Wt::WText>(tr("human-svg")));
+	bindWidget("key-svg", std::make_unique<Wt::WText>(tr("key-svg")));
+	bindWidget("email-svg", std::make_unique<Wt::WText>(tr("email-svg")));
+	bindWidget("phone-svg", std::make_unique<Wt::WText>(tr("phone-svg")));
+	auto password_indicator = bindWidget("password-security-indicator", std::make_unique<Wt::WTemplate>(tr("password-security-indicator")));
+	password_indicator->bindString("indicator-1", "");
+	password_indicator->bindString("indicator-2", "");
+	password_indicator->bindString("indicator-3", "");
+	bindString("password-status", "to short");
+	bindWidget("password-requirments", std::make_unique<Wt::WText>(tr("password-requirments")));
 
 	// link Form Model Fields to FormWidget and set up the view
-	auto userNameLineEdit = std::make_unique<Wt::WLineEdit>();
-	userNameLineEdit->setPlaceholderText("Nume");
-	setFormWidget(RegistrationFormModel::UserName, std::move(userNameLineEdit));
+	auto usernameLineEdit = std::make_unique<Wt::WLineEdit>();
+	usernameLineEdit->setPlaceholderText("Username");
+	setFormWidget(RegistrationFormModel::UserName, std::move(usernameLineEdit));
 
-	auto userEmailLineEdit = std::make_unique<Wt::WLineEdit>();
+	auto userEmailLineEdit = std::make_unique<Wt::WEmailEdit>();
 	userEmailLineEdit->setPlaceholderText("Email");
 	setFormWidget(RegistrationFormModel::UserEmail, std::move(userEmailLineEdit));
 
+	// Phone field
 	auto userPhoneLineEdit = std::make_unique<Wt::WLineEdit>();
-	userPhoneLineEdit->setPlaceholderText("Telefon");
+	userPhoneLineEdit->setPlaceholderText("Phone");
 	userPhoneLineEdit->setInputMask("9999999999");
 	setFormWidget(RegistrationFormModel::UserPhone, std::move(userPhoneLineEdit));
 
-	auto userPasswordLineEdit = std::make_unique<Wt::WLineEdit>();
-	userPasswordLineEdit->setEchoMode(Wt::EchoMode::Password);
-	userPasswordLineEdit->setPlaceholderText("Password");
-	setFormWidget(RegistrationFormModel::UserPassword, std::move(userPasswordLineEdit));
 
+	// Password field
+    auto userPasswordLineEdit = std::make_unique<Wt::WLineEdit>();
+	userPasswordLineEdit->setEchoMode(Wt::EchoMode::Password);
+	userPasswordLineEdit->setPlaceholderText("Repeat Password to make sure");
+	auto password = userPasswordLineEdit.get();
+	auto eye_btn = bindWidget("password-eye", std::make_unique<Wt::WTemplate>(tr("eye-crossed-svg")));
+	eye_btn->clicked().connect(this, [=](){
+        if(password->echoMode() == Wt::EchoMode::Password)
+        {
+            password->setEchoMode(Wt::EchoMode::Normal);
+            eye_btn->setTemplateText(tr("eye-svg"));
+                }else {
+            password->setEchoMode(Wt::EchoMode::Password);
+            eye_btn->setTemplateText(tr("eye-crossed-svg"));
+        }
+    });
+
+	setFormWidget(RegistrationFormModel::UserPassword, std::move(userPasswordLineEdit));
+	
+	// Password Repeat field
 	auto userPasswordRepeatLineEdit = std::make_unique<Wt::WLineEdit>();
 	userPasswordRepeatLineEdit->setEchoMode(Wt::EchoMode::Password);
-	userPasswordRepeatLineEdit->setPlaceholderText("Repeat Password");
+	userPasswordRepeatLineEdit->setPlaceholderText("Repeat Your Password");
+	auto password_repeat = userPasswordRepeatLineEdit.get();
+	auto eye_btn_repeat = bindWidget("password-repeat-eye", std::make_unique<Wt::WTemplate>(tr("eye-crossed-svg")));
+	eye_btn_repeat->clicked().connect(this, [=](){
+		if(password_repeat->echoMode() == Wt::EchoMode::Password)
+		{
+			password_repeat->setEchoMode(Wt::EchoMode::Normal);
+			eye_btn_repeat->setTemplateText(tr("eye-svg"));
+				}else {
+			password_repeat->setEchoMode(Wt::EchoMode::Password);
+			eye_btn_repeat->setTemplateText(tr("eye-crossed-svg"));
+		}
+	});
 	setFormWidget(RegistrationFormModel::UserPasswordRepeat, std::move(userPasswordRepeatLineEdit));
 
 	// Login Btn
-	auto submitBtn = std::make_unique<Wt::WPushButton>("Register");
+	auto submitBtn = std::make_unique<Wt::WPushButton>("Sign Up");
 	submitBtn->clicked().connect(this, &RegistrationFormView::process);
-	bindWidget("submit-button", std::move(submitBtn));
+	bindWidget("sign-up-btn", std::move(submitBtn));
 
 	bindEmpty("submit-info");
 
@@ -275,8 +325,7 @@ void RegistrationFormView::process()
 
 				AuthModule::LoginReturn loginReturn = authInterface->loginUser(loginInfo);
 				login_->login(loginReturn);
-			}
-			else if (registrationResponse == AuthModule::RegistrationResponse::EmailAlreadyExists)
+			}else if (registrationResponse == AuthModule::RegistrationResponse::EmailAlreadyExists)
 			{
 				bindWidget("submit-info", std::make_unique<Wt::WText>("User with same Email identified, forgot Password ?"));
 			}
@@ -285,5 +334,28 @@ void RegistrationFormView::process()
 		{
 			std::cerr << e.what() << std::endl;
 		}
+	}else {
+		std::cout << "\n\n Model is not valid \n\n";
+		if(!model_->validateField(model_->UserName))
+		{
+			std::cout << "\n\n Username is valid \n\n";
+		}
+		if(!model_->validateField(model_->UserPhone))
+		{
+			std::cout << "\n\n Phone is valid \n\n";
+		}
+		if(!model_->validateField(model_->UserEmail))
+		{
+			std::cout << "\n\n Email is valid \n\n";
+		}
+		if(!model_->validateField(model_->UserPassword))
+		{
+			std::cout << "\n\n Password is valid \n\n";
+		}
+		if(!model_->validateField(model_->UserPasswordRepeat))
+		{
+			std::cout << "\n\n Password Repeat is valid \n\n";
+		}
+
 	}
 }

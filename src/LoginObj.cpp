@@ -13,6 +13,18 @@ Login::Login()
 	user_.token = "";
 }
 
+void Login::setUserLogin(bool login)
+{
+	if(login) {
+		user_.loginResponse = AuthModule::LoginResponse::LoggedIn;
+		changed_.emit();
+	}else {
+		user_.loginResponse = AuthModule::LoginResponse::NotIdentified;
+		changed_.emit();
+	}
+}
+
+
 void Login::login(AuthModule::LoginReturn loginReturn)
 {
 	std::cout << "\n Login obj here to tell you that the user LOGGED IN succesfully :D \n";
@@ -54,9 +66,14 @@ void Login::getConnectionStrings()
 
 	if (!eventCommFile || !authCommFile)
 	{
-		std::cout << "\n\n - ERROR - Give me the EVENT and AUTH COMUNICATION FILES and i will work :) - \n\n";
+		authCommFile = std::ifstream("comm-auth.txt");
+		eventCommFile = std::ifstream("comm-event.txt");
+		if(!eventCommFile || !authCommFile){
+			std::cout << "\n\n - ERROR - Give me the EVENT and AUTH COMUNICATION FILES and i will work :) - \n\n";
 		return;
+		}
 	}
+
 	getline(authCommFile, authConnString_);
 	getline(eventCommFile, eventConnString_);
 }

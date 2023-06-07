@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../dist/tailwind.css" rel="stylesheet" />
+    <script src="./js/themeSwitcher.js" defer></script>
+    <script src="./js/auth.js" defer></script>
+    <title>Title</title>
+  </head>
+
+  <body class="sans-serif text-gray-800">
+    <!-- Theme switcher -->
+    <div class="absolute right-0 top-0 me-5">
+      <div
+        class="m-4 flex h-5 w-10 items-center rounded-full bg-white shadow transition duration-300 focus:outline-none"
+        onclick="toggleTheme()"
+      >
+        <div
+          id="themeToggler"
+          class="relative h-6 w-6 -translate-x-2 transform rounded-full bg-yellow-500 p-1 text-white transition duration-500"
+        ></div>
+      </div>
+    </div>
+    <!-- Theme switcher -->
+
+    <div class="mx-auto max-w-3xl px-4 py-10">
+      <!-- header section -->
+      <div class="flex flex-col justify-between md:flex-row">
+        <div class="steps">
+          <div
+            class="mb-1 text-xs font-bold uppercase leading-tight tracking-wide text-gray-500"
+          >
+            STEP: 1 OF 3
+          </div>
+          <div class="text-lg font-bold capitalize leading-tight text-gray-700">
+            your profile
+          </div>
+        </div>
+        <div class="flex items-end md:w-64">
+          <div class="flex w-full items-center">
+            <div
+              class="h-2 flex-grow rounded-full bg-neutral-200 text-center text-xs leading-none"
+            >
+              <div class="h-full w-1/2 bg-green-500"></div>
+            </div>
+            <div class="ms-2">50%</div>
+          </div>
+        </div>
+      </div>
+      <!-- header section -->
+      <hr class="border-gray-50" />
+      <!-- content section -->
+
+      <!-- Step 1 -->
+      <div class="mb-5">
+        <div class="py-10">
+          <div
+            class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100"
+          >
+            <img
+              class="h-32 w-full rounded-full object-cover"
+              src="../../../images/blank-profile-picture.png"
+              alt="profile photo"
+            />
+          </div>
+
+          <button
+            class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium text-gray-500 shadow-sm hover:bg-gray-100 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="-mt-1 mr-1 inline-flex h-6 w-6 flex-shrink-0"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+              <path
+                d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2"
+              />
+              <circle cx="12" cy="13" r="3" />
+            </svg>
+            Browse Photo
+          </button>
+
+          <div class="mx-auto w-48 text-center text-xs text-gray-400">
+            Click to add profile picture
+          </div>
+        </div>
+        <div class="flex w-full flex-col">
+          <!-- First name -->
+          <div class="mb-5 flex flex-col justify-stretch">
+            <label for="firstname" class="mb-1 block font-bold text-gray-700"
+              >Firstname</label
+            >
+            <input
+              type="text"
+              class="rounded-lg border-0 px-4 py-3 font-medium text-gray-600 shadow-sm"
+              placeholder="Enter your first name..."
+            />
+          </div>
+          <!-- Email -->
+          <div class="mb-5 flex flex-col justify-stretch">
+            <label for="email" class="mb-1 block font-bold text-gray-700"
+              >Email</label
+            >
+            <input
+              type="email"
+              class="rounded-lg border-0 px-4 py-3 font-medium text-gray-600 shadow-sm"
+              placeholder="Enter your email address..."
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div class="mb-5">
+        <label for="password" class="mb-1 block font-bold text-gray-700"
+          >Set up password</label
+        >
+        <div class="mb-4 mt-2 text-gray-600">
+          Please create a secure password including the following criteria
+          below.
+
+          <ul class="ml-4 ms-0 mt-2 list-disc ps-3 text-sm">
+            <li>lowercase letters</li>
+            <li>numbers</li>
+            <li>capital letters</li>
+            <li>special characters</li>
+          </ul>
+        </div>
+
+        <div class="relative">
+          <input
+            class="focus:shadow-outline w-full rounded-lg border-0 px-4 py-3 font-medium text-gray-600 shadow-sm"
+            placeholder="Your strong password..."
+          />
+
+          <div class="absolute bottom-0 right-0 top-0 cursor-pointer px-3 py-3">
+            <svg
+              :class="{'hidden': !togglePassword, 'block': togglePassword }"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 fill-current text-gray-500"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 19c.946 0 1.81-.103 2.598-.281l-1.757-1.757C12.568 16.983 12.291 17 12 17c-5.351 0-7.424-3.846-7.926-5 .204-.47.674-1.381 1.508-2.297L4.184 8.305c-1.538 1.667-2.121 3.346-2.132 3.379-.069.205-.069.428 0 .633C2.073 12.383 4.367 19 12 19zM12 5c-1.837 0-3.346.396-4.604.981L3.707 2.293 2.293 3.707l18 18 1.414-1.414-3.319-3.319c2.614-1.951 3.547-4.615 3.561-4.657.069-.205.069-.428 0-.633C21.927 11.617 19.633 5 12 5zM16.972 15.558l-2.28-2.28C14.882 12.888 15 12.459 15 12c0-1.641-1.359-3-3-3-.459 0-.888.118-1.277.309L8.915 7.501C9.796 7.193 10.814 7 12 7c5.351 0 7.424 3.846 7.926 5C19.624 12.692 18.76 14.342 16.972 15.558z"
+              />
+            </svg>
+
+            <svg
+              :class="{'hidden': togglePassword, 'block': !togglePassword }"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 fill-current text-gray-500"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12,9c-1.642,0-3,1.359-3,3c0,1.642,1.358,3,3,3c1.641,0,3-1.358,3-3C15,10.359,13.641,9,12,9z"
+              />
+              <path
+                d="M12,5c-7.633,0-9.927,6.617-9.948,6.684L1.946,12l0.105,0.316C2.073,12.383,4.367,19,12,19s9.927-6.617,9.948-6.684 L22.054,12l-0.105-0.316C21.927,11.617,19.633,5,12,5z M12,17c-5.351,0-7.424-3.846-7.926-5C4.578,10.842,6.652,7,12,7 c5.351,0,7.424,3.846,7.926,5C19.422,13.158,17.348,17,12,17z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="my-4 flex h-3 items-center">
+          <div class="flex h-2 w-2/3 justify-between">
+            <div class="mr-1 h-2 w-1/3 rounded-full bg-red-300"></div>
+            <div class="mr-1 h-2 w-1/3 rounded-full bg-gray-300"></div>
+            <div class="h-2 w-1/3 rounded-full bg-gray-300"></div>
+          </div>
+          <div class="ml-3 text-sm font-extrabold leading-none text-gray-400">
+            too weak
+          </div>
+        </div>
+
+        <div class="relative">
+          <input
+            class="focus:shadow-outline w-full rounded-lg border-0 px-4 py-3 font-medium text-gray-600 shadow-sm"
+            placeholder="Your strong password..."
+          />
+
+          <div class="absolute bottom-0 right-0 top-0 cursor-pointer px-3 py-3">
+            <svg
+              :class="{'hidden': !togglePassword, 'block': togglePassword }"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 fill-current text-gray-500"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 19c.946 0 1.81-.103 2.598-.281l-1.757-1.757C12.568 16.983 12.291 17 12 17c-5.351 0-7.424-3.846-7.926-5 .204-.47.674-1.381 1.508-2.297L4.184 8.305c-1.538 1.667-2.121 3.346-2.132 3.379-.069.205-.069.428 0 .633C2.073 12.383 4.367 19 12 19zM12 5c-1.837 0-3.346.396-4.604.981L3.707 2.293 2.293 3.707l18 18 1.414-1.414-3.319-3.319c2.614-1.951 3.547-4.615 3.561-4.657.069-.205.069-.428 0-.633C21.927 11.617 19.633 5 12 5zM16.972 15.558l-2.28-2.28C14.882 12.888 15 12.459 15 12c0-1.641-1.359-3-3-3-.459 0-.888.118-1.277.309L8.915 7.501C9.796 7.193 10.814 7 12 7c5.351 0 7.424 3.846 7.926 5C19.624 12.692 18.76 14.342 16.972 15.558z"
+              />
+            </svg>
+
+            <svg
+              :class="{'hidden': togglePassword, 'block': !togglePassword }"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 fill-current text-gray-500"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12,9c-1.642,0-3,1.359-3,3c0,1.642,1.358,3,3,3c1.641,0,3-1.358,3-3C15,10.359,13.641,9,12,9z"
+              />
+              <path
+                d="M12,5c-7.633,0-9.927,6.617-9.948,6.684L1.946,12l0.105,0.316C2.073,12.383,4.367,19,12,19s9.927-6.617,9.948-6.684 L22.054,12l-0.105-0.316C21.927,11.617,19.633,5,12,5z M12,17c-5.351,0-7.424-3.846-7.926-5C4.578,10.842,6.652,7,12,7 c5.351,0,7.424,3.846,7.926,5C19.422,13.158,17.348,17,12,17z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div class="mb-5">
+        <div>
+          <label for="email" class="mb-1 block font-bold text-gray-700"
+            >Gender</label
+          >
+
+          <div class="flex">
+            <label
+              class="text-truncate mr-4 flex items-center justify-start rounded-lg bg-white py-3 pl-4 pr-6 shadow-sm"
+            >
+              <div class="mr-3 text-teal-600">
+                <input
+                  type="radio"
+                  aria-label="gender"
+                  value="Male"
+                  class="form-radio focus:shadow-outline focus:outline-none"
+                />
+              </div>
+              <div class="select-none text-gray-700">Male</div>
+            </label>
+
+            <label
+              class="text-truncate flex items-center justify-start rounded-lg bg-white py-3 pl-4 pr-6 shadow-sm"
+            >
+              <div class="mr-3 text-teal-600">
+                <input
+                  type="radio"
+                  aria-label="gender"
+                  value="Female"
+                  class="form-radio focus:shadow-outline focus:outline-none"
+                />
+              </div>
+              <div class="select-none text-gray-700">Female</div>
+            </label>
+          </div>
+        </div>
+        <div class="mb-5 flex flex-col justify-stretch">
+          <label for="profession" class="mb-1 block font-bold text-gray-700"
+            >Profession</label
+          >
+          <input
+            type="profession"
+            class="rounded-lg border-0 px-4 py-3 font-medium text-gray-600 shadow-sm"
+            placeholder="eg. Web Developer"
+          />
+        </div>
+      </div>
+      <!-- content section -->
+      <!-- footer section -->
+      <div class="fixed bottom-0 left-0 right-0 bg-white py-5 shadow-md">
+        <div class="mx-auto flex max-w-3xl justify-between">
+          <button class="btn btn-seccondary w-32 px-5 py-2">previus</button>
+          <button class="btn btn-primary w-32 px-5 py-2">continue</button>
+        </div>
+      </div>
+      <!-- footer section -->
+    </div>
+  </body>
+</html>
+
+<!-- npm install -D prettier-plugin-tailwindcss -->

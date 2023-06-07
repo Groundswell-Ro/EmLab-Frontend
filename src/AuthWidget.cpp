@@ -20,14 +20,15 @@ AuthWidget::AuthWidget(std::shared_ptr<Login> login)
 	authTemp_->setStyleClass("auth-container");
 	auto signInBtn = authTemp_->bindWidget("btn-sign-in", std::make_unique<Wt::WPushButton>("Login"));
 	auto signUpBtn = authTemp_->bindWidget("btn-sign-up", std::make_unique<Wt::WPushButton>("Create Account"));
-	loginFormView_ = authTemp_->bindWidget("login-form-view", std::make_unique<LoginFormView>(login_));
-	registrationFormView_ = authTemp_->bindWidget("registration-form-view", std::make_unique<RegistrationFormView>(login_));
+	loginFormView_ = authTemp_->bindWidget("login-form-view", std::make_unique<LoginFormView>("",login_));
+	// registrationFormView_ = authTemp_->bindWidget("registration-form-view", std::make_unique<RegistrationFormView>(login_));
 
 	loginFormView_->setStyleClass("w-100");
-	registrationFormView_->setStyleClass("w-100");
+	registrationFormView_->setStyleClass("w-full");
 
 	signInBtn->clicked().connect(this, [=]()
 								 { authTemp_->removeStyleClass("right-panel-active"); });
+
 	signUpBtn->clicked().connect(this, [=]()
 								 { authTemp_->addStyleClass("right-panel-active"); });
 }

@@ -25,7 +25,7 @@ private:
 class LoginFormView : public Wt::WTemplateFormView
 {
 public:
-	LoginFormView(std::shared_ptr<Login> login);
+	LoginFormView(std::string temp_str, std::shared_ptr<Login> login);
 
 	std::shared_ptr<LoginFormModel> model_;
 	std::shared_ptr<Login> login_;
@@ -55,7 +55,7 @@ private:
 class RegistrationFormView : public Wt::WTemplateFormView
 {
 public:
-	RegistrationFormView(std::shared_ptr<Login> login);
+	RegistrationFormView(std::string temp_str, std::shared_ptr<Login> login);
 
 	std::shared_ptr<RegistrationFormModel> model_;
 

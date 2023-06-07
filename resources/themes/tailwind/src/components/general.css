@@ -1,0 +1,55 @@
+.text-basic {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.bg-basic {
+  @apply text-basic bg-gray-200 dark:bg-gray-500;
+}
+
+/* custom default styles for elements */
+.bg-body {
+  @apply bg-neutral-0 text-neutral-900 dark:bg-neutral-700 dark:text-gray-50;
+}
+
+.bg-body-hover {
+  @apply bg-body hover:bg-neutral-50 dark:hover:bg-neutral-650;
+}
+
+.bg-body-hover-border {
+  @apply bg-body-hover border border-x-0 border-b-2 border-t-0 border-neutral-300 hover:border-solid;
+}
+
+.bg-body-active {
+  @apply bg-body border border-x-0 border-b-2 border-t-0 border-solid border-neutral-300 hover:bg-neutral-0 dark:hover:bg-neutral-700;
+}
+
+.input-rounded {
+  @apply rounded-lg border-0 bg-white px-4 py-3 ps-10 font-medium shadow-md;
+}
+
+body {
+  @apply m-0 bg-neutral-50 font-sans text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50;
+}
+
+a {
+  @apply text-inherit no-underline;
+}
+svg {
+  @apply text-gray-500;
+}
+/* Some flex utilitis */
+.flex-center {
+  @apply flex justify-center;
+}
+
+.flex-center-center {
+  @apply flex-center items-center;
+}
+
+.flex-col-center {
+  @apply flex flex-col items-center;
+}
+
+.flex-col-center-center {
+  @apply flex-col-center justify-center;
+}

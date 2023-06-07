@@ -22,8 +22,10 @@ public:
 
 	void getUserServices();
 
+	void setUserLogin(bool login = true);
 private:
 	AuthModule::LoginReturn user_;
 	Wt::Signal<> changed_;
 	void getConnectionStrings();
+	// delete on production
 };

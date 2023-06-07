@@ -1,0 +1,87 @@
+/* DEFAULT  */
+.btn-light-default {
+  @apply hover:bg-gray-100 focus:ring-2 focus:ring-gray-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-200;
+}
+.btn-dark-default {
+  @apply dark:shadow dark:shadow-gray-800 dark:hover:bg-gray-600 dark:focus:ring-1 dark:focus:ring-gray-800 dark:disabled:bg-gray-700 dark:disabled:text-gray-400;
+}
+.btn {
+  @apply bg-basic btn-light-default btn-dark-default m-2 block cursor-pointer rounded-lg border-0 border-solid px-4 py-1 text-center font-medium tracking-wider shadow-md first-letter:uppercase disabled:cursor-not-allowed;
+}
+
+/* PRIMARY */
+.btn-primary-light {
+  @apply bg-blue-500 text-gray-50 hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 disabled:bg-blue-400 disabled:text-gray-300 disabled:hover:bg-blue-400;
+}
+.btn-primary-dark {
+  @apply dark:bg-blue-700 dark:hover:bg-blue-600 dark:focus:ring-1 dark:focus:ring-blue-600 dark:disabled:bg-blue-900  dark:disabled:hover:bg-blue-900;
+}
+.btn-primary {
+  @apply btn btn-primary-light btn-primary-dark;
+}
+
+/* SECCONDARY */
+.btn-seccondary-light {
+  @apply bg-gray-500 text-gray-50 hover:bg-gray-600 focus:ring-2 focus:ring-gray-300 disabled:bg-gray-400 disabled:text-gray-300 disabled:hover:bg-gray-400;
+}
+.btn-seccondary-dark {
+  @apply dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-2 dark:focus:ring-gray-600 dark:disabled:bg-gray-600  dark:disabled:hover:bg-gray-600;
+}
+.btn-seccondary {
+  @apply btn btn-seccondary-light btn-seccondary-dark;
+}
+
+/* DANGER  */
+.btn-danger-light {
+  @apply bg-red-500 text-gray-50 hover:bg-red-600 focus:ring-2 focus:ring-red-300 disabled:bg-red-400 disabled:text-gray-300 disabled:hover:bg-red-400;
+}
+.btn-danger-dark {
+  @apply dark:bg-red-700 dark:hover:bg-red-600 dark:focus:ring-1 dark:focus:ring-red-950 dark:disabled:bg-red-950 dark:disabled:hover:bg-red-950;
+}
+.btn-danger {
+  @apply btn btn-danger-light btn-danger-dark;
+}
+
+/* SUCCESS */
+.btn-success-light {
+  @apply bg-green-500 text-gray-50 hover:bg-green-600 focus:ring-2 focus:ring-green-300 disabled:bg-green-400 disabled:text-gray-200 disabled:hover:bg-green-400;
+}
+.btn-success-dark {
+  @apply dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-1 dark:focus:ring-green-950 dark:disabled:bg-green-950 dark:disabled:hover:bg-green-950;
+}
+.btn-success {
+  @apply btn btn-success-light btn-success-dark;
+}
+
+/* WARNING */
+.btn-warning-light {
+  @apply bg-yellow-500 text-gray-100 hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-300 disabled:bg-yellow-400 disabled:text-gray-50 disabled:hover:bg-yellow-400;
+}
+.btn-warning-dark {
+  @apply dark:bg-yellow-700 dark:hover:bg-yellow-800 dark:focus:ring-1 dark:focus:ring-yellow-950 dark:disabled:bg-yellow-950 dark:disabled:hover:bg-yellow-950;
+}
+.btn-warning {
+  @apply btn btn-warning-light btn-warning-dark;
+}
+
+/* INFO */
+.btn-info-light {
+  @apply bg-teal-500 text-gray-50 hover:bg-teal-600 focus:ring-2 focus:ring-teal-300 disabled:bg-teal-400 disabled:text-gray-100 disabled:hover:bg-teal-400;
+}
+.btn-info-dark {
+  @apply dark:bg-teal-700 dark:hover:bg-teal-800 dark:focus:ring-1 dark:focus:ring-teal-950 dark:disabled:bg-teal-950 dark:disabled:hover:bg-teal-950;
+}
+.btn-info {
+  @apply btn btn-info-light btn-info-dark;
+}
+
+/* DARK */
+.btn-dark-light {
+  @apply bg-gray-800 text-gray-50 hover:bg-gray-900 focus:ring-2 focus:ring-gray-300 disabled:bg-gray-700 disabled:text-gray-300 disabled:hover:bg-gray-700;
+}
+.btn-dark-dark {
+  @apply dark:bg-gray-900  dark:hover:bg-gray-950 dark:focus:ring-1 dark:focus:ring-gray-950 dark:disabled:bg-gray-700 dark:disabled:hover:bg-gray-700;
+}
+.btn-dark {
+  @apply btn btn-dark-light btn-dark-dark;
+}

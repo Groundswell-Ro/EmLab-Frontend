@@ -2,18 +2,15 @@
 #include <Wt/WApplication.h>
 #include <Wt/WServer.h>
 #include <Wt/Dbo/Exception.h>
-#include "include/Theme.h"
-// Theme compiles with gulp version 4.0.2
 
 std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 {
 	auto app = std::make_unique<Wt::WApplication>(env);
 	// Set up application resourses and settings
 	app->setTitle("Event Manager Lab");
-	app->setTheme(std::make_shared<Theme>());
-	// meta tags
-	// app->addMetaHeader("viewport", "width=device-width, initial-scale=1", "en");
-	app->addMetaHeader("viewport", "width=device-width, initial-scale=1");
+
+	// include tailwind css file
+	app->useStyleSheet("resources/themes/tailwind/dist/tailwind.css");
 	
 	// import resources
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/general");
@@ -22,7 +19,11 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/ProfileSettings");
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/EventData");
 	app->messageResourceBundle().use(app->appRoot() + "resources/templates/Authentification");
-	app->require("resources/Js/CopyToClipboard.js");
+
+	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Auth");
+	app->messageResourceBundle().use(app->appRoot() + "resources/xml/General");
+	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Navbar");
+	// app->require("resources/Js/CopyToClipboard.js");
 	app->require("resources/Js/Utility.js");
 	
 	// Application content
