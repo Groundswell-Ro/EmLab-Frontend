@@ -338,23 +338,19 @@ void RegistrationFormView::process()
 		std::cout << "\n\n Model is not valid \n\n";
 		if(!model_->validateField(model_->UserName))
 		{
-			std::cout << "\n\n Username is valid \n\n";
-		}
-		if(!model_->validateField(model_->UserPhone))
+			bindWidget("submit-info", std::make_unique<Wt::WText>("Username should be betweeen 3 and 30 characters"));
+		}else if(!model_->validateField(model_->UserPhone))
 		{
-			std::cout << "\n\n Phone is valid \n\n";
-		}
-		if(!model_->validateField(model_->UserEmail))
+			bindWidget("submit-info", std::make_unique<Wt::WText>("Phone number should be 10 digits"));
+		}else if(!model_->validateField(model_->UserEmail))
 		{
-			std::cout << "\n\n Email is valid \n\n";
-		}
-		if(!model_->validateField(model_->UserPassword))
+			bindWidget("submit-info", std::make_unique<Wt::WText>("Email is not valid, example@gmai.com"));
+		}else if(!model_->validateField(model_->UserPassword))
 		{
-			std::cout << "\n\n Password is valid \n\n";
-		}
-		if(!model_->validateField(model_->UserPasswordRepeat))
+			bindWidget("submit-info", std::make_unique<Wt::WText>("Password dose not respect the rules"));
+		}else if(!model_->validateField(model_->UserPasswordRepeat))
 		{
-			std::cout << "\n\n Password Repeat is valid \n\n";
+			bindWidget("submit-info", std::make_unique<Wt::WText>("Password repeat dose not respect the rules"));
 		}
 
 	}

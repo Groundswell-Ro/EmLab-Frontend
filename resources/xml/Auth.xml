@@ -119,8 +119,8 @@
 		</div>
 		<ul class="ml-4 ms-0 mt-2 list-disc ps-3 text-sm">
 			<li>at least 6 characters long</li>
-			<li>lowercase letters</li>
-			<li>numbers</li>
+			<li>at least one letter</li>
+			<li>at least one number</li>
 		</ul>
 	</message>
 

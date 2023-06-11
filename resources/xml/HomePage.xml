@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+
+    <message id="home">
+        ${home-sidebar class="relative w-64 bg-body transition-spacing ease-in-out delay-75 duration-300 shadow-2xl rounded"}
+        ${home-content clsaa="relative grow max-w-screen-xl min-w-screen-sm p-5 m-5 mb-0 rounded-b-none bg-green-200 rounded-lg shadow-lg mx-auto"}
+    </message>
+
+
+    <message id="home-sidebar">
+        ${sidebar-toggler class="absolute top-0 -right-14 flex justify-center items-center btn btn-primary p-1.5 rounded-full transition-spacing ease-in-out duration-300 delay-75 shadow-md"}
+        ${calendar class="calendar flex justify-center w-full"}
+        ${add-event-btn class="btn btn-primary"}
+        <div class="mx-2 flex">
+            ${start-time class=""}
+            ${end-time class=""}
+        </div>
+    </message>
+
+    <message id='home-profile'>
+        ${profile-header class="ring p-3 bg-neutral-50 rounded-lg shadow-lg"}
+        ${profile-main class="ring p-3 bg-neutral-50 rounded-lg shadow-lg"}
+        ${profile-footer class="ring p-3 bg-neutral-50 rounded-lg shadow-lg"}
+    </message>
+
+    <message id="home-profile-header">
+        profile-header
+    </message>
+
+    <message id="home-profile-main">
+        profile-main
+    </message>
+
+    <message id="home-profile-footer">
+        profile-footer
+    </message>
+
+    <message id='input-time-edit'>
+        ${input-time-edit class="border-transparent hover:border-x-none hover:border-t-none focus-within:outline-none  hover:border-neutral-350"}
+        ${increse-btn}
+        ${decrese-btn}
+    </message>
+</messages>

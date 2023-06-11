@@ -12,11 +12,11 @@
 }
 
 .bg-body-hover {
-  @apply bg-body hover:bg-neutral-50 dark:hover:bg-neutral-650;
+  @apply bg-body cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-650;
 }
 
 .bg-body-hover-border {
-  @apply bg-body-hover border border-x-0 border-b-2 border-t-0 border-neutral-300 hover:border-solid;
+  @apply bg-body-hover !rounded-b-none border border-x-0 border-b-2 border-t-0 border-neutral-200 hover:border-solid;
 }
 
 .bg-body-active {
@@ -37,6 +37,7 @@ a {
 svg {
   @apply text-gray-500;
 }
+
 /* Some flex utilitis */
 .flex-center {
   @apply flex justify-center;

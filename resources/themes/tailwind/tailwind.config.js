@@ -35,6 +35,9 @@ module.exports = {
           1000: "#000000",
         },
       },
+      transitionProperty: {
+        'spacing': 'margin, padding',
+      },
     },
   },
   plugins: [],

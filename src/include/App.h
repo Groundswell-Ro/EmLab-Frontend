@@ -48,6 +48,7 @@ private:
     void createAuth();
     void createApp();
     void handleUserAuth();
-
     void createThemeSwitcher();
+    // this only handles the underline styles of the nav menu and user menu
+    void menuItemSelected(Wt::WMenuItem* selecter_item); 
 };

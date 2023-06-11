@@ -6,9 +6,57 @@
 HomePage::HomePage()
     : WContainerWidget()
 {
-	// setStyleClass("bg-basic");
-    addWidget(std::make_unique<Wt::WText>("<div class='text-current'>HomePage</div>"));
-    
+	setStyleClass("relative h-full w-full flex");
+	createSidebar();
+	createProfile();
+}
+
+void HomePage::createSidebar()
+{
+	sidebar_ = addWidget(std::make_unique<Wt::WTemplate>(tr("home-sidebar")));
+	sidebar_->addStyleClass("relative w-64 bg-body transition-spacing ease-in-out delay-75 duration-300 shadow-2xl rounded");
+	auto toggle_sidebar_btn = sidebar_->bindWidget("sidebar-toggler", std::make_unique<Wt::WPushButton>(tr("book-svg")));
+	toggle_sidebar_btn->setTextFormat(Wt::TextFormat::XHTML);
+	toggle_sidebar_btn->clicked().connect(this, [=](){
+		if(sidebar_->hasStyleClass("-ms-64")){
+			sidebar_->removeStyleClass("-ms-64");
+		} else {
+			sidebar_->addStyleClass("-ms-64");
+		}
+	});
+	calendar_ = sidebar_->bindWidget("calendar", std::make_unique<Calendar>());
+	calendar_->setStyleClass("calendar flex justify-center w-full");
+	calendar_->setSelectionMode(Wt::SelectionMode::Single);
+	calendar_->setHorizontalHeaderFormat(Wt::CalendarHeaderFormat::SingleLetterDayNames);
+	calendar_->select(Wt::WDate::currentDate());
+	auto add_event_btn = sidebar_->bindWidget("add-event-btn", std::make_unique<Wt::WPushButton>("Add event"));
+
+	start_time_ = createTimeEdit("start-time");
+
+	
+	end_time_ = createTimeEdit("end-time");
+
+}
+
+void HomePage::createProfile()
+{
+	auto profile_ = addWidget(std::make_unique<Wt::WTemplate>(tr("home-profile")));
+	profile_->setStyleClass("grow max-w-screen-xl min-w-screen-sm p-5 m-5 mb-0 rounded-b-none bg-green-200 rounded-lg shadow-lg mx-auto");
+	auto header = profile_->bindWidget("profile-header", std::make_unique<Wt::WTemplate>(tr("home-profile-header")));
+	auto main = profile_->bindWidget("profile-main", std::make_unique<Wt::WTemplate>(tr("home-profile-main")));
+	auto footer = profile_->bindWidget("profile-footer", std::make_unique<Wt::WTemplate>(tr("home-profile-footer")));
+}
+
+Wt::WLineEdit* HomePage::createTimeEdit(Wt::WString comp_string)
+{
+	auto time_edit_temp = sidebar_->bindWidget(comp_string.toUTF8(), std::make_unique<Wt::WTemplate>(tr("input-time-edit")));
+	auto time_edit = time_edit_temp->bindWidget("input-time-edit", std::make_unique<Wt::WLineEdit>());
+	
+	return time_edit;
+}
+
+void HomePage::createButtonsExampla() 
+{
     auto btn_Wrapper = addWidget(std::make_unique<Wt::WContainerWidget>());
 	btn_Wrapper->addStyleClass("block");
 	Wt::WString btn_wrapper_styles = "flex flex-wrap";
@@ -94,6 +142,5 @@ HomePage::HomePage()
 	dark_disabled->setDisabled(true);
 	darkBtn_Wrapper->addWidget(std::make_unique<Wt::WPushButton>("dark"))->setStyleClass("btn btn-dark");
 	
-
 
 }

@@ -1,0 +1,61 @@
+.calendar > table {
+    @apply w-full text-basic shadow-md;
+}
+
+.calendar tbody {
+    @apply border;
+}
+
+.calendar .Wt-cal-year
+{
+    @apply text-gray-400 pointer-events-none ms-2;
+}
+.calendar select {
+    @apply bg-blue-50 font-bold text-neutral-350 text-lg rounded border-0 outline-none text-center me-2;
+}
+
+
+ /* Header for days of the week */
+.calendar tbody > :nth-child(2) {
+    @apply text-sm font-medium text-gray-500 border-y border-x-0 border-solid border-neutral-100;
+}
+.calendar tbody > :nth-child(2) th {
+    @apply text-inherit;
+}
+
+/* targets every calendar days cell */
+.calendar td {
+    @apply w-[calc(100%/7)] text-center;
+}
+
+/* Navigation Buttons */
+.Wt-cal-navbutton {
+    @apply w-full h-8 flex items-center justify-center hover:bg-blue-50 text-lg;
+}
+
+/* CALENDAR CELL */
+.cal-cell {
+    @apply hover:bg-neutral-50;
+}
+
+/* OUTSIDE DURRENT MONTH DAY */
+.cal-outside-day {
+    @apply text-gray-400 bg-neutral-50 hover:bg-neutral-100 hover:!text-neutral-300;
+}
+/* INSIDE CURRENT MONTH DAY */
+.cal-inside-day {
+    @apply text-gray-700;
+}
+/* WEEKEND DAY */
+.cal-weekend-day {
+    @apply text-blue-700;
+}
+/* OUTSIDE */
+.cal-outside-day.cal-weekend-day {
+    @apply text-blue-200;
+}
+/* SELECTED */
+.cal-selected-day {
+    @apply rounded-full ring-2 ring-inset bg-body;
+    /* bg-blue-500 text-white hover:bg-blue-500 hover:text-white; */
+}

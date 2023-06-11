@@ -5,7 +5,7 @@
             <div class="bg-body relative flex h-12 shadow-md items-center px-2 dark:!border-b border-solid dark:border-neutral-650">
             ${hamburger-button class="sm:hidden bg-body border-0"}
             ${logo class="mx-auto h-8 w-auto sm:mr-3 sm:ml-2"} 
-            ${menu class="hidden w-full sm:h-full list-none bg-body shadow-2xl absolute right-0 top-12 flex flex-col ps-0 m-0 items-center sm:static sm:flex sm:ml-3 sm:w-auto sm:flex-row sm:space-x-4 sm:!shadow-none"}
+            ${menu class="hidden w-full z-50 sm:h-full list-none bg-body shadow-2xl absolute right-0 top-12 flex flex-col ps-0 m-0 items-center sm:static sm:flex sm:ml-3 sm:w-auto sm:flex-row sm:space-x-4 sm:!shadow-none"}
                   <div class="sm:ms-auto">
                         <button class="flex rounded-full border-0 p-0 text-sm ">
       ${user-image class="h-9 w-9 rounded-full"}
