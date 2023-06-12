@@ -32,7 +32,7 @@ void EventView::setData(EventDataModule::EventDataPack eventDataPack)
     if (firstSetData_)
     {
         clientForm_->clientChanged().connect(this, &EventView::clientChanged);
-        eventForm_->setFieldsSignals();
+        // eventForm_->setFieldsSignals();
         firstSetData_ = false;
         eventChangedClient_.emit(eventDataPack.clientData.name, eventDataPack.eventData.id);
     }

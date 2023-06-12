@@ -30,7 +30,7 @@
 
 /* Navigation Buttons */
 .Wt-cal-navbutton {
-    @apply w-full h-8 flex items-center justify-center hover:bg-blue-50 text-lg;
+    @apply w-full h-8 flex items-center justify-center hover:bg-blue-50 text-lg m-0;
 }
 
 /* CALENDAR CELL */

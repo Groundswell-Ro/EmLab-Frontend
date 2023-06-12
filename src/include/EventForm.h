@@ -1,5 +1,6 @@
 #pragma once
 #include "LoginObj.h"
+#include "Utils.h"
 #include "../../../comunication/EventDataModule.h"
 
 #include <Wt/WFormModel.h>
@@ -12,15 +13,20 @@
 #include <Wt/WDoubleSpinBox.h>
 #include <Wt/WTextArea.h>
 
+// Validators
 #include <Wt/WValidator.h>
+#include <Wt/WLengthValidator.h> // for Name
+#include <Wt/WDateValidator.h>   // for Date
+#include <Wt/WDoubleValidator.h> // for Duration
+#include <Wt/WTimeValidator.h>   // for Start hour
+
+#include <Ice/Ice.h>
+#include <stdexcept>
 
 // E V E N T _____________ M O D E L
 class EventFormModel : public Wt::WFormModel
 {
 public:
-    Wt::WString dateFormat_ = "dd/MM/yyyy";
-    Wt::WString timeFormat_ = "HH:mm AP";
-    Wt::WString dateTimeFormat_ = dateFormat_ + " " + timeFormat_;
 
     // Associate each field with a unique string literal.
     static const Field EventDateField;
@@ -58,27 +64,12 @@ public:
     Wt::WLineEdit *eventLocation_;
     Wt::WTextArea *eventObservations_;
 
-    Wt::WPushButton *changeDateBtn_;
-    Wt::WPushButton *changeStartBtn_;
-    Wt::WPushButton *changeDurationBtn_;
-    Wt::WPushButton *changeLocationBtn_;
-    Wt::WPushButton *changeObservationsBtn_;
-
-    Wt::WPushButton *confirmDateBtn_;
-    Wt::WPushButton *confirmStartBtn_;
-    Wt::WPushButton *confirmDurationBtn_;
-    Wt::WPushButton *confirmLocationBtn_;
-    Wt::WPushButton *confirmObservationsBtn_;
-
     void setData(EventDataModule::EventData eventData);
 
-    void hideEventChangeBtns(bool hide = true);
-    void hideEventConfirmBtns(bool hide = true);
     void setReadOnlyAll(bool readOnly = true);
     void changeEventData(EventDataModule::EventField field);
     void confirmEventData(EventDataModule::EventField field);
 
-    void setFieldsSignals();
     Wt::Signal<Wt::WDate, int> &dateChanged() { return dateChanged_; };
 
     bool validate();

@@ -101,8 +101,8 @@ void EventManagerLab::createApp() {
 	stack_->setStyleClass("flex-grow");
 	
 	// add menu_ items
-	auto home_page_menu_item = nav_menu_->addItem("Home", std::make_unique<HomePage>());
-	auto page_two_menu_item = nav_menu_->addItem("Test", std::make_unique<TestPage>());
+	auto home_page_menu_item = nav_menu_->addItem("Home", std::make_unique<HomePage>(login_));
+	auto page_two_menu_item = nav_menu_->addItem("Test", std::make_unique<TestPage>(login_));
 	// menu_ Item styles
 	Wt::WString list_item_styles = "bg-body-hover-border w-4/5 rounded-md sm:rounded-none h-6 h-full flex items-center justify-center";
 	home_page_menu_item->setStyleClass(list_item_styles);

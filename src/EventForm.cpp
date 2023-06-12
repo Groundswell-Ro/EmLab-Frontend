@@ -1,14 +1,5 @@
 #include "include/EventForm.h"
 
-#include <Ice/Ice.h>
-#include <stdexcept>
-
-// Validators
-#include <Wt/WLengthValidator.h> // for Name
-#include <Wt/WDateValidator.h>   // for Date
-#include <Wt/WDoubleValidator.h> // for Duration
-#include <Wt/WTimeValidator.h>   // for Start hour
-
 std::shared_ptr<Wt::WValidator> EventFormModel::createDateValidator()
 {
     auto v = std::make_shared<Wt::WDateValidator>();
@@ -89,20 +80,17 @@ EventDataModule::EventData EventFormModel::getData()
 std::string EventFormModel::getDateTime()
 {
 
-    auto date = Wt::WDate().fromString(valueText(EventDateField), dateFormat_);
-    auto time = Wt::WTime().fromString(valueText(EventStartField), timeFormat_);
+    auto date = Wt::WDate().fromString(valueText(EventDateField), Emlab::DATE_FORMAT);
+    auto time = Wt::WTime().fromString(valueText(EventStartField), Emlab::TIME_FORMAT);
     Wt::WDateTime dateTime{date, time};
 
-    return dateTime.toString(dateTimeFormat_).toUTF8();
+    return dateTime.toString(Emlab::DATE_TIME_FORMAT).toUTF8();
 }
 
 // E V E N T _____________ V I E W
 EventFormView::EventFormView(std::shared_ptr<Login> login)
     : login_(login)
-{
-    setMinimumSize(Wt::WLength(320, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
-    setMaximumSize(Wt::WLength(380, Wt::LengthUnit::Pixel), Wt::WLength::Auto);
-    
+{    
     model_ = std::make_shared<EventFormModel>();
     setTemplateText(tr("event-form-template"));
     addFunction("id", &WTemplate::Functions::id);
@@ -113,7 +101,7 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
     auto eventDateWidget = std::make_unique<Wt::WDateEdit>();
     eventDateWidget->setReadOnly(true);
     eventDateWidget->setPlaceholderText("nu este setata nici o data");
-    eventDateWidget->setFormat(model_->dateFormat_);
+    eventDateWidget->setFormat(Emlab::DATE_FORMAT);
     eventDate_ = eventDateWidget.get();
     setFormWidget(model_->EventDateField, std::move(eventDateWidget));
 
@@ -123,7 +111,7 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
     auto eventStartWidget = std::make_unique<Wt::WTimeEdit>();
     eventStartWidget->setMinuteStep(15);
     eventStartWidget->setTime(Wt::WTime(12, 0, 0));
-    eventStartWidget->setFormat(model_->timeFormat_);
+    eventStartWidget->setFormat(Emlab::TIME_FORMAT);
     eventStartWidget->setReadOnly(true);
     eventStart_ = eventStartWidget.get();
     setFormWidget(model_->EventStartField, std::move(eventStartWidget));
@@ -156,58 +144,7 @@ EventFormView::EventFormView(std::shared_ptr<Login> login)
         eventObservations_->setHeight(Wt::WLength(250));
     });
 
-    bindEmpty("date-info");
-    bindEmpty("time-info");
-    bindEmpty("duration-info");
-    bindEmpty("location-info");
-    bindEmpty("observations-info");
-
-    changeDateBtn_ = bindWidget("event-date-btn-change", std::make_unique<Wt::WPushButton>("x"));
-    changeStartBtn_ = bindWidget("event-start-btn-change", std::make_unique<Wt::WPushButton>("x"));
-    changeDurationBtn_ = bindWidget("event-duration-btn-change", std::make_unique<Wt::WPushButton>("x"));
-    changeLocationBtn_ = bindWidget("event-location-btn-change", std::make_unique<Wt::WPushButton>("x"));
-    changeObservationsBtn_ = bindWidget("event-observations-btn-change", std::make_unique<Wt::WPushButton>("x"));
-
-    confirmDateBtn_ = bindWidget("event-date-btn-confirm", std::make_unique<Wt::WPushButton>("✔"));
-    confirmStartBtn_ = bindWidget("event-start-btn-confirm", std::make_unique<Wt::WPushButton>("✔"));
-    confirmDurationBtn_ = bindWidget("event-duration-btn-confirm", std::make_unique<Wt::WPushButton>("✔"));
-    confirmLocationBtn_ = bindWidget("event-location-btn-confirm", std::make_unique<Wt::WPushButton>("✔"));
-    confirmObservationsBtn_ = bindWidget("event-observations-btn-confirm", std::make_unique<Wt::WPushButton>("✔"));
-
-    hideEventChangeBtns(true);
-    hideEventConfirmBtns(true);
-
     updateView(model_.get());
-}
-
-void EventFormView::setFieldsSignals()
-{
-    hideEventChangeBtns(false);
-    setReadOnlyAll(true);
-
-    // Change Buttons Signals
-    changeDateBtn_->clicked().connect(this, [=]()
-                                      { changeEventData(EventDataModule::EventField::date); });
-    changeStartBtn_->clicked().connect(this, [=]()
-                                       { changeEventData(EventDataModule::EventField::time); });
-    changeDurationBtn_->clicked().connect(this, [=]()
-                                          { changeEventData(EventDataModule::EventField::duration); });
-    changeLocationBtn_->clicked().connect(this, [=]()
-                                          { changeEventData(EventDataModule::EventField::location); });
-    changeObservationsBtn_->clicked().connect(this, [=]()
-                                              { changeEventData(EventDataModule::EventField::observations); });
-
-    // Confirm Buttons Signals
-    confirmDateBtn_->clicked().connect(this, [=]()
-                                       { confirmEventData(EventDataModule::EventField::date); });
-    confirmStartBtn_->clicked().connect(this, [=]()
-                                        { confirmEventData(EventDataModule::EventField::time); });
-    confirmDurationBtn_->clicked().connect(this, [=]()
-                                           { confirmEventData(EventDataModule::EventField::duration); });
-    confirmLocationBtn_->clicked().connect(this, [=]()
-                                           { confirmEventData(EventDataModule::EventField::location); });
-    confirmObservationsBtn_->clicked().connect(this, [=]()
-                                               { confirmEventData(EventDataModule::EventField::observations); });
 }
 
 void EventFormView::changeEventData(EventDataModule::EventField field)
@@ -220,36 +157,31 @@ void EventFormView::changeEventData(EventDataModule::EventField field)
             model_->setReadOnly(model_->EventDateField, false);
             updateViewField(model_.get(), model_->EventDateField);
             eventDate_->setFocus();
-            changeDateBtn_->hide();
-            confirmDateBtn_->show();
+        
             break;
         case EventDataModule::EventField::time:
             model_->setReadOnly(model_->EventStartField, false);
             updateViewField(model_.get(), model_->EventStartField);
             eventStart_->setFocus();
-            changeStartBtn_->hide();
-            confirmStartBtn_->show();
+          
             break;
         case EventDataModule::EventField::duration:
             model_->setReadOnly(model_->EventDurationField, false);
             updateViewField(model_.get(), model_->EventDurationField);
             eventDuration_->setFocus();
-            changeDurationBtn_->hide();
-            confirmDurationBtn_->show();
+       
             break;
         case EventDataModule::EventField::location:
             model_->setReadOnly(model_->EventLocationField, false);
             updateViewField(model_.get(), model_->EventLocationField);
             eventLocation_->setFocus();
-            changeLocationBtn_->hide();
-            confirmLocationBtn_->show();
+      
             break;
         case EventDataModule::EventField::observations:
             model_->setReadOnly(model_->EventObservationsField, false);
             updateViewField(model_.get(), model_->EventObservationsField);
             eventObservations_->setFocus();
-            changeObservationsBtn_->hide();
-            confirmObservationsBtn_->show();
+
             break;
         default:
             std::cout << "\n EventFormView::changeEventDate() - unknown field \n";
@@ -282,10 +214,9 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
                 model_->setReadOnly(model_->EventDateField, true);
                 auto stringField = model_->getDateTime();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, EventDataModule::EventField::dateTime, stringField);
-                changeDateBtn_->setHidden(false);
-                confirmDateBtn_->setHidden(true);
+       
                 // signal emmited to change navItem date
-                dateChanged_.emit(Wt::WDate().fromString(model_->valueText(model_->EventDateField), model_->dateFormat_), model_->id);
+                dateChanged_.emit(Wt::WDate().fromString(model_->valueText(model_->EventDateField), Emlab::DATE_FORMAT), model_->id);
             }
             else if (field == EventDataModule::EventField::time)
             {
@@ -293,8 +224,7 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
                 model_->setReadOnly(model_->EventStartField, true);
                 auto stringField = model_->getDateTime();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, EventDataModule::EventField::dateTime, stringField);
-                changeStartBtn_->setHidden(false);
-                confirmStartBtn_->setHidden(true);
+               
             }
             else if (field == EventDataModule::EventField::duration)
             {
@@ -302,8 +232,7 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
                 model_->setReadOnly(model_->EventDurationField, true);
                 auto doubleField = ::atof(model_->valueText(model_->EventDurationField).toUTF8().c_str());
                 eventsDataInterface->modifyEventDoubleField(login_->userToken(), eventId, field, doubleField);
-                changeDurationBtn_->setHidden(false);
-                confirmDurationBtn_->setHidden(true);
+               
             }
             else if (field == EventDataModule::EventField::location)
             {
@@ -311,8 +240,7 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
                 model_->setReadOnly(model_->EventLocationField, true);
                 auto stringField = model_->valueText(model_->EventLocationField).toUTF8();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, field, stringField);
-                changeLocationBtn_->setHidden(false);
-                confirmLocationBtn_->setHidden(true);
+               
             }
             else if (field == EventDataModule::EventField::observations)
             {
@@ -320,8 +248,7 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
                 model_->setReadOnly(model_->EventObservationsField, true);
                 auto stringField = model_->valueText(model_->EventObservationsField).toUTF8();
                 eventsDataInterface->modifyEventStringField(login_->userToken(), eventId, field, stringField);
-                changeObservationsBtn_->setHidden(false);
-                confirmObservationsBtn_->setHidden(true);
+            
                 eventObservations_->setHeight(Wt::WLength::Auto);
             }
             else
@@ -337,45 +264,6 @@ void EventFormView::confirmEventData(EventDataModule::EventField field)
     }
 }
 
-void EventFormView::hideEventChangeBtns(bool hide)
-{
-    if (hide)
-    {
-        changeDateBtn_->hide();
-        changeStartBtn_->hide();
-        changeDurationBtn_->hide();
-        changeLocationBtn_->hide();
-        changeObservationsBtn_->hide();
-    }
-    else
-    {
-        changeDateBtn_->show();
-        changeStartBtn_->show();
-        changeDurationBtn_->show();
-        changeLocationBtn_->show();
-        changeObservationsBtn_->show();
-    }
-}
-
-void EventFormView::hideEventConfirmBtns(bool hide)
-{
-    if (hide)
-    {
-        confirmDateBtn_->hide();
-        confirmStartBtn_->hide();
-        confirmDurationBtn_->hide();
-        confirmLocationBtn_->hide();
-        confirmObservationsBtn_->hide();
-    }
-    else
-    {
-        confirmDateBtn_->show();
-        confirmStartBtn_->show();
-        confirmDurationBtn_->show();
-        confirmLocationBtn_->show();
-        confirmObservationsBtn_->show();
-    }
-}
 
 void EventFormView::setReadOnlyAll(bool readOnly)
 {
@@ -401,10 +289,10 @@ void EventFormView::setReadOnlyAll(bool readOnly)
 
 void EventFormView::setData(EventDataModule::EventData eventData)
 {
-    Wt::WDateTime dateTime = Wt::WDateTime::fromString(eventData.dateTime, model_->dateTimeFormat_);
+    Wt::WDateTime dateTime = Wt::WDateTime::fromString(eventData.dateTime, Emlab::DATE_TIME_FORMAT);
 
-    std::string eventDateString = dateTime.date().toString(model_->dateFormat_).toUTF8();
-    std::string eventTimeString = dateTime.time().toString(model_->timeFormat_).toUTF8();
+    std::string eventDateString = dateTime.date().toString(Emlab::DATE_FORMAT).toUTF8();
+    std::string eventTimeString = dateTime.time().toString(Emlab::TIME_FORMAT).toUTF8();
 
     model_->id = eventData.id;
     model_->setValue(model_->EventDateField, eventDateString);

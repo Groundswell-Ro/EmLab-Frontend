@@ -97,7 +97,6 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
 
 void ClientFormView::setData(EventDataModule::ClientData clientData)
 {
-
     clearBtn_->show();
     confirmBtn_->hide();
 

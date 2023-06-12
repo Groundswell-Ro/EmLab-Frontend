@@ -2,40 +2,11 @@
 <messages>
 
 	<message id='event-form-template'>
-		<form class="form-inline m-2 mt-4">
-			<div class="mb-4 d-flex event-form-field"> 
-				${event-date class="form-control" } 
-				<label  for="${id:event-date}" class="event-forms-label">Data <span class="help-inline text-danger">${date-info}</span></label>
-				${event-date-btn-change class="btn btn-sm btn-outline-secondary"}
-				${event-date-btn-confirm class="btn btn-sm btn-primary"}
-
-			</div>
-			<div class=" mb-4 d-flex event-form-field"> 
-				${event-start class="form-control" }
-				<label for="${id:event-start}" class="event-forms-label">Ora <span class="help-inline text-danger">${time-info}</span></label>
-				${event-start-btn-change class="btn btn-sm btn-outline-secondary"}
-				${event-start-btn-confirm class="btn btn-sm btn-primary"}
-			</div>
-
-			<div class=" mb-4 d-flex event-form-field"> 
-				${event-duration class="form-control" } 
-				<label for="${id:event-duration}" class="event-forms-label">Durata \ H <span class="help-inline text-danger">${duration-info}</span></label>
-				${event-duration-btn-change class="btn btn-sm btn-outline-secondary"}
-				${event-duration-btn-confirm class="btn btn-sm btn-primary"}
-			</div>
-			<div class=" mb-4 d-flex event-form-field"> 
-				${event-location class="form-control pt-1" } 
-				<label
-					for="${id:event-location}"  class="event-forms-label">Locatia <span class="help-inline text-danger">${location-info}</span></label>
-				${event-location-btn-change class="btn btn-sm btn-outline-secondary"}
-				${event-location-btn-confirm class="btn btn-sm btn-primary"}
-			</div>
-			<div class="mb-4 d-flex event-form-field"> 
-				${event-observations class="form-control pt-1 "} 
-				<label for="${id:event-observations}" class="event-forms-label">Observatii <span class="help-inline text-danger">${observations-info}</span></label>
-				${event-observations-btn-change class="btn btn-sm btn-outline-secondary"}
-				${event-observations-btn-confirm class="btn btn-sm btn-primary"}
-			</div>
+		<form class="flex flex-col">
+			${event-start class="" }
+			${event-duration class="" } 
+			${event-location class="" } 
+			${event-observations class=""} 
 		</form>
 	</message>
 
@@ -43,50 +14,57 @@
 		<form class="form-inline m-1 mt-4">
 			<div class="event-form-field mb-4 d-flex"> 
 				${provider-identity class="form-control" } 
-				<label for="${id:provider-identity}" class="event-forms-label">Furnizorul <span class="help-inline text-danger">${provider-info}</span></label>
+				<label for="${id:provider-identity}" class="event-forms-label">Furnizorul <span class="help-inline text-danger">${provider-info}</span>
+				</label>
 				${service-provider-identity-btn-change class="btn btn-sm btn-outline-secondary"}
 				${service-provider-identity-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="event-form-field mb-4 d-flex"> 
 				${provider-service class="form-control" } 
-				<label for="${id:provider-identity}" class="event-forms-label">Serviciul <span class="help-inline text-danger">${service-info}</span></label>
+				<label for="${id:provider-identity}" class="event-forms-label">Serviciul <span class="help-inline text-danger">${service-info}</span>
+				</label>
 				${service-provider-service-btn-change class="btn btn-sm btn-outline-secondary"}
 				${service-provider-service-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="event-form-field mb-4 d-flex"> 
 				${service-start class="form-control" } 
-				<label for="${id:service-start}" class="event-forms-label">Ora <span class="help-inline text-danger">${time-info}</span></label>
+				<label for="${id:service-start}" class="event-forms-label">Ora <span class="help-inline text-danger">${time-info}</span>
+				</label>
 				${service-start-btn-change class="btn btn-sm btn-outline-secondary"}
 				${service-start-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="event-form-field mb-4 d-flex"> 
 				${service-duration class="form-control" } 
-				<label for="${id:service-duration}" class="event-forms-label">Durata <span class="help-inline text-danger">${duration-info}</span></label>
+				<label for="${id:service-duration}" class="event-forms-label">Durata <span class="help-inline text-danger">${duration-info}</span>
+				</label>
 				${service-duration-btn-change class="btn btn-sm btn-outline-secondary"}
 				${service-duration-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 
 			<div class="event-form-field mb-4 d-flex"> 
 				${service-cost class="form-control" } 
-				<label for="${id:service-cost}" class="event-forms-label">Tarif / ora <span class="help-inline text-danger">${cost-info}</span></label>
+				<label for="${id:service-cost}" class="event-forms-label">Tarif / ora <span class="help-inline text-danger">${cost-info}</span>
+				</label>
 				${service-cost-btn-change class="btn btn-sm btn-outline-secondary"}
 				${service-cost-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="event-form-field mb-4 d-flex"> 
 				${service-description class="form-control" } 
-				<label for="${id:service-description}" class="event-forms-label">Descriere serviciu <span class="help-inline text-danger">${description-info}</span></label>
+				<label for="${id:service-description}" class="event-forms-label">Descriere serviciu <span class="help-inline text-danger">${description-info}</span>
+				</label>
 				${service-description-btn-change class="btn btn-sm btn-outline-secondary"}
 				${service-description-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
 			<div class="event-form-field mb-4 d-flex">
 				 ${service-observations class="form-control" } 
-				 <label for="${id:service-observations}" class="event-forms-label">Observatii <span class="help-inline text-danger">${observations-info}</span></label>
+				<label for="${id:service-observations}" class="event-forms-label">Observatii <span class="help-inline text-danger">${observations-info}</span>
+				</label>
 				 ${service-observations-btn-change class="btn btn-sm btn-outline-secondary"}
 				 ${service-observations-btn-confirm class="btn btn-sm btn-primary"}
 			</div>
-			
+
 		</form>
 	</message>
 
@@ -114,39 +92,41 @@
 		<div class="">
 			<form class="form-inline mt-4 mx-2 flex-grow-1">
 				<div class="event-form-field mb-4"> ${client-name class="form-control" } 
-					<label for="${id:client-name}" class="event-forms-label">Nume client <span class="help-inline text-danger mx-2 p-0">${info-name}</span></label>
+					<label for="${id:client-name}" class="event-forms-label">Nume client <span class="help-inline text-danger mx-2 p-0">${info-name}</span>
+					</label>
 				</div>
 				<div class="event-form-field"> ${client-phone class="form-control" } 
-					<label for="${id:client-phone}" class="event-forms-label">Telefon client <span class="help-inline text-danger mx-2 p-0">${info-phone}</span></label>
+					<label for="${id:client-phone}" class="event-forms-label">Telefon client <span class="help-inline text-danger mx-2 p-0">${info-phone}</span>
+					</label>
 				</div>
 			</form>
 			<div class="w-100 p-2">
 				${clear-client-btn class="btn btn-outline-secondary w-100"}
 				${confirm-client-btn class="btn btn-success w-100"}
 			</div>
-			
+
 		</div>
 	</message>
 
 	<message id='event-nav-item'>
 		<div class="events-nav-item-head">
-		  <div class="events-nav-item-head-client">${client-name}</div>
-		  <div class="events-nav-item-head-date">${event-date}</div>
+			<div class="events-nav-item-head-client">${client-name}</div>
+			<div class="events-nav-item-head-date">${event-date}</div>
 		</div>
-		<div class="events-nav-item-description">${settings-btn}</div>  
+		<div class="events-nav-item-description">${settings-btn}</div>
 	</message>
 
 	<message id='service-item'>
-	  
+
 		<h2 class="accordion-header">
-		  <div class="accordion-button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne">
+			<div class="accordion-button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne">
 			TITLE
-		  </div>
+			</div>
 		</h2>
 		<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
 			${service-form class="accordion-body px-0"}
 		</div>
-	
+
 	</message>
-	
+
 </messages>
