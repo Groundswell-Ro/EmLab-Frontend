@@ -30,7 +30,7 @@ private:
     Wt::WPushButton*    cancel_event_btn_;
     
     Wt::WTimeEdit*      start_time_input_;
-    Wt::WTimeEdit*      end_time_input_;
+    Wt::WLineEdit*      duration_input_;
     Wt::WLineEdit*      location_input_;
     Wt::WTextArea*      description_input_;
     int event_duration = 60;

@@ -41,27 +41,49 @@
     </message>
 
     <message id='sidebar-event-open'>
-        <div class="relative shadow-lg bg-body bor-1 m-1 p-1 py-3">
+        <div class="relative shadow-lg bg-body bor-1 m-1 p-1 py-5">
             ${toggle-size-btn class="btn bg-transparent shadow-none absolute top-0 right-0 p-1 m-0 flex justify-center items-center rounded-md"}
-
             ${event-form}
-
         </div>
     </message>
 
     <message id='event-form'>
-        <div class="flex">
-            ${start-sub-time-btn class="btn p-0.5 m-0 rounded-none flex justify-center items-center"}
-            ${start-time-input class="input-underline w-1/3 px-1 text-center"}
-            ${start-add-time-btn class="btn p-0.5 m-0 rounded flex justify-center items-center"}
+        <div class="p-2">
+            <div class="flex mb-2">
+                <span class="w-28 flex items-center">${clock-svg class="flex justify-center items-center me-1"}Start Time</span>
+                <span class="flex">
+                ${start-sub-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
+                ${start-time-input class="input-underline border-t w-16 px-1 text-center"}
+                ${start-add-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
+                </span>
+            </div>
+
+            <div class="flex mb-2">
+                <span class="w-28 flex items-center">${hourglass-svg class="flex justify-center items-center me-1"}Duration</span>
+                <div class="flex">
+                ${duration-sub-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
+                ${duration-time-input class="input-underline border-t w-16 px-1 text-center"}
+                ${duration-add-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
+                </div>
+            </div>
+
+            <div class="flex mb-3">
+                <span class="w-28 flex items-center">${clock-svg-fill class="flex justify-center items-center me-1"}End Time</span>
+                <span class="flex ms-7 text-sm cursor-default">${end-hour}</span>
+            </div>
+            <!-- <div class="flex flex-col space-y-1">
+                <span class="flex items-center">${location-pin-svg class="flex justify-center items-center me-1"}Location</span>
+                ${location-input class="input-underline border-neutral-200"}
+            </div> -->
+            <div class="relative mb-3">
+                ${location-input class="input-float peer"} 
+                <label for="${id:location-input}" class="label-float flex items-center">${location-pin-svg class="flex justify-center items-center me-1"}Location</label>
+            </div>
+            <div class="relative">
+                ${description-input class="input-float peer resize-y"} 
+                <label for="${id:description-input}" class="label-float flex items-center">${book-open-svg class="flex justify-center items-center me-1"}Description</label>
+            </div>
         </div>
-        <div class="flex">
-            ${end-sub-time-btn class="btn bg-opacity-30  p-0.5 m-0 rounded-none flex justify-center items-center"}
-            ${end-time-input class="input-underline w-1/3 px-1 text-center"}
-            ${end-add-time-btn class="btn bg-opacity-30 p-0.5 m-0 rounded flex justify-center items-center"}
-        </div>
-        ${location-input class="hidden"}
-        ${description-input class="hidden"}
     </message>
 
 

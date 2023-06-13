@@ -3,7 +3,7 @@
 #include <Wt/WStackedWidget.h>
 #include "LoginObj.h"
 #include <Wt/WDate.h>
-
+#include "../../../comunication/EventDataModule.h"
 class Events : public Wt::WContainerWidget
 {
 public:

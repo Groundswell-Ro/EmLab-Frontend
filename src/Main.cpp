@@ -24,8 +24,11 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/General");
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Navbar");
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/HomePage");
+	
 	// app->require("resources/Js/CopyToClipboard.js");
 	app->require("resources/Js/Utility.js");
+	app->require("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
+
 	
 	// Application content
 	app->root()->addWidget(std::make_unique<EventManagerLab>());

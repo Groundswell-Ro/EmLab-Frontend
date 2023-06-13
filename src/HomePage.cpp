@@ -35,7 +35,7 @@ void HomePage::createSidebar()
 	add_event_btn_->clicked().connect(this, &HomePage::addEvent);
 	save_event_btn_ = sidebar_->bindWidget("save-event-btn", std::make_unique<Wt::WPushButton>("Save"));
 	save_event_btn_->clicked().connect(this, &HomePage::saveEvent);
-	save_event_btn_->disable();
+	// save_event_btn_->disable();
 	cancel_event_btn_ = sidebar_->bindWidget("cancel-event-btn", std::make_unique<Wt::WPushButton>(tr("x-svg-sm")));
 	cancel_event_btn_->setTextFormat(Wt::TextFormat::XHTML);
 	cancel_event_btn_->clicked().connect(this, &HomePage::cancelEvent);
@@ -52,6 +52,23 @@ void HomePage::saveEvent()
 	save_event_btn_->addStyleClass("-translate-x-28");
 	sidebar_content_->setTemplateText("");
 	cancel_event_btn_->setDisabled(true);
+
+	try
+	{
+		Ice::CommunicatorHolder ich = Ice::initialize();
+		auto base = ich->stringToProxy(login_->eventConnString_);
+		auto eventsDataInterface = Ice::checkedCast<EventDataModule::EventsDataInterfacePrx>(base);
+		if (!eventsDataInterface)
+		{
+			throw std::runtime_error("Invalid proxy");
+		}
+		EventDataModule::EventDataPack eventData;
+		auto newEvDataPack = eventsDataInterface->registerEvent(login_->userToken(), eventData);
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 }
 
 void HomePage::addEvent()
@@ -68,29 +85,31 @@ void HomePage::addEvent()
 	auto date = *(calendar_->selection().begin());
 	toggle_size_btn->setTextFormat(Wt::TextFormat::XHTML);
 
-	
-
 	// Event Information Form
 	{
-
+		event_form->addFunction("id", &Wt::WTemplate::Functions::id);
 		start_time_input_ = event_form->bindWidget("start-time-input", std::make_unique<Wt::WTimeEdit>());
-		auto end_time_input_ = event_form->bindWidget("end-time-input", std::make_unique<Wt::WTimeEdit>());
+		duration_input_ = event_form->bindWidget("duration-time-input", std::make_unique<Wt::WLineEdit>());
 		auto start_add_time_btn = event_form->bindWidget("start-add-time-btn", std::make_unique<Wt::WPushButton>(tr("plus-svg-sm")));
 		auto start_sub_time_btn = event_form->bindWidget("start-sub-time-btn", std::make_unique<Wt::WPushButton>(tr("minus-svg-sm")));
-		auto end_sub_time_btn = event_form->bindWidget("end-sub-time-btn", std::make_unique<Wt::WPushButton>(tr("minus-svg-sm")));
-		auto end_add_time_btn = event_form->bindWidget("end-add-time-btn", std::make_unique<Wt::WPushButton>(tr("plus-svg-sm")));
+		auto duration_sub_time_btn = event_form->bindWidget("duration-sub-time-btn", std::make_unique<Wt::WPushButton>(tr("minus-svg-sm")));
+		auto duration_add_time_btn = event_form->bindWidget("duration-add-time-btn", std::make_unique<Wt::WPushButton>(tr("plus-svg-sm")));
+		auto end_hour = event_form->bindWidget("end-hour", std::make_unique<Wt::WText>("13:00 PM"));
 		location_input_ = event_form->bindWidget("location-input", std::make_unique<Wt::WLineEdit>());
 		description_input_ = event_form->bindWidget("description-input", std::make_unique<Wt::WTextArea>());
 
+		event_form->bindWidget("clock-svg", std::make_unique<Wt::WText>(tr("clock-svg-sm")));
+		event_form->bindWidget("hourglass-svg", std::make_unique<Wt::WText>(tr("hourglass-svg-sm")));
+		event_form->bindWidget("clock-svg-fill", std::make_unique<Wt::WText>(tr("clock-svg-fill-sm")));
+		event_form->bindWidget("location-pin-svg", std::make_unique<Wt::WText>(tr("location-pin-svg-sm")));
+		event_form->bindWidget("book-open-svg", std::make_unique<Wt::WText>(tr("book-open-svg-sm")));
 
 		start_time_input_->setFormat(Emlab::TIME_FORMAT);
 		start_time_input_->setTime(Wt::WTime(12,0,0));
 		start_time_input_->setDisabled(true);
 
-		end_time_input_->setFormat(Emlab::TIME_FORMAT);
-		end_time_input_->setTime(Wt::WTime(12+(event_duration/60),0,0));
-		end_time_input_->setDisabled(true);
-
+		duration_input_->setDisabled(true);
+		duration_input_->setText(std::to_string(event_duration/60) + " Hours");
 
 		start_add_time_btn->setTextFormat(Wt::TextFormat::XHTML);
 		start_add_time_btn->clicked().connect(this, [=](){
@@ -98,8 +117,7 @@ void HomePage::addEvent()
 			time = time.addSecs(60*15);
 			time.hour() > 23 ? time = Wt::WTime(0,0,0) : time = time;
 			start_time_input_->setTime(time);
-			end_time_input_->setTime(time.addSecs(60*event_duration));
-			
+			end_hour->setText(time.addSecs(event_duration*60).toString(Emlab::TIME_FORMAT));
 		});
 
 		start_sub_time_btn->setTextFormat(Wt::TextFormat::XHTML);	
@@ -108,32 +126,42 @@ void HomePage::addEvent()
 			time.minute() == 0 && time.hour() == 0 ? time = Wt::WTime(24,0,0) : time = time;
 			time = time.addSecs(-(60*15));
 			start_time_input_->setTime(time);
-			end_time_input_->setTime(time.addSecs(60*event_duration));
+			end_hour->setText(time.addSecs(event_duration*60).toString(Emlab::TIME_FORMAT));
 		});
 
-
-		end_add_time_btn->setTextFormat(Wt::TextFormat::XHTML);
-		end_add_time_btn->clicked().connect(this, [=](){
-			auto end_time = end_time_input_->time();
+		duration_add_time_btn->setTextFormat(Wt::TextFormat::XHTML);
+		duration_add_time_btn->clicked().connect(this, [=](){
 			auto start_time = start_time_input_->time();
+			Wt::WString duration_string;
 			event_duration < 60*12 ? event_duration += 15 : event_duration = event_duration;
-			end_time.hour() > 23 ? end_time = Wt::WTime(0,0,0) : end_time = end_time;
-			end_time = start_time.addSecs(60*event_duration);
-			end_time_input_->setTime(end_time);
+			duration_string += std::to_string(event_duration/60);
+			if(event_duration%60 != 0) {
+				duration_string += ":" + std::to_string(event_duration%60);
+			}else {
+			}
+			duration_string += " Hours";
+			duration_input_->setText(duration_string);
+			end_hour->setText(start_time.addSecs(event_duration*60).toString(Emlab::TIME_FORMAT));
+
 		});
 
-		end_sub_time_btn->setTextFormat(Wt::TextFormat::XHTML);
-		end_sub_time_btn->clicked().connect(this, [=](){
-			auto end_time = end_time_input_->time();
+		duration_sub_time_btn->setTextFormat(Wt::TextFormat::XHTML);
+		duration_sub_time_btn->clicked().connect(this, [=](){
 			auto start_time = start_time_input_->time();
+			Wt::WString duration_string;
 			event_duration > 15 ? event_duration -= 15 : event_duration = event_duration;
-			end_time = start_time.addSecs(60*event_duration);
-			
-			end_time_input_->setTime(end_time);
-			
+			duration_string += std::to_string(event_duration/60);
+			if(event_duration%60 != 0) {
+				duration_string += ":" + std::to_string(event_duration%60);
+			}else {
+			}
+			duration_string += " Hours";
+			duration_input_->setText(duration_string);
+			end_hour->setText(start_time.addSecs(event_duration*60).toString(Emlab::TIME_FORMAT));
 		});
 
-
+		location_input_->setPlaceholderText(" ");
+		description_input_->setPlaceholderText(" ");
 
 	}
 
