@@ -1,3 +1,4 @@
+#pragma once
 #include <Wt/WCalendar.h>
 #include <Wt/WTemplate.h>
 #include <Wt/WComboBox.h>

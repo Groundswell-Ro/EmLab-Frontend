@@ -30,19 +30,19 @@ ClientFormModel::ClientFormModel()
     setValidator(ClientPhoneNumberField, createTextValidator(true, 10, 10));
 }
 
-EventDataModule::ClientData ClientFormModel::getData()
+EventModule::ClientInfo ClientFormModel::getData()
 {
-    EventDataModule::ClientData clientData;
-    clientData.id = id;
+    EventModule::ClientInfo clientInfo;
+    clientInfo.id = id;
     auto clientName = valueText(ClientNameField).toUTF8();
 
     // make client name lower case
     std::transform(clientName.begin(), clientName.end(), clientName.begin(), ::tolower);
 
-    clientData.name = clientName;
-    clientData.phone = valueText(ClientPhoneNumberField).toUTF8();
+    clientInfo.name = clientName;
+    clientInfo.phone = valueText(ClientPhoneNumberField).toUTF8();
 
-    return clientData;
+    return clientInfo;
 }
 
 // C L I E N T ____________ V I E W
@@ -95,14 +95,14 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
     updateView(model_.get());
 }
 
-void ClientFormView::setData(EventDataModule::ClientData clientData)
+void ClientFormView::setData(EventModule::ClientInfo clientInfo)
 {
     clearBtn_->show();
     confirmBtn_->hide();
 
-    model_->id = clientData.id;
-    model_->setValue(model_->ClientNameField, clientData.name);
-    model_->setValue(model_->ClientPhoneNumberField, clientData.phone);
+    model_->id = clientInfo.id;
+    model_->setValue(model_->ClientNameField, clientInfo.name);
+    model_->setValue(model_->ClientPhoneNumberField, clientInfo.phone);
 
     model_->setReadOnly(model_->ClientNameField, true);
     model_->setReadOnly(model_->ClientPhoneNumberField, true);
@@ -133,11 +133,11 @@ void ClientFormView::clientNameChanged(Wt::WString currentValue)
     {
         return;
     }
-    if (seqClients_.size() != 0)
+    if (seqClientInfo_.size() != 0)
     {
-        EventDataModule::SeqClients newSeqClients;
-        // search for client with the same lastClientName_ in seqClients_
-        for (auto &client : seqClients_)
+        EventModule::SeqClientInfo newSeqClients;
+        // search for client with the same lastClientName_ in seqClientInfo_
+        for (auto &client : seqClientInfo_)
         {
             // if lastClientName_ is in the begining of client.name then add it to newSeqClients
             if (client.name.find(currentValue.toUTF8()) == 0)
@@ -147,29 +147,13 @@ void ClientFormView::clientNameChanged(Wt::WString currentValue)
         }
         if (newSeqClients.size() != 0)
         {
-            seqClients_ = newSeqClients;
+            seqClientInfo_ = newSeqClients;
             resetSuggestions();
             return;
         }
     }
 
-    // Ice communication for getting clients from server
-    try
-    {
-        Ice::CommunicatorHolder ich = Ice::initialize();
-        auto base = ich->stringToProxy(login_->eventConnString_);
-        auto eventsDataInterface = Ice::checkedCast<EventDataModule::EventsDataInterfacePrx>(base);
-        if (!eventsDataInterface)
-        {
-            throw std::runtime_error("Invalid proxy");
-        }
-        // get clients from server by name
-        seqClients_ = eventsDataInterface->getClientsByName(login_->userToken(), currentValue.toUTF8());
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
+    seqClientInfo_ = login_->getClientsByName(currentValue.toUTF8());
 
     resetSuggestions();
     lastClientName_ = currentValue;
@@ -181,11 +165,11 @@ void ClientFormView::clientPhoneChanged(Wt::WString currentValue)
     {
         return;
     }
-    if (seqClients_.size() != 0)
+    if (seqClientInfo_.size() != 0)
     {
-        EventDataModule::SeqClients newSeqClients;
-        // search for client with the same lastClientPhone_ in seqClients_
-        for (auto &client : seqClients_)
+        EventModule::SeqClientInfo newSeqClients;
+        // search for client with the same lastClientPhone_ in seqClientInfo_
+        for (auto &client : seqClientInfo_)
         {
             // if lastClientPhone_ is in the begining of client.phone then add it to newSeqClients
             if (client.phone.find(currentValue.toUTF8()) == 0)
@@ -196,30 +180,12 @@ void ClientFormView::clientPhoneChanged(Wt::WString currentValue)
         }
         if (newSeqClients.size() != 0)
         {
-            seqClients_ = newSeqClients;
+            seqClientInfo_ = newSeqClients;
             resetSuggestions();
             return;
         }
     }
-
-    // Ice communication for getting clients from server
-    try
-    {
-        Ice::CommunicatorHolder ich = Ice::initialize();
-        auto base = ich->stringToProxy(login_->eventConnString_);
-        auto eventsDataInterface = Ice::checkedCast<EventDataModule::EventsDataInterfacePrx>(base);
-        if (!eventsDataInterface)
-        {
-            throw std::runtime_error("Invalid proxy");
-        }
-        // get clients from server by phone
-        seqClients_ = eventsDataInterface->getClientsByPhone(login_->userToken(), currentValue.toUTF8());
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-
+    seqClientInfo_ = login_->getClientsByPhone(currentValue.toUTF8());
     resetSuggestions();
     lastClientPhone_ = currentValue;
 }
@@ -232,27 +198,10 @@ void ClientFormView::process()
         return;
     
     auto clientData = model_->getData();
-    // Ice communication for registering client
-    try
-    {
-        Ice::CommunicatorHolder ich = Ice::initialize();
-        auto base = ich->stringToProxy(login_->eventConnString_);
-        auto eventsDataInterface = Ice::checkedCast<EventDataModule::EventsDataInterfacePrx>(base);
-        if (!eventsDataInterface)
-        {
-            throw std::runtime_error("Invalid proxy");
-        }
-        // Try to register Data
-        clientData.id = eventsDataInterface->registerClient(login_->userToken(), clientData);
-        clientChanged_.emit(Wt::WString(clientData.name), clientData.id);
-        setData(clientData);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
+    clientData.id = login_->registerClient(clientData);
+    clientChanged_.emit(Wt::WString(clientData.name), clientData.id);
+    setData(clientData);
 
-    // update view
     updateView(model_.get());
 }
 
@@ -288,7 +237,7 @@ bool ClientFormView::validate()
 
 void ClientFormView::clientSelected(int pos, Wt::WFormWidget *formWidget)
 {
-    auto clientData = seqClients_[pos];
+    auto clientData = seqClientInfo_[pos];
     setData(clientData);
     clientChanged_.emit(Wt::WString(clientData.name), clientData.id);
     validate();
@@ -322,11 +271,11 @@ void ClientFormView::resetSuggestions()
     clientNameSugestion_->clearSuggestions();
     clientPhoneSugestion_->clearSuggestions();
 
-    for (int i = 0; i < seqClients_.size(); ++i)
+    for (int i = 0; i < seqClientInfo_.size(); ++i)
     {
-        EventDataModule::ClientData clientData = seqClients_.at(i);
-        Wt::WString clientName = clientData.name;
-        Wt::WString clientPhone = clientData.phone;
+        EventModule::ClientInfo clientInfo = seqClientInfo_.at(i);
+        Wt::WString clientName = clientInfo.name;
+        Wt::WString clientPhone = clientInfo.phone;
 
         Wt::WString sugestionNameString{clientName + " | " + clientPhone};
         Wt::WString sugestionPhoneString{clientPhone + " | " + clientName};

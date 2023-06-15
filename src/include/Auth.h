@@ -4,22 +4,17 @@
 #include <Wt/WPushButton.h>
 #include <Wt/WSignal.h>
 
-enum RegistrationSteps {
-    step_one = 1,
-    step_two = 2,
-    step_three = 3,
-    step_four = 4
-};
-
 class Auth : public Wt::WTemplate
 {
 public:
     Auth(std::shared_ptr<Login> login);
+    
+    LoginFormView* login_veiw;
+    RegistrationFormView* registration_view;
 
-    Wt::Signal<>& userLoggedIn() { return user_logged_in_; }
+    void dev_loginUser(Wt::WString user_email, Wt::WString user_password);
 private:
     void createLogin();
     void createSignUp();
     std::shared_ptr<Login> login_;
-    Wt::Signal<> user_logged_in_;
 };

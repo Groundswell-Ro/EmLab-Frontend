@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <messages>
 
-    <message id="home">
-        ${home-sidebar class=""}
-        ${home-content class=""}
-    </message>
-
 
     <message id="home-sidebar">
         ${sidebar-toggler class="absolute top-0 -right-14 flex justify-center items-center btn btn-primary p-1.5 rounded-full animate-spacing shadow-md"}
@@ -21,34 +16,40 @@
     </message>
 
     <message id='home-profile'>
-        ${profile-header class="ring p-3 bg-neutral-50 rounded-lg shadow-lg"}
-        ${profile-main class="ring p-3 bg-neutral-50 rounded-lg shadow-lg"}
-        ${profile-footer class="ring p-3 bg-neutral-50 rounded-lg shadow-lg"}
+        ${profile-header class="rounded-lg ring-1"}
+        ${profile-menu class="rounded-lg ring-1"}
+        ${profile-main class="rounded-lg ring-1"}
+        ${profile-stack class="rounded-lg ring-1"}
     </message>
 
     <message id="home-profile-header">
-        <div class="flex justify-between">
-
+        <div class="flex justify-between items-center flex-wrap">
+            <div class="border border-dashed">
+                ${services-list}
+            </div>
+            <div class="border border-dashed">
+                ${image class="min-w-min h-64 rounded-full shadow-lg"}
+            </div>
+            <div class="border border-dashed">
+                ${calendar}
+            </div>
         </div>
-    </message>
-
-    <message id="home-profile-main">
-        profile-main
-    </message>
-
-    <message id="home-profile-footer">
-        profile-footer
     </message>
 
     <message id='sidebar-event-open'>
         <div class="relative shadow-lg bg-body bor-1 m-1 p-1 py-5">
-            ${toggle-size-btn class="btn bg-transparent shadow-none absolute top-0 right-0 p-1 m-0 flex justify-center items-center rounded-md"}
-            ${event-form}
+            ${toggle-size-btn class="bg-transparent shadow-none absolute top-0 right-0 p-1 m-0 flex justify-center items-center rounded-md border-none"}
+            ${event-view}
         </div>
     </message>
 
+    <message id='event-view'>
+        ${event-data-panel}
+    </message>
+
     <message id='event-form'>
-        <div class="p-2">
+        <div class="w-full">
+
             <div class="flex mb-2">
                 <span class="w-28 flex items-center">${clock-svg class="flex justify-center items-center me-1"}Start Time</span>
                 <span class="flex">
@@ -71,15 +72,13 @@
                 <span class="w-28 flex items-center">${clock-svg-fill class="flex justify-center items-center me-1"}End Time</span>
                 <span class="flex ms-7 text-sm cursor-default">${end-hour}</span>
             </div>
-            <!-- <div class="flex flex-col space-y-1">
-                <span class="flex items-center">${location-pin-svg class="flex justify-center items-center me-1"}Location</span>
-                ${location-input class="input-underline border-neutral-200"}
-            </div> -->
-            <div class="relative mb-3">
+
+            <div class="flex flex-col items-stretch relative mb-3">
                 ${location-input class="input-float peer"} 
                 <label for="${id:location-input}" class="label-float flex items-center">${location-pin-svg class="flex justify-center items-center me-1"}Location</label>
             </div>
-            <div class="relative">
+
+            <div class="flex flex-col items-stretch relative">
                 ${description-input class="input-float peer resize-y"} 
                 <label for="${id:description-input}" class="label-float flex items-center">${book-open-svg class="flex justify-center items-center me-1"}Description</label>
             </div>

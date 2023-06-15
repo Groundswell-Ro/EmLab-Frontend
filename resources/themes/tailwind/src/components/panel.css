@@ -1,0 +1,15 @@
+.panel {
+    @apply border border-solid border-gray-300 rounded-lg;
+}
+
+.panel-head {
+    @apply text-red-400 rounded-t-lg py-2 px-1 capitalize bg-blue-100 text-basic;
+}
+
+.panel-body {
+    @apply rounded-b-lg p-2;
+}
+
+.panel .body {
+    @apply p-0 m-0;
+}

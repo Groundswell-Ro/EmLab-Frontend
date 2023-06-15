@@ -1,19 +1,72 @@
 #include "include/TestPage.h"
-#include <Wt/WText.h>
-#include <Wt/WTemplate.h>
-#include <Wt/WApplication.h>
-#include <Wt/WPushButton.h>
+
 
 TestPage::TestPage(std::shared_ptr<Login> login)
     : WContainerWidget(),
 	login_(login)
 {
-    addStyleClass("page-two");
+    addStyleClass("");
 
-    createButtonsExampla();
-
+    // createButtonsExampla();
+	createEventsTable();
 }
 
+void TestPage::createEventsTable()
+{
+	auto table_wrapper = addWidget(std::make_unique<Wt::WContainerWidget>());
+	table_wrapper->setStyleClass("max-w-screen-xl m-auto");
+	table_wrapper->addWidget(std::make_unique<Wt::WText>("Events"));
+	events_table_ = table_wrapper->addWidget(std::make_unique<Wt::WTable>());
+	events_table_->setStyleClass("table");
+	events_table_->setHeaderCount(1);
+	auto refresh = events_table_->elementAt(0, 0)->addNew<Wt::WPushButton>(tr("refresh-svg-sm"));
+	events_table_->elementAt(0, 1)->addNew<Wt::WText>("client-id");
+	events_table_->elementAt(0, 2)->addNew<Wt::WText>("date-time");
+	events_table_->elementAt(0, 3)->addNew<Wt::WText>("duration");
+	events_table_->elementAt(0, 4)->addNew<Wt::WText>("location");
+	events_table_->elementAt(0, 5)->addNew<Wt::WText>("Description");
+
+	refresh->setTextFormat(Wt::TextFormat::XHTML);
+	refresh->clicked().connect(this, &TestPage::populateEventsTable);
+
+	if(!login_->isLoggedIn()) return;
+	populateEventsTable();
+	
+
+} 
+
+void TestPage::populateEventsTable()
+{
+	EventModule::SeqEventData seqEventData = login_->getEventsData();;
+	while(events_table_->rowCount() > 1)
+	{
+		events_table_->removeRow(1);
+	}
+
+	// add events to this view
+	if (seqEventData.size() != 0)
+	{
+		auto size = seqEventData.size();
+		for (int i = 0; i < size; ++i)
+		{
+			auto event = seqEventData.at(i);
+
+			auto del_btn = events_table_->elementAt(i + 1, 0)->addNew<Wt::WPushButton>(tr("trash-svg-sm"));
+			events_table_->elementAt(i + 1, 1)->addNew<Wt::WText>(std::to_string(event.eventInfo.clientId));
+			events_table_->elementAt(i + 1, 2)->addNew<Wt::WText>(event.eventInfo.dateTime);
+			events_table_->elementAt(i + 1, 3)->addNew<Wt::WText>(std::to_string(event.eventInfo.duration));
+			events_table_->elementAt(i + 1, 4)->addNew<Wt::WText>(event.eventInfo.location);
+			events_table_->elementAt(i + 1, 5)->addNew<Wt::WText>(event.eventInfo.description);
+
+			del_btn->setTextFormat(Wt::TextFormat::XHTML);
+			del_btn->setStyleClass("btn btn-danger");
+			del_btn->clicked().connect([=] {
+				login_->deleteRecord(EventModule::Table::events, event.eventInfo.id);
+				populateEventsTable();
+			});
+		}
+	}
+}
 
 void TestPage::createButtonsExampla() 
 {

@@ -1,0 +1,29 @@
+.table {
+    @apply min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700 rounded-lg;
+}
+
+.table thead {
+    @apply bg-gray-100 dark:bg-gray-700;
+}
+
+.table thead th {
+    @apply p-2 text-start;
+}
+
+.table tbody {
+    @apply divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800;
+}
+
+.table tbody tr:nth-child(even) {
+    @apply bg-gray-50 dark:bg-gray-600;
+}
+
+.table tbody tr {
+    @apply hover:bg-gray-100 dark:hover:bg-gray-500;
+}
+
+
+.table tbody td {
+    @apply w-4 p-2 max-w-sm overflow-x-scroll;
+}
+

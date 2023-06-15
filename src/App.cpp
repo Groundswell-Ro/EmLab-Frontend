@@ -8,10 +8,11 @@ EventManagerLab::EventManagerLab()
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 	// createAuth();
+	
 }
 
 // this is used for faster development
-void EventManagerLab::createDevControlers()
+void EventManagerLab::dev_controlers()
 {
 	auto controlers_container = addWidget(std::make_unique<Wt::WContainerWidget>());
 	controlers_container->setStyleClass("flex justify-end");
@@ -27,14 +28,6 @@ void EventManagerLab::createDevControlers()
 		handleUserAuth();
 	});
 
-	auto login_checkbox = controlers_container->addWidget(std::make_unique<Wt::WCheckBox>("Login"));
-	login_checkbox->setChecked(loginStatus);
-	login_checkbox->clicked().connect([=] {
-		if(login_checkbox->isChecked())
-			login_->setUserLogin(true);
-		else
-			login_->setUserLogin(false);
-	});
 
 	auto user_menu_toggle = controlers_container->addWidget(std::make_unique<Wt::WPushButton>("User Menu"));
 	user_menu_toggle->clicked().connect(this, [=](){
@@ -49,8 +42,10 @@ void EventManagerLab::createDevControlers()
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	this->clear();
-	// createDevControlers();
-	addWidget(std::make_unique<Auth>(login_));
+	// dev_controlers();
+	auto auth = addWidget(std::make_unique<Auth>(login_));
+	// auth->dev_loginUser("test1@gmail.com", "asdfghj1");
+	
 }
 
 // handle app state depending on user login status
@@ -77,6 +72,7 @@ void EventManagerLab::handleUserAuth()
 		log_out->clicked().connect(this, [=](){
 			login_->logout();
 		});
+		
 	}else {
 		// remove user_menu_ widget
 		user_menu_wrapper_->bindEmpty("user-menu");
@@ -84,13 +80,15 @@ void EventManagerLab::handleUserAuth()
 		auto log_in = user_menu_wrapper_->bindWidget("auth-btn", std::make_unique<Wt::WPushButton>("Log In"));
 		log_in->clicked().connect(this, &EventManagerLab::createAuth);
 	}
-	
+	// select start page
+	// nav_menu_->select(1);
+	// menuItemSelected(nav_menu_->itemAt(1));
 }
 
 // create Application Page
 void EventManagerLab::createApp() {
 	this->clear();
-	// createDevControlers();
+	// dev_controlers();
 	// Create navigation
 	navbar_ = addWidget(std::make_unique<Wt::WTemplate>(tr("navbar")));
 	auto logo = navbar_->bindWidget("logo", std::make_unique<Wt::WImage>("https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"));

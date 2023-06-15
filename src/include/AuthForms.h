@@ -1,10 +1,30 @@
 #pragma once
-#include <Wt/WFormModel.h> // used to create the Model of the form
-#include <Wt/WTemplateFormView.h>
-#include <Wt/WValidator.h> // used to create a Validator
 #include "LoginObj.h"
 
-#include "../../../comunication/AuthModule.h"
+#include <Wt/WFormModel.h>
+#include <Wt/WTemplateFormView.h>
+
+// Validators
+#include <Wt/WValidator.h>
+#include <Wt/WLengthValidator.h>
+#include <Wt/WRegExpValidator.h>
+#include <Wt/WEmailValidator.h>
+#include <Wt/WEmailEdit.h>
+
+// Form Widgets
+#include <Wt/WLineEdit.h>
+#include <Wt/WPushButton.h>
+#include <Wt/WFileUpload.h>
+
+// Ice
+#include <Ice/Ice.h>
+#include <stdexcept>
+
+
+#include <Ice/Ice.h> // For ZeroC Ice
+#include <IceUtil/IceUtil.h> // For IceUtil::byteSeqFromSTLContainer and Ice::createInputStream
+// #include <opencv2/opencv.h> // For OpenCV
+
 
 std::shared_ptr<Wt::WValidator> createUserPasswordValidator();
 
@@ -26,12 +46,13 @@ class LoginFormView : public Wt::WTemplateFormView
 {
 public:
 	LoginFormView(std::string temp_str, std::shared_ptr<Login> login);
-
-	std::shared_ptr<LoginFormModel> model_;
-	std::shared_ptr<Login> login_;
+	Wt::WEmailEdit* email_;	
+	Wt::WLineEdit* password_;
 
 	void process();
 private:
+	std::shared_ptr<Login> login_;
+	std::shared_ptr<LoginFormModel> model_;
 };
 
 // Registration Form Model Definition
@@ -56,11 +77,18 @@ class RegistrationFormView : public Wt::WTemplateFormView
 {
 public:
 	RegistrationFormView(std::string temp_str, std::shared_ptr<Login> login);
-
-	std::shared_ptr<RegistrationFormModel> model_;
-
-	std::shared_ptr<Login> login_;
-
-private:
+	Wt::WText* profile_photo_status_;
+	Wt::WLineEdit* username_;
+	Wt::WEmailEdit* email_;
+	Wt::WLineEdit* phone_;
+	Wt::WLineEdit* password_;
+	Wt::WLineEdit* password_repeat_;
+	Wt::WFileUpload* profile_photo_uploder_;
+	Wt::WImage* profile_photo_;
+	
 	void process();
+private:
+	std::shared_ptr<RegistrationFormModel> model_;
+	std::shared_ptr<Login> login_;
+	void setPhotoUploder();
 };

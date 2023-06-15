@@ -45,20 +45,16 @@
 		<!-- Photo -->
 		<div>
 			<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
-				<img class="h-32 w-full rounded-full object-cover" src="./resources/images/blank-profile-picture.png" alt="profile photo" />
+				${profile-photo class="h-32 w-full rounded-full object-cover"}
 			</div>
 
-			<button class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none">
-				<svg xmlns="http://www.w3.org/2000/svg" class="-mt-1 mr-1 inline-flex h-6 w-6 flex-shrink-0" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-					<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-					<path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-					<circle cx="12" cy="13" r="3" />
-				</svg>
+			<!-- <button class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none">
+				${camera-svg}
            				Browse Photo
-			</button>
-
+			</button> -->
+		${photo-uploader class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none"}
 			<div class="mx-auto w-48 text-center text-xs text-gray-400">
-            			Click to add profile picture
+            	${profile-photo-uploader-status}
 			</div>
 		</div>
 		<!-- UserName -->

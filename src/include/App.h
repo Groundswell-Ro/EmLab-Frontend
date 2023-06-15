@@ -6,7 +6,6 @@
 // #include "AuthWidget.h"
 #include "HomePage.h"
 #include "TestPage.h"
-#include "../../../comunication/EventDataModule.h"
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/WStackedWidget.h>
@@ -15,28 +14,17 @@
 #include <iostream>
 #include <Wt/WApplication.h>
 #include <Wt/WCheckBox.h>
-#include <Wt/WAnimation.h>
+
 class EventManagerLab : public Wt::WContainerWidget
 {
 public:
     EventManagerLab();
 
-    // past
-    std::shared_ptr<Login> login_;
-
-    // AuthWidget *authWidget_;
-
-    // Wt::WNavigationBar *navigation_;
-    // Wt::WStackedWidget *contentsStack_;
-    // past
 
 private:
+    std::shared_ptr<Login> login_;
 
-    // past
-    // void handleUserAuth();
-    // void createApp();
-    //past
-    void createDevControlers();
+    void dev_controlers();
     
     Wt::WTemplate* navbar_;
     Wt::WStackedWidget* stack_;

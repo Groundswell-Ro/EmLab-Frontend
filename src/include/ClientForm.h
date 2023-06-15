@@ -1,7 +1,5 @@
 #pragma once
-#include "../../../comunication/EventDataModule.h"
 #include "LoginObj.h"
-#include "EventForm.h"
 
 #include <Wt/WFormModel.h>
 #include <Wt/WTemplateFormView.h>
@@ -20,7 +18,7 @@ public:
     static const Field ClientPhoneNumberField;
     int id = 0;
 
-    EventDataModule::ClientData getData();
+    EventModule::ClientInfo getData();
 
 private:
     std::shared_ptr<Wt::WValidator> createTextValidator(bool mandatory, int min, int max);
@@ -44,12 +42,12 @@ public:
     Wt::WLineEdit *clientPhone_;
 
     std::shared_ptr<ClientFormModel> model_;
-    EventDataModule::SeqClients seqClients_;
+    EventModule::SeqClientInfo seqClientInfo_;
 
     Wt::WString lastClientName_;
     Wt::WString lastClientPhone_;
 
-    void setData(EventDataModule::ClientData clientData);
+    void setData(EventModule::ClientInfo clientInfo);
     void process();
     bool validate();
 

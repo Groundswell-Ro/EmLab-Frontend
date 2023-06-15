@@ -12,8 +12,8 @@ Auth::Auth(std::shared_ptr<Login> login)
 void Auth::createLogin()
 {
     bindWidget("header", std::make_unique<Wt::WText>("<div>Login</div>"));
-	auto login = bindWidget("content", std::make_unique<LoginFormView>("login-content" ,login_));
-    auto sign_up_btn = login->bindWidget("sign-up-button", std::make_unique<Wt::WPushButton>("Sign Up"));
+	login_veiw = bindWidget("content", std::make_unique<LoginFormView>("login-content" ,login_));
+    auto sign_up_btn = login_veiw->bindWidget("sign-up-button", std::make_unique<Wt::WPushButton>("Sign Up"));
     
     sign_up_btn->clicked().connect(this, [=](){
         createSignUp();
@@ -24,15 +24,18 @@ void Auth::createLogin()
 void Auth::createSignUp() {
     bindWidget("header", std::make_unique<Wt::WText>("<div>Registration</div>"));
 
-    auto registration = bindWidget("content", std::make_unique<RegistrationFormView>("sign-up-content",login_));
-
-	// auto content = bindWidget("content", std::make_unique<Wt::WTemplate>(tr("sign-up-content")));
-    
-    // content->bindWidget("password-requirments", std::make_unique<Wt::WTemplate>(tr("password-requirments")));
-
-    auto back_to_login = registration->bindWidget("back-to-login", std::make_unique<Wt::WPushButton>("Back to login"));
+    registration_view = bindWidget("content", std::make_unique<RegistrationFormView>("sign-up-content",login_));
+    auto back_to_login = registration_view->bindWidget("back-to-login", std::make_unique<Wt::WPushButton>("Back to login"));
 
     back_to_login->clicked().connect(this, [=](){
         createLogin();
     });
+}
+
+void Auth::dev_loginUser(Wt::WString user_email, Wt::WString user_password) {
+    createLogin();
+    login_veiw->email_->setValueText(user_email);
+    login_veiw->password_->setValueText(user_password);
+    login_veiw->process();
+
 }

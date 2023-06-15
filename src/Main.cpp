@@ -8,7 +8,7 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	auto app = std::make_unique<Wt::WApplication>(env);
 	// Set up application resourses and settings
 	app->setTitle("Event Manager Lab");
-
+	app->setCssTheme("");
 	// include tailwind css file
 	app->useStyleSheet("resources/themes/tailwind/dist/tailwind.css");
 	

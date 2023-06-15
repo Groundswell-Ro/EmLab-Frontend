@@ -2,7 +2,9 @@
 @import "./components/general.css";
 @import "./components/buttons.css";
 @import "./components/calendar.css";
+@import "./components/table.css";
 @import "./components/test.css";
+@import "./components/panel.css";
 @tailwind base;
 * {
     scrollbar-width: thin;

@@ -1,5 +1,11 @@
+/* .calendar {
+    @apply min-w-[16rem];
+} */
 .calendar > table {
-    @apply w-full text-basic shadow-md;
+    @apply w-full text-basic;
+}
+.calendar.Wt-disabled * {
+    @apply bg-gray-200 hover:bg-gray-200;
 }
 
 .calendar tbody {
@@ -30,7 +36,7 @@
 
 /* Navigation Buttons */
 .Wt-cal-navbutton {
-    @apply w-full h-8 flex items-center justify-center hover:bg-blue-50 text-lg m-0;
+    @apply h-5 flex items-center justify-center text-lg m-0 p-0 pb-1 bg-transparent text-basic;
 }
 
 /* CALENDAR CELL */
