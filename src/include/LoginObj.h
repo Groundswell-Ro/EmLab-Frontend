@@ -1,6 +1,7 @@
 #pragma once
 #include "../../../comunication/AuthModule.h"
 #include "../../../comunication/EventModule.h"
+#include "../../../comunication/Utils.h"
 #include <Wt/WSignal.h>
 
 class Login
@@ -31,10 +32,10 @@ public:
 	AuthModule::LoginReturn loginUser(AuthModule::LoginInfo authInfo);
 	AuthModule::RegistrationResponse registerUser(AuthModule::RegistrationInfo regInfo);
 
-	// Image
-    Ice::ByteSeq imageToBytes(const std::string& imagePath);
- 	bool bytesToImage(const Ice::ByteSeq& bytes, const std::string& imagePath);
 private:
+
+
+
 	AuthModule::LoginReturn user_;
 	Wt::Signal<> changed_;
 	void getConnectionStrings();

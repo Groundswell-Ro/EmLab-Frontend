@@ -7,6 +7,7 @@ Auth::Auth(std::shared_ptr<Login> login)
 {
 	setStyleClass("bg-body min-h-screen");
     createLogin();
+    // createSignUp();
 }
 
 void Auth::createLogin()
@@ -30,6 +31,7 @@ void Auth::createSignUp() {
     back_to_login->clicked().connect(this, [=](){
         createLogin();
     });
+    // registration_view->dev_setValues();
 }
 
 void Auth::dev_loginUser(Wt::WString user_email, Wt::WString user_password) {

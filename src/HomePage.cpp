@@ -7,7 +7,7 @@ HomePage::HomePage(std::shared_ptr<Login> login)
 	setStyleClass("relative h-full w-full flex");
 	createSidebar();
 	createProfile();
-	addEvent();
+	// addEvent();
 }
 
 void HomePage::createSidebar()

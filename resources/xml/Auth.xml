@@ -57,6 +57,10 @@
             	${profile-photo-uploader-status}
 			</div>
 		</div>
+		<div>
+			${user_role_client}
+			${user_role_provider}
+		</div>
 		<!-- UserName -->
 		<div>
 			<div for="text" class="mb-1 font-bold">Username</div>

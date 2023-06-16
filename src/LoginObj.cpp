@@ -65,7 +65,6 @@ void Login::getConnectionStrings()
 	getline(eventCommFile, eventConnString_);
 }
 
-
 // Ice communication for getting clients from server
 EventModule::SeqClientInfo Login::getClientsByName(std::string name)
 {
@@ -245,19 +244,3 @@ AuthModule::RegistrationResponse Login::registerUser(AuthModule::RegistrationInf
 }
 
  
-Ice::ByteSeq Login::imageToBytes(const std::string& imagePath)
-{
-std::ifstream imageFile(imagePath, std::ios::binary);
-Ice::ByteSeq imageData(
-    (std::istreambuf_iterator<char>(imageFile)),
-    (std::istreambuf_iterator<char>()));
-return imageData;
-}
-
-bool Login::bytesToImage(const Ice::ByteSeq& bytes, const std::string& imagePath)
-{
-    std::ofstream imageFile(imagePath, std::ios::binary);
-    imageFile.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
-
-    return !imageFile.fail();
-}

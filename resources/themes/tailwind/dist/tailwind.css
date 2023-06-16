@@ -2835,10 +2835,6 @@ svg{
   resize: vertical;
 }
 
-.resize{
-  resize: both;
-}
-
 .list-disc{
   list-style-type: disc;
 }

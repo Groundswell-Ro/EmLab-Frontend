@@ -15,6 +15,8 @@
 #include <Wt/WLineEdit.h>
 #include <Wt/WPushButton.h>
 #include <Wt/WFileUpload.h>
+#include <Wt/WRadioButton.h>
+#include <Wt/WRadioButton.h>
 
 // Ice
 #include <Ice/Ice.h>
@@ -78,6 +80,7 @@ class RegistrationFormView : public Wt::WTemplateFormView
 public:
 	RegistrationFormView(std::string temp_str, std::shared_ptr<Login> login);
 	Wt::WText* profile_photo_status_;
+	Wt::WText* profile_registration_status_;
 	Wt::WLineEdit* username_;
 	Wt::WEmailEdit* email_;
 	Wt::WLineEdit* phone_;
@@ -85,9 +88,13 @@ public:
 	Wt::WLineEdit* password_repeat_;
 	Wt::WFileUpload* profile_photo_uploder_;
 	Wt::WImage* profile_photo_;
-	
+	std::shared_ptr<Wt::WButtonGroup> role_;
 	void process();
+	void dev_setValues();
 private:
+
+	AuthModule::ImageData photo_bytes_interface_;
+
 	std::shared_ptr<RegistrationFormModel> model_;
 	std::shared_ptr<Login> login_;
 	void setPhotoUploder();

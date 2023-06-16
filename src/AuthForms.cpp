@@ -186,7 +186,8 @@ AuthModule::RegistrationInfo RegistrationFormModel::getData()
 RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr<Login> login)
 	: Wt::WTemplateFormView(tr(temp_str)),
 	model_(std::make_shared<RegistrationFormModel>()),
-	login_(login)
+	login_(login),
+	role_(std::make_shared<Wt::WButtonGroup>())
 {
 	bindWidget("human-svg", std::make_unique<Wt::WText>(tr("human-svg")));
 	bindWidget("key-svg", std::make_unique<Wt::WText>(tr("key-svg")));
@@ -196,7 +197,13 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	bindString("password-status", "to short");
 	bindWidget("password-requirments", std::make_unique<Wt::WText>(tr("password-requirments")));
 
-	setPhotoUploder();
+	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(AuthModule::CLIENT));
+	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(AuthModule::PROVIDER));
+	
+	role_->addButton(client_role);
+	role_->addButton(provider_role);
+
+	role_->setCheckedButton(client_role);
 	
 	// link Form Model Fields to FormWidget and set up the view
 	auto username_input = std::make_unique<Wt::WLineEdit>();
@@ -261,8 +268,8 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	submitBtn->clicked().connect(this, &RegistrationFormView::process);
 	bindWidget("sign-up-btn", std::move(submitBtn));
 
-	bindEmpty("submit-info");
-
+	profile_registration_status_ = bindWidget("submit-info", std::make_unique<Wt::WText>("submit info"));
+	setPhotoUploder();
 	updateView(model_.get());
 }
 
@@ -278,18 +285,18 @@ void RegistrationFormView::process()
 		auto repeatPassword = model_->valueText(model_->UserPasswordRepeat);
 		if (password != repeatPassword)
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("Passwords are not matching, try again"));
+			profile_registration_status_->setText("Passwords are not matching, try again");
 			return;
 		}
-		// auto photo_in_bytes = login_->imageToBytes(profile_photo_uploder_->spoolFileName());
 		auto registrationInfo = model_->getData();
-		// registrationInfo.photo = login_->imageToBytes(profile_photo_uploder_->spoolFileName());
+		registrationInfo.photo = photo_bytes_interface_;
+		registrationInfo.role = role_->checkedButton()->text().toUTF8();
 
 		AuthModule::RegistrationResponse registrationResponse = login_->registerUser(registrationInfo);
 
 		if (registrationResponse == AuthModule::RegistrationResponse::RegistrationSuccessful)
 		{
-			bindEmpty("submit-info");
+			profile_registration_status_->setText("Registration Successful");
 			// Log User In
 			AuthModule::LoginInfo loginInfo;
 			loginInfo.email = model_->valueText(model_->UserEmail).toUTF8();
@@ -299,26 +306,26 @@ void RegistrationFormView::process()
 			login_->login(loginReturn);
 		}else if (registrationResponse == AuthModule::RegistrationResponse::EmailAlreadyExists)
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("User with same Email identified, forgot Password ?"));
+			profile_registration_status_->setText("User with same Email identified, forgot Password ?");
 		}
 		
 	}else {
 		std::cout << "\n\n Model is not valid \n\n";
 		if(!model_->validateField(model_->UserName))
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("Username should be betweeen 3 and 30 characters"));
+			profile_registration_status_->setText("Username should be betweeen 3 and 30 characters");
 		}else if(!model_->validateField(model_->UserPhone))
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("Phone number should be 10 digits"));
+			profile_registration_status_->setText("Phone number should be 10 digits");
 		}else if(!model_->validateField(model_->UserEmail))
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("Email is not valid, example@gmai.com"));
+			profile_registration_status_->setText("Email is not valid, example@gmai.com");
 		}else if(!model_->validateField(model_->UserPassword))
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("Password dose not respect the rules"));
+			profile_registration_status_->setText("Password dose not respect the rules");
 		}else if(!model_->validateField(model_->UserPasswordRepeat))
 		{
-			bindWidget("submit-info", std::make_unique<Wt::WText>("Password repeat dose not respect the rules"));
+			profile_registration_status_->setText("Password repeat dose not respect the rules");
 		}
 
 	}
@@ -339,19 +346,28 @@ void RegistrationFormView::setPhotoUploder()
     // React to a succesprofile_photo_uploder_ll upload.
     profile_photo_uploder_->uploaded().connect([=] {
         profile_photo_status_->setText("File upload is finished.");
-
-        auto image_byte = login_->imageToBytes(profile_photo_uploder_->spoolFileName());
-        auto conversion_result = login_->bytesToImage(image_byte, "test.jpg");
-        if(conversion_result)
-            std::cout << "\n\n conversion_result: " << conversion_result << "\n\n";
-        else 
-            std::cout << "\n\n conversion_result: " << conversion_result << "\n\n";
+        photo_bytes_interface_ = Emlab::imageToBytes(profile_photo_uploder_->spoolFileName());
+		Wt::WString photoPath = "resources/registrationImages/" + profile_photo_uploder_->clientFileName();
+		std::cout << "\n\n Photo Path : " << photoPath.toUTF8() << "\n\n";
+        auto conversion_result = Emlab::bytesToImage(photo_bytes_interface_, photoPath.toUTF8());
+		conversion_result ? std::cout << "\n\n Image saved \n\n" : std::cout << "\n\n Image not saved \n\n";
+		profile_photo_->setImageLink(Wt::WLink(photoPath.toUTF8()));
     });
 
     // React to a file upload problem.
     profile_photo_uploder_->fileTooLarge().connect([=] {
         profile_photo_status_->setText("File is too large.");
-
-
     });
+}
+
+void RegistrationFormView::dev_setValues()
+{
+	model_->setValue(model_->UserName, "test");
+	model_->setValue(model_->UserPhone, "1234567890");
+	model_->setValue(model_->UserEmail, "test1@gmail.com");
+	model_->setValue(model_->UserPassword, "asdfghj1");
+	model_->setValue(model_->UserPasswordRepeat, "asdfghj1");
+
+	updateView(model_.get());
+
 }
