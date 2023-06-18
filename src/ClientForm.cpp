@@ -30,9 +30,9 @@ ClientFormModel::ClientFormModel()
     setValidator(ClientPhoneNumberField, createTextValidator(true, 10, 10));
 }
 
-EventModule::ClientInfo ClientFormModel::getData()
+ClientInfo ClientFormModel::getData()
 {
-    EventModule::ClientInfo clientInfo;
+    ClientInfo clientInfo;
     clientInfo.id = id;
     auto clientName = valueText(ClientNameField).toUTF8();
 
@@ -95,7 +95,7 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
     updateView(model_.get());
 }
 
-void ClientFormView::setData(EventModule::ClientInfo clientInfo)
+void ClientFormView::setData(ClientInfo clientInfo)
 {
     clearBtn_->show();
     confirmBtn_->hide();
@@ -135,7 +135,7 @@ void ClientFormView::clientNameChanged(Wt::WString currentValue)
     }
     if (seqClientInfo_.size() != 0)
     {
-        EventModule::SeqClientInfo newSeqClients;
+        SeqClientInfo newSeqClients;
         // search for client with the same lastClientName_ in seqClientInfo_
         for (auto &client : seqClientInfo_)
         {
@@ -153,7 +153,7 @@ void ClientFormView::clientNameChanged(Wt::WString currentValue)
         }
     }
 
-    seqClientInfo_ = login_->getClientsByName(currentValue.toUTF8());
+    // seqClientInfo_ = login_->getClientsByName(currentValue.toUTF8());
 
     resetSuggestions();
     lastClientName_ = currentValue;
@@ -167,7 +167,7 @@ void ClientFormView::clientPhoneChanged(Wt::WString currentValue)
     }
     if (seqClientInfo_.size() != 0)
     {
-        EventModule::SeqClientInfo newSeqClients;
+        SeqClientInfo newSeqClients;
         // search for client with the same lastClientPhone_ in seqClientInfo_
         for (auto &client : seqClientInfo_)
         {
@@ -185,7 +185,7 @@ void ClientFormView::clientPhoneChanged(Wt::WString currentValue)
             return;
         }
     }
-    seqClientInfo_ = login_->getClientsByPhone(currentValue.toUTF8());
+    // seqClientInfo_ = login_->getClientsByPhone(currentValue.toUTF8());
     resetSuggestions();
     lastClientPhone_ = currentValue;
 }
@@ -198,7 +198,7 @@ void ClientFormView::process()
         return;
     
     auto clientData = model_->getData();
-    clientData.id = login_->registerClient(clientData);
+    // clientData.id = login_->registerClient(clientData);
     clientChanged_.emit(Wt::WString(clientData.name), clientData.id);
     setData(clientData);
 
@@ -273,7 +273,7 @@ void ClientFormView::resetSuggestions()
 
     for (int i = 0; i < seqClientInfo_.size(); ++i)
     {
-        EventModule::ClientInfo clientInfo = seqClientInfo_.at(i);
+        ClientInfo clientInfo = seqClientInfo_.at(i);
         Wt::WString clientName = clientInfo.name;
         Wt::WString clientPhone = clientInfo.phone;
 

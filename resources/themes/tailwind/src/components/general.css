@@ -16,7 +16,12 @@
 }
 
 .bg-body-hover-border {
-  @apply bg-body-hover !rounded-b-none border border-x-0 border-b-2 border-t-0 border-neutral-200 hover:border-solid;
+  @apply bg-body-hover !rounded-b-none border border-x-0 border-b-2 border-t-0 border-solid border-transparent  hover:border-neutral-200;
+}
+
+.bg-body-hover-border.itemselected.simple-menu-item {
+  @apply bg-body border border-x-0 border-b-2 border-t-0 border-solid border-neutral-300 hover:bg-neutral-0 dark:hover:bg-neutral-700;
+
 }
 
 .bg-body-active {
@@ -39,7 +44,7 @@ input {
 
 
 body {
-  @apply m-0 bg-neutral-50 font-sans text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50;
+  @apply m-0 bg-neutral-150 font-sans text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50;
 }
 
 a {

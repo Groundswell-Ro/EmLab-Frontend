@@ -37,7 +37,7 @@ void TestPage::createEventsTable()
 
 void TestPage::populateEventsTable()
 {
-	EventModule::SeqEventData seqEventData = login_->getEventsData();;
+	SeqEventData seqEventData = login_->getEventsData();;
 	while(events_table_->rowCount() > 1)
 	{
 		events_table_->removeRow(1);
@@ -61,7 +61,7 @@ void TestPage::populateEventsTable()
 			del_btn->setTextFormat(Wt::TextFormat::XHTML);
 			del_btn->setStyleClass("btn btn-danger");
 			del_btn->clicked().connect([=] {
-				login_->deleteRecord(EventModule::Table::events, event.eventInfo.id);
+				login_->delEvent(event.eventInfo.id);
 				populateEventsTable();
 			});
 		}

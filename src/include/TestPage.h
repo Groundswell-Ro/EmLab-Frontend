@@ -18,8 +18,4 @@ private:
     void createEventsTable();
     void populateEventsTable();
     std::shared_ptr<Login> login_;
-
-    std::string time_format_ = "HH:mm AP"; 
-    std::string date_format_ = "dd/MMM/yyyy";
-    std::string datetime_format_ = date_format_ + " " + time_format_;
 };

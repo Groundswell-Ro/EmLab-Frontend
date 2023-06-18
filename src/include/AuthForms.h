@@ -38,7 +38,7 @@ public:
 	static const Field UserPassword;
 
 	LoginFormModel();
-	AuthModule::LoginInfo getData();
+	LoginInfo getData();
 
 private:
 };
@@ -69,7 +69,7 @@ public:
 
 	RegistrationFormModel();
 
-	AuthModule::RegistrationInfo getData();
+	RegistrationInfo getData();
 
 private:
 };
@@ -93,7 +93,7 @@ public:
 	void dev_setValues();
 private:
 
-	AuthModule::ImageData photo_bytes_interface_;
+	ImageData photo_bytes_interface_;
 
 	std::shared_ptr<RegistrationFormModel> model_;
 	std::shared_ptr<Login> login_;

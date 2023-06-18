@@ -22,6 +22,22 @@
 		</svg>
 	</message>
 
+	<message id='calendar-svg'>
+		<svg fill="#000000" class="w-6 h-6 text-current" viewBox="0 0 32 32" version="1.1"
+			xmlns="http://www.w3.org/2000/svg">
+			<title>calendar</title>
+			<path d="M0 26.016q0 2.496 1.76 4.224t4.256 1.76h20q2.464 0 4.224-1.76t1.76-4.224v-20q0-1.952-1.12-3.488t-2.88-2.144v2.624q0 1.248-0.864 2.144t-2.144 0.864-2.112-0.864-0.864-2.144v-3.008h-12v3.008q0 1.248-0.896 2.144t-2.112 0.864-2.144-0.864-0.864-2.144v-2.624q-1.76 0.64-2.88 2.144t-1.12 3.488v20zM4 26.016v-16h24v16q0 0.832-0.576 1.408t-1.408 0.576h-20q-0.832 0-1.44-0.576t-0.576-1.408zM6.016 3.008q0 0.416 0.288 0.704t0.704 0.288 0.704-0.288 0.288-0.704v-3.008h-1.984v3.008zM8 24h4v-4h-4v4zM8 18.016h4v-4h-4v4zM14.016 24h4v-4h-4v4zM14.016 18.016h4v-4h-4v4zM20 24h4v-4h-4v4zM20 18.016h4v-4h-4v4zM24 3.008q0 0.416 0.288 0.704t0.704 0.288 0.704-0.288 0.32-0.704v-3.008h-2.016v3.008z"></path>
+		</svg>
+	</message>
+
+	<message id='calendar-svg-sm'>
+		<svg fill="#000000" class="w-4 h-4 text-current" viewBox="0 0 32 32" version="1.1"
+			xmlns="http://www.w3.org/2000/svg">
+			<title>calendar</title>
+			<path d="M0 26.016q0 2.496 1.76 4.224t4.256 1.76h20q2.464 0 4.224-1.76t1.76-4.224v-20q0-1.952-1.12-3.488t-2.88-2.144v2.624q0 1.248-0.864 2.144t-2.144 0.864-2.112-0.864-0.864-2.144v-3.008h-12v3.008q0 1.248-0.896 2.144t-2.112 0.864-2.144-0.864-0.864-2.144v-2.624q-1.76 0.64-2.88 2.144t-1.12 3.488v20zM4 26.016v-16h24v16q0 0.832-0.576 1.408t-1.408 0.576h-20q-0.832 0-1.44-0.576t-0.576-1.408zM6.016 3.008q0 0.416 0.288 0.704t0.704 0.288 0.704-0.288 0.288-0.704v-3.008h-1.984v3.008zM8 24h4v-4h-4v4zM8 18.016h4v-4h-4v4zM14.016 24h4v-4h-4v4zM14.016 18.016h4v-4h-4v4zM20 24h4v-4h-4v4zM20 18.016h4v-4h-4v4zM24 3.008q0 0.416 0.288 0.704t0.704 0.288 0.704-0.288 0.32-0.704v-3.008h-2.016v3.008z"></path>
+		</svg>
+	</message>
+
 	<message id="human-svg">
 		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-75" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 			<path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -52,6 +68,34 @@
 		<svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 			<path stroke="none" d="M0 0h24v24H0z" />
 			<polyline points="6 9 12 15 18 9" />
+		</svg>
+	</message>
+
+	<message id='arrow-left-svg'>
+		<svg class="w-6 h-6 text-current" viewBox="0 0 32 32" version="1.1"
+			xmlns="http://www.w3.org/2000/svg">
+			<path d="M23.505 0c0.271 0 0.549 0.107 0.757 0.316 0.417 0.417 0.417 1.098 0 1.515l-14.258 14.264 14.050 14.050c0.417 0.417 0.417 1.098 0 1.515s-1.098 0.417-1.515 0l-14.807-14.807c-0.417-0.417-0.417-1.098 0-1.515l15.015-15.022c0.208-0.208 0.486-0.316 0.757-0.316z"></path>
+		</svg>
+	</message>
+
+	<message id='arrow-left-svg-sm'>
+		<svg class="w-4 h-4 text-current" viewBox="0 0 32 32" version="1.1"
+			xmlns="http://www.w3.org/2000/svg">
+			<path d="M23.505 0c0.271 0 0.549 0.107 0.757 0.316 0.417 0.417 0.417 1.098 0 1.515l-14.258 14.264 14.050 14.050c0.417 0.417 0.417 1.098 0 1.515s-1.098 0.417-1.515 0l-14.807-14.807c-0.417-0.417-0.417-1.098 0-1.515l15.015-15.022c0.208-0.208 0.486-0.316 0.757-0.316z"></path>
+		</svg>
+	</message>
+
+	<message id='arrow-right-svg'>
+		<svg class="w-6 h-6 text-current" viewBox="0 0 32 32" version="1.1"
+			xmlns="http://www.w3.org/2000/svg">
+			<path d="M8.489 31.975c-0.271 0-0.549-0.107-0.757-0.316-0.417-0.417-0.417-1.098 0-1.515l14.258-14.264-14.050-14.050c-0.417-0.417-0.417-1.098 0-1.515s1.098-0.417 1.515 0l14.807 14.807c0.417 0.417 0.417 1.098 0 1.515l-15.015 15.022c-0.208 0.208-0.486 0.316-0.757 0.316z"></path>
+		</svg>
+	</message>
+
+	<message id='arrow-right-svg-sm'>
+		<svg class="w-4 h-4 text-current" viewBox="0 0 32 32" version="1.1"
+			xmlns="http://www.w3.org/2000/svg">
+			<path d="M8.489 31.975c-0.271 0-0.549-0.107-0.757-0.316-0.417-0.417-0.417-1.098 0-1.515l14.258-14.264-14.050-14.050c-0.417-0.417-0.417-1.098 0-1.515s1.098-0.417 1.515 0l14.807 14.807c0.417 0.417 0.417 1.098 0 1.515l-15.015 15.022c-0.208 0.208-0.486 0.316-0.757 0.316z"></path>
 		</svg>
 	</message>
 
@@ -147,6 +191,26 @@
 	<message id="moon-svg">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2 transform rounded-full bg-gray-500 stroke-slate-100 duration-300">
 			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+		</svg>
+	</message>
+
+	<message id='connect-svg'>
+		<svg class="w-6 h-6 text-current" viewBox="0 0 32 32"
+			xmlns="http://www.w3.org/2000/svg">
+			<title/>
+			<g data-name="Layer 2" id="Layer_2">
+				<path d="M26,22a4,4,0,0,0-2.67,1L10,16.36c0-.12,0-.24,0-.36s0-.24,0-.36L23.33,9A4,4,0,1,0,22,6a3.81,3.81,0,0,0,.23,1.27L9.29,13.74a4,4,0,1,0,0,4.52l12.94,6.47A3.81,3.81,0,0,0,22,26a4,4,0,1,0,4-4ZM26,4a2,2,0,1,1-2,2A2,2,0,0,1,26,4ZM6,18a2,2,0,1,1,2-2A2,2,0,0,1,6,18ZM26,28a2,2,0,1,1,2-2A2,2,0,0,1,26,28Z"/>
+			</g>
+		</svg>
+	</message>
+
+	<message id='connect-svg-sm'>
+		<svg class="w-4 h-4 text-current" viewBox="0 0 32 32"
+			xmlns="http://www.w3.org/2000/svg">
+			<title/>
+			<g data-name="Layer 2" id="Layer_2">
+				<path d="M26,22a4,4,0,0,0-2.67,1L10,16.36c0-.12,0-.24,0-.36s0-.24,0-.36L23.33,9A4,4,0,1,0,22,6a3.81,3.81,0,0,0,.23,1.27L9.29,13.74a4,4,0,1,0,0,4.52l12.94,6.47A3.81,3.81,0,0,0,22,26a4,4,0,1,0,4-4ZM26,4a2,2,0,1,1-2,2A2,2,0,0,1,26,4ZM6,18a2,2,0,1,1,2-2A2,2,0,0,1,6,18ZM26,28a2,2,0,1,1,2-2A2,2,0,0,1,26,28Z"/>
+			</g>
 		</svg>
 	</message>
 

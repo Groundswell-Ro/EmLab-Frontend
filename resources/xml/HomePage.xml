@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <messages>
 
-
     <message id="home-sidebar">
         ${sidebar-toggler class="absolute top-0 -right-14 flex justify-center items-center btn btn-primary p-1.5 rounded-full animate-spacing shadow-md"}
         ${calendar class="calendar w-full"}
@@ -13,27 +12,6 @@
         </div>
         ${sidebar-content class="w-full animate-width shadow-lg"}
                   
-    </message>
-
-    <message id='home-profile'>
-        ${profile-header class="rounded-lg ring-1"}
-        ${profile-menu class="rounded-lg ring-1"}
-        ${profile-main class="rounded-lg ring-1"}
-        ${profile-stack class="rounded-lg ring-1"}
-    </message>
-
-    <message id="home-profile-header">
-        <div class="flex justify-between items-center flex-wrap">
-            <div class="border border-dashed">
-                ${services-list}
-            </div>
-            <div class="border border-dashed">
-                ${image class="min-w-min h-64 rounded-full shadow-lg"}
-            </div>
-            <div class="border border-dashed">
-                ${calendar}
-            </div>
-        </div>
     </message>
 
     <message id='sidebar-event-open'>
@@ -85,7 +63,6 @@
         </div>
     </message>
 
-
     <message id='event-time-input'>
         ${minus}
         ${input}
@@ -93,6 +70,3 @@
     </message>
 
 </messages>
-
-
-<!-- hover:w-[calc(100vw-5rem)] sm:hover:w-[calc(100vw-20vw)] hover:ms-5 -->

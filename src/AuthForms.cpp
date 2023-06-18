@@ -50,11 +50,11 @@ LoginFormModel::LoginFormModel()
 
 }
 
-AuthModule::LoginInfo LoginFormModel::getData()
+LoginInfo LoginFormModel::getData()
 {
 	std::cout << "\n\n AuthentificationWidget::loginUser() Started \n";
 
-	AuthModule::LoginInfo loginInfo;
+	LoginInfo loginInfo;
 	loginInfo.email = valueText(UserEmail).toUTF8();
 	loginInfo.password = valueText(UserPassword).toUTF8();
 	return loginInfo;
@@ -110,22 +110,22 @@ void LoginFormView::process()
 	{
 		std::cout << "\n\n model VALID \n\n";
 
-		AuthModule::LoginReturn loginReturn = login_->loginUser(model_->getData());
+		LoginReturn loginReturn = login_->loginUser(model_->getData());
 		switch (loginReturn.loginResponse)
 		{
-		case AuthModule::LoginResponse::NotIdentified:
+		case LoginResponse::NotIdentified:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("No user with that Email"));
 			break;
-		case AuthModule::LoginResponse::LoggedIn:
+		case LoginResponse::LoggedIn:
 			bindEmpty("submit-info");
 			login_->login(loginReturn);
 			break;
-		case AuthModule::LoginResponse::Identified:
+		case LoginResponse::Identified:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("User Succesfuly Identified"));
-		case AuthModule::LoginResponse::IncorectPassword:
+		case LoginResponse::IncorectPassword:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("Incorect Password, reset Password ?"));
 			break;
-		case AuthModule::LoginResponse::ThrottlingActivated:
+		case LoginResponse::ThrottlingActivated:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("Password Trottling is activated, you can try again in 5 minutes, this is for your accout protection"));
 			break;
 		}
@@ -171,9 +171,9 @@ RegistrationFormModel::RegistrationFormModel()
 	setValidator(UserPasswordRepeat, createUserPasswordValidator());
 }
 
-AuthModule::RegistrationInfo RegistrationFormModel::getData()
+RegistrationInfo RegistrationFormModel::getData()
 {
-	AuthModule::RegistrationInfo registrationInfo;
+	RegistrationInfo registrationInfo;
 
 	registrationInfo.name = valueText(UserName).toUTF8();
 	registrationInfo.email = valueText(UserEmail).toUTF8();
@@ -197,8 +197,8 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	bindString("password-status", "to short");
 	bindWidget("password-requirments", std::make_unique<Wt::WText>(tr("password-requirments")));
 
-	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(AuthModule::CLIENT));
-	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(AuthModule::PROVIDER));
+	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(CLIENT));
+	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(PROVIDER));
 	
 	role_->addButton(client_role);
 	role_->addButton(provider_role);
@@ -292,19 +292,19 @@ void RegistrationFormView::process()
 		registrationInfo.photo = photo_bytes_interface_;
 		registrationInfo.role = role_->checkedButton()->text().toUTF8();
 
-		AuthModule::RegistrationResponse registrationResponse = login_->registerUser(registrationInfo);
+		RegistrationResponse registrationResponse = login_->registerUser(registrationInfo);
 
-		if (registrationResponse == AuthModule::RegistrationResponse::RegistrationSuccessful)
+		if (registrationResponse == RegistrationResponse::RegistrationSuccessful)
 		{
 			profile_registration_status_->setText("Registration Successful");
 			// Log User In
-			AuthModule::LoginInfo loginInfo;
+			LoginInfo loginInfo;
 			loginInfo.email = model_->valueText(model_->UserEmail).toUTF8();
 			loginInfo.password = model_->valueText(model_->UserPassword).toUTF8();
 
-			AuthModule::LoginReturn loginReturn = login_->loginUser(loginInfo);
+			LoginReturn loginReturn = login_->loginUser(loginInfo);
 			login_->login(loginReturn);
-		}else if (registrationResponse == AuthModule::RegistrationResponse::EmailAlreadyExists)
+		}else if (registrationResponse == RegistrationResponse::EmailAlreadyExists)
 		{
 			profile_registration_status_->setText("User with same Email identified, forgot Password ?");
 		}

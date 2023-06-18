@@ -24,8 +24,6 @@ public:
 private:
     std::shared_ptr<Login> login_;
 
-    void dev_controlers();
-    
     Wt::WTemplate* navbar_;
     Wt::WStackedWidget* stack_;
     Wt::WMenu* nav_menu_;
@@ -36,7 +34,7 @@ private:
     void createAuth();
     void createApp();
     void handleUserAuth();
-    void createThemeSwitcher();
+    std::unique_ptr<Wt::WPushButton> createThemeSwitcher();
     // this only handles the underline styles of the nav menu and user menu
     void menuItemSelected(Wt::WMenuItem* selecter_item); 
 };

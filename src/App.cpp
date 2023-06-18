@@ -4,47 +4,18 @@ EventManagerLab::EventManagerLab()
 	: WContainerWidget(),
 	  login_(std::make_shared<Login>())
 {
-	setStyleClass("bg-body flex flex-col h-screen");
+	setStyleClass("flex flex-col h-screen");
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 	// createAuth();
 	
 }
 
-// this is used for faster development
-void EventManagerLab::dev_controlers()
-{
-	auto controlers_container = addWidget(std::make_unique<Wt::WContainerWidget>());
-	controlers_container->setStyleClass("flex justify-end");
-	bool loginStatus = login_->isLoggedIn(); 
-
-	auto auth_btn = controlers_container->addWidget(std::make_unique<Wt::WPushButton>("Auth"));
-	auth_btn->clicked().connect([=] {
-		createAuth();
-	});
-
-	auto app_btn = controlers_container->addWidget(std::make_unique<Wt::WPushButton>("App"));
-	app_btn->clicked().connect([=] {
-		handleUserAuth();
-	});
-
-
-	auto user_menu_toggle = controlers_container->addWidget(std::make_unique<Wt::WPushButton>("User Menu"));
-	user_menu_toggle->clicked().connect(this, [=](){
-		if(user_menu_wrapper_->hasStyleClass("hidden")){
-			user_menu_wrapper_->removeStyleClass("hidden");
-		} else {
-			user_menu_wrapper_->addStyleClass("hidden");
-		}
-	});
-}
 
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	this->clear();
-	// dev_controlers();
 	auto auth = addWidget(std::make_unique<Auth>(login_));
-	// auth->dev_loginUser("test1@gmail.com", "asdfghj1");
 	
 }
 
@@ -76,8 +47,12 @@ void EventManagerLab::handleUserAuth()
 	}else {
 		// remove user_menu_ widget
 		user_menu_wrapper_->bindEmpty("user-menu");
+		auto test = navbar_->bindWidget("user-menu", std::make_unique<Wt::WContainerWidget>());
+		test->setStyleClass("flex justify-center items-center");
+		test->addWidget(createThemeSwitcher());
 
-		auto log_in = user_menu_wrapper_->bindWidget("auth-btn", std::make_unique<Wt::WPushButton>("Log In"));
+		auto log_in = test->addWidget(std::make_unique<Wt::WPushButton>("Log In"));
+		log_in->setStyleClass("btn btn-primary ms-auto");
 		log_in->clicked().connect(this, &EventManagerLab::createAuth);
 	}
 	// select start page
@@ -106,7 +81,7 @@ void EventManagerLab::createApp() {
 	home_page_menu_item->setStyleClass(list_item_styles);
 	page_two_menu_item->setStyleClass(list_item_styles);
 	Wt::WString menuItemStyles = "sm:!rounded-none p-3 text-inherit !m-0 font-medium";
-	home_page_menu_item->anchor()->setStyleClass(menuItemStyles);
+	home_page_menu_item->anchor()->setStyleClass(menuItemStyles); 
 	page_two_menu_item->anchor()->setStyleClass(menuItemStyles);
 	home_page_menu_item->clicked().connect(this, [=](){ menuItemSelected(home_page_menu_item); });
 	page_two_menu_item->clicked().connect(this, [=](){ menuItemSelected(page_two_menu_item); });
@@ -123,19 +98,21 @@ void EventManagerLab::createApp() {
 		}
 	});
 
-	auto user_img = navbar_->bindWidget("user-image", std::make_unique<Wt::WImage>("./resources/images/blank-profile-picture.png"));
-	user_menu_wrapper_ = navbar_->bindWidget("user-menu-wrapper", std::make_unique<Wt::WTemplate>(tr("user-menu-wrapper")));
-	
-	// user menu_ toggle open/closed
-	user_img->clicked().connect(this, [=](){
-		if(user_menu_wrapper_->hasStyleClass("hidden")){
-			user_menu_wrapper_->removeStyleClass("hidden");
-		} else {
-			user_menu_wrapper_->addStyleClass("hidden");
-		}
-	});
-	
-	createThemeSwitcher();
+		auto user_menu_temp = navbar_->bindWidget("user-menu", std::make_unique<Wt::WTemplate>(tr("user-menu")));
+		auto user_img = user_menu_temp->bindWidget("user-image", std::make_unique<Wt::WImage>("./resources/images/blank-profile-picture.png"));
+		user_menu_wrapper_ = user_menu_temp->bindWidget("user-menu-wrapper", std::make_unique<Wt::WTemplate>(tr("user-menu-wrapper")));
+		
+		// user menu_ toggle open/closed
+		user_img->clicked().connect(this, [=](){
+			if(user_menu_wrapper_->hasStyleClass("hidden")){
+				user_menu_wrapper_->removeStyleClass("hidden");
+			} else {
+				user_menu_wrapper_->addStyleClass("hidden");
+			}
+		});
+		
+		user_menu_wrapper_->bindWidget("theme-switcher", createThemeSwitcher());
+
 	
 	current_menu_item_ = home_page_menu_item;
 	current_menu_item_->addStyleClass("bg-body-active");
@@ -151,23 +128,23 @@ void EventManagerLab::menuItemSelected(Wt::WMenuItem *item) {
 }
 
 // create theme switcher light/dark mode
-void EventManagerLab::createThemeSwitcher(){
-	auto theme_switcher = user_menu_wrapper_->bindWidget("theme-switcher", std::make_unique<Wt::WPushButton>(tr("sun-svg")));
+std::unique_ptr<Wt::WPushButton> EventManagerLab::createThemeSwitcher(){
+	auto theme_switcher = std::make_unique<Wt::WPushButton>(tr("sun-svg"));
     theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
-    theme_switcher->setStyleClass("relative w-10 h-5 m-1 mr-2 p-0 bg-white rounded-full shadow border-0");
+    theme_switcher->setStyleClass("relative w-10 h-5 m-1 mr-2 p-0 bg-white rounded-full shadow border-0 z-20");
     theme_switcher->setText(tr("sun-svg"));
-
+	auto theme_switcher_ptr = theme_switcher.get();
 	// theme switcher toggle dark/light mode
-    theme_switcher->clicked().connect(this, [=](){
+    theme_switcher_ptr->clicked().connect(this, [=](){
         if(Wt::WApplication::instance()->htmlClass() == "dark"){
-            theme_switcher->setText(tr("sun-svg"));
+            theme_switcher_ptr->setText(tr("sun-svg"));
             Wt::WApplication::instance()->setHtmlClass("");
          }else {
-            theme_switcher->setText(tr("moon-svg"));
+            theme_switcher_ptr->setText(tr("moon-svg"));
             Wt::WApplication::instance()->setHtmlClass("dark");
         }
     });
-	
+	return theme_switcher;
 }
 
 

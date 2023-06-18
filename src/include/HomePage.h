@@ -1,6 +1,7 @@
 #pragma once
 #include "Calendar.h"
 #include "LoginObj.h"
+#include "UserProfile.h"
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/WTemplate.h>
@@ -43,7 +44,6 @@ private:
     int event_duration = 60;
 
 
-    void createProfile();
     void createSidebar();
 
     void calendarClicked(const Wt::WDate date);
@@ -53,8 +53,4 @@ private:
     void cancelEvent();
     
     std::shared_ptr<Login> login_;
-
-    std::string time_format_ = "HH:mm AP"; 
-    std::string date_format_ = "dd/MMM/yyyy";
-    std::string datetime_format_ = date_format_ + " " + time_format_;
 };

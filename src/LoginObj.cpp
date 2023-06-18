@@ -5,15 +5,17 @@
 #include <Ice/Ice.h>
 #include <stdexcept>
 
+
+
 Login::Login()
 {
 	getConnectionStrings();
-	user_.loginResponse = AuthModule::LoginResponse::NotIdentified;
+	user_.loginResponse = LoginResponse::NotIdentified;
 	user_.name = "";
 	user_.token = "";
 }
 
-void Login::login(AuthModule::LoginReturn loginReturn)
+void Login::login(LoginReturn loginReturn)
 {
 	std::cout << "\n Login obj here to tell you that the user LOGGED IN succesfully :D \n";
 
@@ -26,7 +28,7 @@ void Login::login(AuthModule::LoginReturn loginReturn)
 void Login::logout()
 {
 	std::cout << "\n Login obj here to tell you that the user LOGGED OUT succesfully :D \n";
-	user_.loginResponse = AuthModule::LoginResponse::NotIdentified;
+	user_.loginResponse = LoginResponse::NotIdentified;
 	user_.name = "";
 	user_.token = "";
 	changed_.emit();
@@ -35,7 +37,7 @@ void Login::logout()
 bool Login::isLoggedIn()
 {
 	auto status = user_.loginResponse;
-	if (status == AuthModule::LoginResponse::LoggedIn)
+	if (status == LoginResponse::LoggedIn)
 	{
 		return true;
 	}
@@ -65,86 +67,86 @@ void Login::getConnectionStrings()
 	getline(eventCommFile, eventConnString_);
 }
 
-// Ice communication for getting clients from server
-EventModule::SeqClientInfo Login::getClientsByName(std::string name)
-{
-	EventModule::SeqClientInfo seqClientInfo;
-    try
-    {
-        Ice::CommunicatorHolder ich = Ice::initialize();
-        auto base = ich->stringToProxy(eventConnString_);
-        auto eventsDataInterface = Ice::checkedCast<EventModule::EventInterfacePrx>(base);
-        if (!eventsDataInterface)
-        {
-            throw std::runtime_error("Invalid proxy");
-        }
-        // get clients from server by name
-        seqClientInfo = eventsDataInterface->getClientsByName(userToken(), name);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-	return seqClientInfo;
-}
+// // Ice communication for getting clients from server
+// SeqClientInfo Login::getClientsByName(std::string name)
+// {
+// 	SeqClientInfo seqClientInfo;
+//     try
+//     {
+//         Ice::CommunicatorHolder ich = Ice::initialize();
+//         auto base = ich->stringToProxy(eventConnString_);
+//         auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+//         if (!eventsDataInterface)
+//         {
+//             throw std::runtime_error("Invalid proxy");
+//         }
+//         // get clients from server by name
+//         seqClientInfo = eventsDataInterface->getClientsByName(userToken(), name);
+//     }
+//     catch (const std::exception &e)
+//     {
+//         std::cerr << e.what() << std::endl;
+//     }
+// 	return seqClientInfo;
+// }
 
-EventModule::SeqClientInfo Login::getClientsByPhone(std::string phone)
+// SeqClientInfo Login::getClientsByPhone(std::string phone)
+// {
+// 	SeqClientInfo seqClientInfo;
+// 	try
+// 	{
+// 		Ice::CommunicatorHolder ich = Ice::initialize();
+// 		auto base = ich->stringToProxy(eventConnString_);
+// 		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+// 		if (!eventsDataInterface)
+// 		{
+// 			throw std::runtime_error("Invalid proxy");
+// 		}
+// 		// get clients from server by phone
+// 		seqClientInfo = eventsDataInterface->getClientsByPhone(userToken(), phone);
+// 	}
+// 	catch (const std::exception &e)
+// 	{
+// 		std::cerr << e.what() << std::endl;
+// 	}
+// 	return seqClientInfo;
+// }
+
+// int Login::registerClient(ClientInfo clientInfo)
+// {
+// 	int clientId = 0;
+// 	try
+// 	{
+// 		Ice::CommunicatorHolder ich = Ice::initialize();
+// 		auto base = ich->stringToProxy(eventConnString_);
+// 		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+// 		if (!eventsDataInterface)
+// 		{
+// 			throw std::runtime_error("Invalid proxy");
+// 		}
+// 		// add client to server
+// 		clientId = eventsDataInterface->registerClient(userToken(), clientInfo);
+// 	}
+// 	catch (const std::exception &e)
+// 	{
+// 		std::cerr << e.what() << std::endl;
+// 	}
+// 	return clientId;
+// }
+
+EventData Login::registerEvent(EventData eventData)
 {
-	EventModule::SeqClientInfo seqClientInfo;
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventModule::EventInterfacePrx>(base);
-		if (!eventsDataInterface)
-		{
-			throw std::runtime_error("Invalid proxy");
-		}
-		// get clients from server by phone
-		seqClientInfo = eventsDataInterface->getClientsByPhone(userToken(), phone);
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
-	return seqClientInfo;
-}
-
-int Login::registerClient(EventModule::ClientInfo clientInfo)
-{
-	int clientId = 0;
-	try
-	{
-		Ice::CommunicatorHolder ich = Ice::initialize();
-		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventModule::EventInterfacePrx>(base);
-		if (!eventsDataInterface)
-		{
-			throw std::runtime_error("Invalid proxy");
-		}
-		// add client to server
-		clientId = eventsDataInterface->registerClient(userToken(), clientInfo);
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
-	return clientId;
-}
-
-EventModule::EventData Login::registerEvent(EventModule::EventData eventData)
-{
-	try
-	{
-		Ice::CommunicatorHolder ich = Ice::initialize();
-		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventModule::EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
 		}
 		// get events from server by client
-		eventData = eventsDataInterface->registerEvent(userToken(), eventData);
+		eventData = eventsDataInterface->addEvent(userToken(), eventData);
 	}
 	catch (const std::exception &e)
 	{
@@ -153,15 +155,15 @@ EventModule::EventData Login::registerEvent(EventModule::EventData eventData)
 	return eventData;
 }
 
-EventModule::SeqEventData Login::getEventsData()
+SeqEventData Login::getEventsData()
 {
-	EventModule::SeqEventData events_data;
+	SeqEventData events_data;
 	// Ice communication for getting events data
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventModule::EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
@@ -177,19 +179,19 @@ EventModule::SeqEventData Login::getEventsData()
 	return events_data;
 }
 
-void Login::deleteRecord(EventModule::Table table, int id)
+void Login::delEvent(int eventId)
 {
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventModule::EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
 		}
 		// delete event
-		eventsDataInterface->deleteRecord(userToken(),EventModule::Table::events, id);
+		eventsDataInterface->delEvent(userToken(), eventId);
 		// refresh table
 	}
 	catch (const std::exception &e)
@@ -199,14 +201,14 @@ void Login::deleteRecord(EventModule::Table table, int id)
 	}
 }
 
-AuthModule::LoginReturn Login::loginUser(AuthModule::LoginInfo authInfo)
+LoginReturn Login::loginUser(LoginInfo authInfo)
 {
-	AuthModule::LoginReturn loginReturn;
+	LoginReturn loginReturn;
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(authConnString_);
-		auto authInterface = Ice::checkedCast<AuthModule::AuthInterfacePrx>(base);
+		auto authInterface = Ice::checkedCast<AuthInterfacePrx>(base);
 		if (!authInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
@@ -221,14 +223,14 @@ AuthModule::LoginReturn Login::loginUser(AuthModule::LoginInfo authInfo)
 	return loginReturn;
 }
 
-AuthModule::RegistrationResponse Login::registerUser(AuthModule::RegistrationInfo regInfo)
+RegistrationResponse Login::registerUser(RegistrationInfo regInfo)
 {
-	AuthModule::RegistrationResponse registrationResponse;
+	RegistrationResponse registrationResponse;
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(authConnString_);
-		auto authInterface = Ice::checkedCast<AuthModule::AuthInterfacePrx>(base);
+		auto authInterface = Ice::checkedCast<AuthInterfacePrx>(base);
 		if (!authInterface)
 		{
 			throw std::runtime_error("Invalid proxy");

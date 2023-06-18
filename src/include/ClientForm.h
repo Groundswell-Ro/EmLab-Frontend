@@ -18,7 +18,7 @@ public:
     static const Field ClientPhoneNumberField;
     int id = 0;
 
-    EventModule::ClientInfo getData();
+    Emlab::ClientInfo getData();
 
 private:
     std::shared_ptr<Wt::WValidator> createTextValidator(bool mandatory, int min, int max);
@@ -42,12 +42,12 @@ public:
     Wt::WLineEdit *clientPhone_;
 
     std::shared_ptr<ClientFormModel> model_;
-    EventModule::SeqClientInfo seqClientInfo_;
+    Emlab::SeqClientInfo seqClientInfo_;
 
     Wt::WString lastClientName_;
     Wt::WString lastClientPhone_;
 
-    void setData(EventModule::ClientInfo clientInfo);
+    void setData(Emlab::ClientInfo clientInfo);
     void process();
     bool validate();
 
