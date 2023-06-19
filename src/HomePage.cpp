@@ -27,7 +27,7 @@ void HomePage::createSidebar()
 	calendar_ = sidebar_->bindWidget("calendar", std::make_unique<Calendar>());
 	// calendar_->setStyleClass("calendar flex justify-center w-full");
 
-	selected_date_ = sidebar_->bindWidget("selected-date", std::make_unique<Wt::WText>(Wt::WDate::currentDate().toString(DATEFORMAT)));
+	selected_date_ = sidebar_->bindWidget("selected-date", std::make_unique<Wt::WText>(Wt::WDate::currentDate().toString(Emlab::DATEFORMAT)));
 	add_event_btn_ = sidebar_->bindWidget("add-event-btn", std::make_unique<Wt::WPushButton>("Add event"));
 	add_event_btn_->clicked().connect(this, &HomePage::addEvent);
 	save_event_btn_ = sidebar_->bindWidget("save-event-btn", std::make_unique<Wt::WPushButton>("Save"));
@@ -37,7 +37,7 @@ void HomePage::createSidebar()
 	cancel_event_btn_->setTextFormat(Wt::TextFormat::XHTML);
 	cancel_event_btn_->clicked().connect(this, &HomePage::cancelEvent);
 	cancel_event_btn_->setDisabled(true);
-	selected_date_ = sidebar_->bindWidget("selected-date", std::make_unique<Wt::WText>(Wt::WDate::currentDate().toString(DATEFORMAT)));
+	selected_date_ = sidebar_->bindWidget("selected-date", std::make_unique<Wt::WText>(Wt::WDate::currentDate().toString(Emlab::DATEFORMAT)));
 	calendar_->clicked().connect(this, &HomePage::calendarClicked);
 }
 
@@ -48,14 +48,14 @@ void HomePage::saveEvent()
 	save_event_btn_->addStyleClass("-translate-x-28");
 	sidebar_content_->setTemplateText("");
 	cancel_event_btn_->setDisabled(true);
-	EventInfo eventInfo;
+	Emlab::EventInfo eventInfo;
 
 	auto date = calendar_->selection().begin();
 	auto time = start_time_input_->time();
 	auto dateTime = Wt::WDateTime(*date, time);
 
 	// std::cout << "\n date string: " << dateTime.toString(DATETIMEFORMAT) << "\n\n";
-	eventInfo.dateTime = dateTime.toString(DATETIMEFORMAT).toUTF8();
+	eventInfo.dateTime = dateTime.toString(Emlab::DATETIMEFORMAT).toUTF8();
 	eventInfo.duration = (double)event_duration/60;
 	eventInfo.location = location_input_->text().toUTF8();
 	eventInfo.description = description_input_->text().toUTF8();
@@ -109,7 +109,7 @@ void HomePage::addEvent()
 		event_form->bindWidget("location-pin-svg", std::make_unique<Wt::WText>(tr("location-pin-svg-sm")));
 		event_form->bindWidget("book-open-svg", std::make_unique<Wt::WText>(tr("book-open-svg-sm")));
 
-		start_time_input_->setFormat(TIMEFORMAT);
+		start_time_input_->setFormat(Emlab::TIMEFORMAT);
 		start_time_input_->setTime(Wt::WTime(12,0,0));
 		start_time_input_->setDisabled(true);
 
@@ -122,7 +122,7 @@ void HomePage::addEvent()
 			time = time.addSecs(60*15);
 			time.hour() > 23 ? time = Wt::WTime(0,0,0) : time = time;
 			start_time_input_->setTime(time);
-			end_hour->setText(time.addSecs(event_duration*60).toString(TIMEFORMAT));
+			end_hour->setText(time.addSecs(event_duration*60).toString(Emlab::TIMEFORMAT));
 		});
 
 		start_sub_time_btn->setTextFormat(Wt::TextFormat::XHTML);	
@@ -131,7 +131,7 @@ void HomePage::addEvent()
 			time.minute() == 0 && time.hour() == 0 ? time = Wt::WTime(24,0,0) : time = time;
 			time = time.addSecs(-(60*15));
 			start_time_input_->setTime(time);
-			end_hour->setText(time.addSecs(event_duration*60).toString(TIMEFORMAT));
+			end_hour->setText(time.addSecs(event_duration*60).toString(Emlab::TIMEFORMAT));
 		});
 
 		duration_add_time_btn->setTextFormat(Wt::TextFormat::XHTML);
@@ -146,7 +146,7 @@ void HomePage::addEvent()
 			}
 			duration_string += " Hours";
 			duration_input_->setText(duration_string);
-			end_hour->setText(start_time.addSecs(event_duration*60).toString(TIMEFORMAT));
+			end_hour->setText(start_time.addSecs(event_duration*60).toString(Emlab::TIMEFORMAT));
 
 		});
 
@@ -162,7 +162,7 @@ void HomePage::addEvent()
 			}
 			duration_string += " Hours";
 			duration_input_->setText(duration_string);
-			end_hour->setText(start_time.addSecs(event_duration*60).toString(TIMEFORMAT));
+			end_hour->setText(start_time.addSecs(event_duration*60).toString(Emlab::TIMEFORMAT));
 		});
 
 		location_input_->setPlaceholderText(" ");
@@ -195,6 +195,6 @@ void HomePage::cancelEvent()
 
 void HomePage::calendarClicked(const Wt::WDate date)
 {
-	selected_date_->setText(date.toString(DATEFORMAT));
+	selected_date_->setText(date.toString(Emlab::DATEFORMAT));
 }
 

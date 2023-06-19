@@ -50,11 +50,11 @@ LoginFormModel::LoginFormModel()
 
 }
 
-LoginInfo LoginFormModel::getData()
+Emlab::LoginInfo LoginFormModel::getData()
 {
 	std::cout << "\n\n AuthentificationWidget::loginUser() Started \n";
 
-	LoginInfo loginInfo;
+	Emlab::LoginInfo loginInfo;
 	loginInfo.email = valueText(UserEmail).toUTF8();
 	loginInfo.password = valueText(UserPassword).toUTF8();
 	return loginInfo;
@@ -110,22 +110,22 @@ void LoginFormView::process()
 	{
 		std::cout << "\n\n model VALID \n\n";
 
-		LoginReturn loginReturn = login_->loginUser(model_->getData());
+		Emlab::LoginReturn loginReturn = login_->loginUser(model_->getData());
 		switch (loginReturn.loginResponse)
 		{
-		case LoginResponse::NotIdentified:
+		case Emlab::LoginResponse::NotIdentified:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("No user with that Email"));
 			break;
-		case LoginResponse::LoggedIn:
+		case Emlab::LoginResponse::LoggedIn:
 			bindEmpty("submit-info");
 			login_->login(loginReturn);
 			break;
-		case LoginResponse::Identified:
+		case Emlab::LoginResponse::Identified:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("User Succesfuly Identified"));
-		case LoginResponse::IncorectPassword:
+		case Emlab::LoginResponse::IncorectPassword:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("Incorect Password, reset Password ?"));
 			break;
-		case LoginResponse::ThrottlingActivated:
+		case Emlab::LoginResponse::ThrottlingActivated:
 			bindWidget("submit-info", std::make_unique<Wt::WText>("Password Trottling is activated, you can try again in 5 minutes, this is for your accout protection"));
 			break;
 		}
@@ -171,9 +171,9 @@ RegistrationFormModel::RegistrationFormModel()
 	setValidator(UserPasswordRepeat, createUserPasswordValidator());
 }
 
-RegistrationInfo RegistrationFormModel::getData()
+Emlab::RegistrationInfo RegistrationFormModel::getData()
 {
-	RegistrationInfo registrationInfo;
+	Emlab::RegistrationInfo registrationInfo;
 
 	registrationInfo.name = valueText(UserName).toUTF8();
 	registrationInfo.email = valueText(UserEmail).toUTF8();
@@ -197,8 +197,8 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	bindString("password-status", "to short");
 	bindWidget("password-requirments", std::make_unique<Wt::WText>(tr("password-requirments")));
 
-	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(CLIENTROLE));
-	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(PROVIDERROLE));
+	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(Emlab::CLIENTROLE));
+	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(Emlab::PROVIDERROLE));
 	
 	role_->addButton(client_role);
 	role_->addButton(provider_role);
@@ -292,19 +292,19 @@ void RegistrationFormView::process()
 		registrationInfo.photo = photo_bytes_interface_;
 		registrationInfo.role = role_->checkedButton()->text().toUTF8();
 
-		RegistrationResponse registrationResponse = login_->registerUser(registrationInfo);
+		Emlab::RegistrationResponse registrationResponse = login_->registerUser(registrationInfo);
 
-		if (registrationResponse == RegistrationResponse::RegistrationSuccessful)
+		if (registrationResponse == Emlab::RegistrationResponse::RegistrationSuccessful)
 		{
 			profile_registration_status_->setText("Registration Successful");
 			// Log User In
-			LoginInfo loginInfo;
+			Emlab::LoginInfo loginInfo;
 			loginInfo.email = model_->valueText(model_->UserEmail).toUTF8();
 			loginInfo.password = model_->valueText(model_->UserPassword).toUTF8();
 
-			LoginReturn loginReturn = login_->loginUser(loginInfo);
+			Emlab::LoginReturn loginReturn = login_->loginUser(loginInfo);
 			login_->login(loginReturn);
-		}else if (registrationResponse == RegistrationResponse::EmailAlreadyExists)
+		}else if (registrationResponse == Emlab::RegistrationResponse::EmailAlreadyExists)
 		{
 			profile_registration_status_->setText("User with same Email identified, forgot Password ?");
 		}

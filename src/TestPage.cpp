@@ -37,7 +37,7 @@ void TestPage::createEventsTable()
 
 void TestPage::populateEventsTable()
 {
-	SeqEventData seqEventData = login_->getEventsData();;
+	Emlab::SeqEventData seqEventData = login_->getEventsData();;
 	while(events_table_->rowCount() > 1)
 	{
 		events_table_->removeRow(1);

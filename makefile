@@ -1,13 +1,12 @@
 # Compiler settings
 CC = g++
-CXXFLAGS = -std=c++14 -I. -I../comunication/generated -I../comunication  -DICE_CPP11_MAPPING
+CXXFLAGS = -std=c++14 -I. -I../comunication -I../comunication/comm -DICE_CPP11_MAPPING
 
 # Makefile settings
 APPNAME = frontend
 EXT = .cpp
 SRCDIR = ./src
-CMMDIR = ../comunication/generated
-UTILDIR = ../comunication
+CMMDIR = ../comunication/obj
 OBJDIR = ./src/obj
 
 # Linking lib
@@ -19,10 +18,8 @@ RLIB = --docroot . --http-address 0.0.0.0 --http-port 9090
 
 ############## Creating variables #############
 SRC = $(wildcard $(SRCDIR)/*$(EXT))
-COMM = $(wildcard $(CMMDIR)/*$(EXT))
-UTIL = $(wildcard $(UTILDIR)/*$(EXT))
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o) $(COMM:$(CMMDIR)/%$(EXT)=$(OBJDIR)/%.o) $(UTIL:$(UTILDIR)/%$(EXT)=$(OBJDIR)/%.o)
-DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
+OBJCOMM = $(wildcard $(CMMDIR)/*.o)
+OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
 
 ########################################################################
 ####################### Targets beginning here #########################
@@ -31,25 +28,13 @@ DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 all: $(APPNAME)
 
 # Builds the app
-$(APPNAME): $(OBJ)
+$(APPNAME): $(OBJ) $(OBJCOMM)
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-# Creates the dependecy rules
-%.d: $(SRCDIR)/%$(EXT)
-	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
-
-# Includes all .h files
--include $(DEP)
-
 # Building rule for .o files and its .c/.cpp in combination with all .h
-$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT) 
+$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT) | gen_obj_dir
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
-$(OBJDIR)/%.o: $(CMMDIR)/%$(EXT)
-	$(CC) $(CXXFLAGS) -o $@ -c $<
-
-$(OBJDIR)/%.o: $(UTILDIR)/%$(EXT)
-	$(CC) $(CXXFLAGS) -o $@ -c $<
 ################## Run #################
 run:
 	./$(APPNAME) $(RLIB)
@@ -60,6 +45,9 @@ runTrace:
 dbg:
 	gdb ./$(APPNAME)
 
+.PHONY: gen_obj_dir
+gen_obj_dir:
+	mkdir -p $(OBJDIR)
 ################### Cleaning rules ###################
 # Cleans complete project
 .PHONY: clean
@@ -80,7 +68,7 @@ else
 endif
 
 ################### Display variables ###################
-displayVariables:
+echo:
 	@echo $(SRC)
 	@echo $(COMM)
 	@echo $(OBJ)

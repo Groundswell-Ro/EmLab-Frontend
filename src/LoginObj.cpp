@@ -5,17 +5,15 @@
 #include <Ice/Ice.h>
 #include <stdexcept>
 
-
-
 Login::Login()
 {
 	getConnectionStrings();
-	user_.loginResponse = LoginResponse::NotIdentified;
+	user_.loginResponse = Emlab::LoginResponse::NotIdentified;
 	user_.name = "";
 	user_.token = "";
 }
 
-void Login::login(LoginReturn loginReturn)
+void Login::login(Emlab::LoginReturn loginReturn)
 {
 	std::cout << "\n Login obj here to tell you that the user LOGGED IN succesfully :D \n";
 
@@ -28,7 +26,7 @@ void Login::login(LoginReturn loginReturn)
 void Login::logout()
 {
 	std::cout << "\n Login obj here to tell you that the user LOGGED OUT succesfully :D \n";
-	user_.loginResponse = LoginResponse::NotIdentified;
+	user_.loginResponse = Emlab::LoginResponse::NotIdentified;
 	user_.name = "";
 	user_.token = "";
 	changed_.emit();
@@ -37,7 +35,7 @@ void Login::logout()
 bool Login::isLoggedIn()
 {
 	auto status = user_.loginResponse;
-	if (status == LoginResponse::LoggedIn)
+	if (status == Emlab::LoginResponse::LoggedIn)
 	{
 		return true;
 	}
@@ -50,21 +48,28 @@ bool Login::isLoggedIn()
 void Login::getConnectionStrings()
 {
 	//  Get connection strings from files
-	std::ifstream authCommFile("/etc/evntmgr/comm-auth.txt");
-	std::ifstream eventCommFile("/etc/evntmgr/comm-event.txt");
+	// std::ifstream authCommFile("/etc/evntmgr/comm-auth.txt");
+	// std::ifstream eventCommFile("/etc/evntmgr/comm-event.txt");
 
-	if (!eventCommFile || !authCommFile)
-	{
-		authCommFile = std::ifstream("comm-auth.txt");
-		eventCommFile = std::ifstream("comm-event.txt");
-		if(!eventCommFile || !authCommFile){
-			std::cout << "\n\n - ERROR - Give me the EVENT and AUTH COMUNICATION FILES and i will work :) - \n\n";
-		return;
-		}
-	}
+	// if (!eventCommFile || !authCommFile)
+	// {
+	// 	authCommFile = std::ifstream("comm-auth.txt");
+	// 	eventCommFile = std::ifstream("comm-event.txt");
+	// 	if(!eventCommFile || !authCommFile){
+	// 		std::cout << "\n\n - ERROR - Give me the EVENT and AUTH COMUNICATION FILES and i will work :) - \n\n";
+	// 	return;
+	// 	}
+	// }
 
-	getline(authCommFile, authConnString_);
-	getline(eventCommFile, eventConnString_);
+	// getline(authCommFile, authConnString_);
+	// getline(eventCommFile, eventConnString_);
+	Wt::WString connection = ":default -p 10000";
+	authConnString_ = Emlab::AUTHADAPTER + connection.toUTF8();
+	eventConnString_ = Emlab::EVENTADAPTER + connection.toUTF8();
+	serviceConnString_ = Emlab::SERVICEADAPTER + connection.toUTF8();
+	clientConnString_ = Emlab::CLIENTADAPTER + connection.toUTF8();
+	ReviewConnString_ = Emlab::REVIEWADAPTER + connection.toUTF8();
+
 }
 
 // // Ice communication for getting clients from server
@@ -134,13 +139,13 @@ void Login::getConnectionStrings()
 // 	return clientId;
 // }
 
-EventData Login::addEventData(EventData eventData)
+Emlab::EventData Login::addEventData(Emlab::EventData eventData)
 {
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<Emlab::EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
@@ -154,13 +159,13 @@ EventData Login::addEventData(EventData eventData)
 	return eventData;
 }
 
-EventInfo Login::addEventInfo(EventInfo eventInfo)
+Emlab::EventInfo Login::addEventInfo(Emlab::EventInfo eventInfo)
 {
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<Emlab::EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
@@ -174,21 +179,21 @@ EventInfo Login::addEventInfo(EventInfo eventInfo)
 	return eventInfo;
 }
 
-SeqEventData Login::getEventsData()
+Emlab::SeqEventData Login::getEventsData()
 {
-	SeqEventData events_data;
+	Emlab::SeqEventData events_data;
 	// Ice communication for getting events data
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<Emlab::EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
 		}
 		// get events data
-		 events_data = eventsDataInterface->getSeqEventData(userToken());
+		events_data = eventsDataInterface->getSeqEventData(userToken());
 	}
 	catch (const std::exception &e)
 	{
@@ -204,7 +209,7 @@ void Login::delEvent(int eventId)
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(eventConnString_);
-		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+		auto eventsDataInterface = Ice::checkedCast<Emlab::EventInterfacePrx>(base);
 		if (!eventsDataInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
@@ -220,14 +225,14 @@ void Login::delEvent(int eventId)
 	}
 }
 
-LoginReturn Login::loginUser(LoginInfo authInfo)
+Emlab::LoginReturn Login::loginUser(Emlab::LoginInfo authInfo)
 {
-	LoginReturn loginReturn;
+	Emlab::LoginReturn loginReturn;
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(authConnString_);
-		auto authInterface = Ice::checkedCast<AuthInterfacePrx>(base);
+		auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
 		if (!authInterface)
 		{
 			throw std::runtime_error("Invalid proxy");
@@ -242,14 +247,14 @@ LoginReturn Login::loginUser(LoginInfo authInfo)
 	return loginReturn;
 }
 
-RegistrationResponse Login::registerUser(RegistrationInfo regInfo)
+Emlab::RegistrationResponse Login::registerUser(Emlab::RegistrationInfo regInfo)
 {
-	RegistrationResponse registrationResponse;
+	Emlab::RegistrationResponse registrationResponse;
 	try
 	{
 		Ice::CommunicatorHolder ich = Ice::initialize();
 		auto base = ich->stringToProxy(authConnString_);
-		auto authInterface = Ice::checkedCast<AuthInterfacePrx>(base);
+		auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
 		if (!authInterface)
 		{
 			throw std::runtime_error("Invalid proxy");

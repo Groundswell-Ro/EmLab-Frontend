@@ -30,9 +30,9 @@ ClientFormModel::ClientFormModel()
     setValidator(ClientPhoneNumberField, createTextValidator(true, 10, 10));
 }
 
-ClientInfo ClientFormModel::getData()
+Emlab::ClientInfo ClientFormModel::getData()
 {
-    ClientInfo clientInfo;
+    Emlab::ClientInfo clientInfo;
     clientInfo.id = id;
     auto clientName = valueText(ClientNameField).toUTF8();
 
@@ -95,7 +95,7 @@ ClientFormView::ClientFormView(std::shared_ptr<Login> login)
     updateView(model_.get());
 }
 
-void ClientFormView::setData(ClientInfo clientInfo)
+void ClientFormView::setData(Emlab::ClientInfo clientInfo)
 {
     clearBtn_->show();
     confirmBtn_->hide();
@@ -135,7 +135,7 @@ void ClientFormView::clientNameChanged(Wt::WString currentValue)
     }
     if (seqClientInfo_.size() != 0)
     {
-        SeqClientInfo newSeqClients;
+        Emlab::SeqClientInfo newSeqClients;
         // search for client with the same lastClientName_ in seqClientInfo_
         for (auto &client : seqClientInfo_)
         {
@@ -167,7 +167,7 @@ void ClientFormView::clientPhoneChanged(Wt::WString currentValue)
     }
     if (seqClientInfo_.size() != 0)
     {
-        SeqClientInfo newSeqClients;
+        Emlab::SeqClientInfo newSeqClients;
         // search for client with the same lastClientPhone_ in seqClientInfo_
         for (auto &client : seqClientInfo_)
         {
@@ -273,7 +273,7 @@ void ClientFormView::resetSuggestions()
 
     for (int i = 0; i < seqClientInfo_.size(); ++i)
     {
-        ClientInfo clientInfo = seqClientInfo_.at(i);
+        Emlab::ClientInfo clientInfo = seqClientInfo_.at(i);
         Wt::WString clientName = clientInfo.name;
         Wt::WString clientPhone = clientInfo.phone;
 
