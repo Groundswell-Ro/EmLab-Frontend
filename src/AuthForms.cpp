@@ -197,8 +197,8 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	bindString("password-status", "to short");
 	bindWidget("password-requirments", std::make_unique<Wt::WText>(tr("password-requirments")));
 
-	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(CLIENT));
-	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(PROVIDER));
+	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(CLIENTROLE));
+	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(PROVIDERROLE));
 	
 	role_->addButton(client_role);
 	role_->addButton(provider_role);

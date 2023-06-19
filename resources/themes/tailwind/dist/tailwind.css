@@ -2618,6 +2618,11 @@ svg{
   margin: auto;
 }
 
+.mx-3{
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -2626,11 +2631,6 @@ svg{
 .my-4{
   margin-top: 1rem;
   margin-bottom: 1rem;
-}
-
-.mx-3{
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
 }
 
 .-mb-5{
@@ -2736,14 +2736,6 @@ svg{
   margin-top: 1.25rem;
 }
 
-.-mb-8{
-  margin-bottom: -2rem;
-}
-
-.-mb-3{
-  margin-bottom: -0.75rem;
-}
-
 .block{
   display: block;
 }
@@ -2814,10 +2806,6 @@ svg{
 
 .h-screen{
   height: 100vh;
-}
-
-.max-h-12{
-  max-height: 3rem;
 }
 
 .min-h-screen{
@@ -2925,10 +2913,6 @@ svg{
   max-width: 1280px;
 }
 
-.max-w-sm{
-  max-width: 24rem;
-}
-
 .flex-shrink-0{
   flex-shrink: 0;
 }
@@ -3003,10 +2987,6 @@ svg{
   flex-wrap: wrap;
 }
 
-.flex-nowrap{
-  flex-wrap: nowrap;
-}
-
 .place-items-center{
   place-items: center;
 }
@@ -3061,27 +3041,12 @@ svg{
   overflow-x: auto;
 }
 
-.overflow-x-scroll{
-  overflow-x: scroll;
-}
-
 .\!overflow-y-scroll{
   overflow-y: scroll !important;
 }
 
 .overflow-y-scroll{
   overflow-y: scroll;
-}
-
-.truncate{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.break-normal{
-  overflow-wrap: normal;
-  word-break: normal;
 }
 
 .rounded{
@@ -3225,14 +3190,14 @@ svg{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-yellow-500{
-  --tw-bg-opacity: 1;
-  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
-}
-
 .bg-yellow-400{
   --tw-bg-opacity: 1;
   background-color: rgb(250 204 21 / var(--tw-bg-opacity));
+}
+
+.bg-yellow-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-b{
@@ -3357,16 +3322,6 @@ svg{
   padding-bottom: 1.25rem;
 }
 
-.px-0{
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-.px-8{
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
 .pb-2{
   padding-bottom: 0.5rem;
 }
@@ -3389,47 +3344,12 @@ svg{
           padding-inline-start: 0.75rem;
 }
 
-.pb-0{
-  padding-bottom: 0px;
-}
-
-.ps-8{
-  -webkit-padding-start: 2rem;
-          padding-inline-start: 2rem;
-}
-
-.ps-24{
-  -webkit-padding-start: 6rem;
-          padding-inline-start: 6rem;
-}
-
-.\!pb-0{
-  padding-bottom: 0px !important;
-}
-
-.ps-12{
-  -webkit-padding-start: 3rem;
-          padding-inline-start: 3rem;
-}
-
 .text-left{
   text-align: left;
 }
 
 .text-center{
   text-align: center;
-}
-
-.align-baseline{
-  vertical-align: baseline;
-}
-
-.align-top{
-  vertical-align: top;
-}
-
-.align-text-bottom{
-  vertical-align: text-bottom;
 }
 
 .font-sans{
@@ -3804,21 +3724,6 @@ svg{
     border-radius: 0px;
   }
 
-  .sm\:ps-3{
-    -webkit-padding-start: 0.75rem;
-            padding-inline-start: 0.75rem;
-  }
-
-  .sm\:ps-12{
-    -webkit-padding-start: 3rem;
-            padding-inline-start: 3rem;
-  }
-
-  .sm\:ps-8{
-    -webkit-padding-start: 2rem;
-            padding-inline-start: 2rem;
-  }
-
   .sm\:text-3xl{
     font-size: 1.875rem;
     line-height: 2.25rem;
@@ -3856,11 +3761,6 @@ svg{
 
   .md\:justify-start{
     justify-content: flex-start;
-  }
-
-  .md\:ps-3{
-    -webkit-padding-start: 0.75rem;
-            padding-inline-start: 0.75rem;
   }
 
   .md\:text-center{

@@ -26,7 +26,8 @@ public:
     // SeqClientInfo getClientsByName(std::string name);
 	// SeqClientInfo getClientsByPhone(std::string phone);
 	// int registerClient(ClientInfo client);
-	EventData registerEvent(EventData eventData);
+	EventInfo addEventInfo(EventInfo eventInfo);
+	EventData addEventData(EventData eventData);
 	SeqEventData getEventsData();
 	void delEvent(int eventId);
 	

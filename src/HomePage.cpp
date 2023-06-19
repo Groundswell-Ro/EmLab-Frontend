@@ -48,19 +48,19 @@ void HomePage::saveEvent()
 	save_event_btn_->addStyleClass("-translate-x-28");
 	sidebar_content_->setTemplateText("");
 	cancel_event_btn_->setDisabled(true);
-	EventData event_data;
+	EventInfo eventInfo;
 
 	auto date = calendar_->selection().begin();
 	auto time = start_time_input_->time();
 	auto dateTime = Wt::WDateTime(*date, time);
 
 	// std::cout << "\n date string: " << dateTime.toString(DATETIMEFORMAT) << "\n\n";
-	event_data.eventInfo.dateTime = dateTime.toString(DATETIMEFORMAT).toUTF8();
-	event_data.eventInfo.duration = (double)event_duration/60;
-	event_data.eventInfo.location = location_input_->text().toUTF8();
-	event_data.eventInfo.description = description_input_->text().toUTF8();
+	eventInfo.dateTime = dateTime.toString(DATETIMEFORMAT).toUTF8();
+	eventInfo.duration = (double)event_duration/60;
+	eventInfo.location = location_input_->text().toUTF8();
+	eventInfo.description = description_input_->text().toUTF8();
 
-	auto event = login_->registerEvent(event_data);
+	auto event = login_->addEventInfo(eventInfo);
 	calendar_->enable();
 }
 

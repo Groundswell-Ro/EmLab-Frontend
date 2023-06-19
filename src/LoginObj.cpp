@@ -134,7 +134,7 @@ void Login::getConnectionStrings()
 // 	return clientId;
 // }
 
-EventData Login::registerEvent(EventData eventData)
+EventData Login::addEventData(EventData eventData)
 {
 	try
 	{
@@ -145,14 +145,33 @@ EventData Login::registerEvent(EventData eventData)
 		{
 			throw std::runtime_error("Invalid proxy");
 		}
-		// get events from server by client
-		eventData = eventsDataInterface->addEvent(userToken(), eventData);
+		eventData.eventInfo.id =  eventsDataInterface->addEventData(userToken(), eventData);
 	}
 	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
 	}
 	return eventData;
+}
+
+EventInfo Login::addEventInfo(EventInfo eventInfo)
+{
+	try
+	{
+		Ice::CommunicatorHolder ich = Ice::initialize();
+		auto base = ich->stringToProxy(eventConnString_);
+		auto eventsDataInterface = Ice::checkedCast<EventInterfacePrx>(base);
+		if (!eventsDataInterface)
+		{
+			throw std::runtime_error("Invalid proxy");
+		}
+		eventInfo.id = eventsDataInterface->addEventInfo(userToken(), eventInfo);
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	return eventInfo;
 }
 
 SeqEventData Login::getEventsData()
@@ -169,7 +188,7 @@ SeqEventData Login::getEventsData()
 			throw std::runtime_error("Invalid proxy");
 		}
 		// get events data
-		 events_data = eventsDataInterface->getEventsData(userToken());
+		 events_data = eventsDataInterface->getSeqEventData(userToken());
 	}
 	catch (const std::exception &e)
 	{
