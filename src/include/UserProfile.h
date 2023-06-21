@@ -1,4 +1,7 @@
 #pragma once
+#include "LoginObj.h"
+#include <comm/ReviewInterface.h>
+
 #include <Wt/WTemplate.h>
 #include <Wt/WContainerWidget.h>
 #include <Wt/WMenu.h>
@@ -9,24 +12,32 @@
 #include <Wt/WText.h>
 #include <Wt/WImage.h>
 #include <Wt/WPushButton.h>
-#include <Wt/WToolBar.h>
+#include <Wt/WAnimation.h>
+#include <Wt/WLineEdit.h>
 
 class UserProfile : public Wt::WTemplate
 {
 public:
-        UserProfile();
+        UserProfile(std::shared_ptr<Login> login);
 private:
-    Wt::WTemplate* header_;
-    Wt::WTemplate* header_cover_;
     Wt::WImage* profile_image_;
-    Wt::WMenu* menu_;
-    Wt::WStackedWidget* stack_;
 
-    std::unique_ptr<Wt::WContainerWidget> createInfoPage();
-    std::unique_ptr<Wt::WContainerWidget> createGaleryPage();
-    std::unique_ptr<Wt::WContainerWidget> createServicesPage();
-    std::unique_ptr<Wt::WContainerWidget> createRreviewsPage();
-    std::unique_ptr<Wt::WContainerWidget> createSettingsPage();
+    std::unique_ptr<Wt::WContainerWidget> createInfo();
+    std::unique_ptr<Wt::WContainerWidget> createGalery();
+    std::unique_ptr<Wt::WContainerWidget> createServices();
+    std::unique_ptr<Wt::WContainerWidget> createReviews();
+    std::unique_ptr<Wt::WContainerWidget> createSettings();
 
-    void addReview(Wt::WContainerWidget* container);
+    // those widgets are created into the settings page
+    std::unique_ptr<Wt::WTemplate> createSettingsGeneralWidget(std::string tempName);
+    std::unique_ptr<Wt::WTemplate> createChangeEmailWidget(std::string tempName);
+    std::unique_ptr<Wt::WTemplate> createChangeUsernameWidget(std::string tempName);
+    std::unique_ptr<Wt::WTemplate> createChangeNameWidget(std::string tempName);
+    std::unique_ptr<Wt::WTemplate> createChangePhoneWidget(std::string tempName);
+    std::unique_ptr<Wt::WTemplate> createChangePasswordWidget(std::string tempName);
+
+private:
+    std::shared_ptr<Login> login_;
+
+
 };

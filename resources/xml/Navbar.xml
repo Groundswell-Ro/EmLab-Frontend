@@ -24,8 +24,7 @@
       <message id="user-menu-wrapper">
       ${user-menu} 
       ${auth-btn class="btn btn-primary ms-auto"}
-      ${theme-switcher class="relative block w-10 h-5 ms-auto
-      bg-white rounded-full shadow-lg border-0"}
+      ${theme-switcher class="rounded-full shadow-lg"}
       </message>
 
 </messages>

@@ -7,13 +7,13 @@ HomePage::HomePage(std::shared_ptr<Login> login)
 	setStyleClass("relative w-full h-full flex");
 	if(login_->isLoggedIn())
 		createSidebar();
-	addWidget(std::make_unique<UserProfile>());
+	addWidget(std::make_unique<UserProfile>(login_));
 }
 
 void HomePage::createSidebar()
 {
 	sidebar_ = addWidget(std::make_unique<Wt::WTemplate>(tr("home-sidebar")));
-	sidebar_->addStyleClass("m-3 absolute left-0 top-0 h-full sm:relative max-w-64 w-64 min-w-[16rem] bg-body z-20 transition-spacing ease-in-out delay-75 duration-300 shadow-2xl rounded -ms-64");
+	sidebar_->addStyleClass("m-3 absolute left-0 top-0 min-h-[calc(100%-1.5rem)] sm:relative max-w-64 w-64 min-w-[16rem] bg-body z-20 transition-spacing ease-in-out delay-75 duration-300 shadow-2xl rounded -ms-64");
 	sidebar_content_ = sidebar_->bindWidget("sidebar-content", std::make_unique<Wt::WTemplate>());
 	auto toggle_sidebar_btn = sidebar_->bindWidget("sidebar-toggler", std::make_unique<Wt::WPushButton>(tr("book-svg")));
 	toggle_sidebar_btn->setTextFormat(Wt::TextFormat::XHTML);
@@ -44,7 +44,7 @@ void HomePage::createSidebar()
 void HomePage::saveEvent()
 {
 	std::cout << "\n save event \n";
-	add_event_btn_->removeStyleClass("-translate-x-28");
+	add_event_btn_->removeStyleClass("-translate-x-32");
 	save_event_btn_->addStyleClass("-translate-x-28");
 	sidebar_content_->setTemplateText("");
 	cancel_event_btn_->setDisabled(true);
@@ -68,7 +68,7 @@ void HomePage::addEvent()
 {
 	std::cout << "\n add event \n";
 	// auto date = *(calendar_->selection().begin());
-	add_event_btn_->addStyleClass("-translate-x-28");
+	add_event_btn_->addStyleClass("-translate-x-32");
 	save_event_btn_->removeStyleClass("-translate-x-28");
 	sidebar_content_->setTemplateText(tr("sidebar-event-open"));
 
@@ -186,7 +186,7 @@ void HomePage::addEvent()
 void HomePage::cancelEvent()
 {
 	std::cout << "\n cancel event \n";
-	add_event_btn_->removeStyleClass("-translate-x-28");
+	add_event_btn_->removeStyleClass("-translate-x-32");
 	save_event_btn_->addStyleClass("-translate-x-28");
 	sidebar_content_->setTemplateText("");
 	cancel_event_btn_->setDisabled(true);

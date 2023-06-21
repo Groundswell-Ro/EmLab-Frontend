@@ -1,3 +1,15 @@
 .expand {
   @apply !w-[calc(100vw-5rem)] sm:w-[calc(100vw-20vw)];
 }
+
+.reviews-menu > .btn {
+  @apply !hidden;
+}
+
+.basic-widget {
+  @apply bg-body mx-0 my-3 rounded-md p-4 shadow-md sm:m-3;
+}
+/* 
+* {
+  @apply box-border;
+} */

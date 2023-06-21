@@ -85,6 +85,6 @@
 .btn-dark {
   @apply btn btn-dark-light btn-dark-dark;
 }
-.btn.active {
-  @apply !bg-neutral-50;
+.btn.itemselected {
+  @apply !visible !bg-neutral-50;
 }

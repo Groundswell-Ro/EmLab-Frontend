@@ -7,22 +7,23 @@ EventManagerLab::EventManagerLab()
 	setStyleClass("flex flex-col h-screen");
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
-	// createAuth();
-	
-}
 
+	// createAuth();
+}
 
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	this->clear();
 	auto auth = addWidget(std::make_unique<Auth>(login_));
-	
+	// auth->dev_loginUser("client@gmail.com", "asdfghj1");
+	// auth->dev_loginUser("provider@gmail.com", "asdfghj1");
 }
 
 // handle app state depending on user login status
 void EventManagerLab::handleUserAuth() 
 {	
 	createApp();
+
 	if (login_->isLoggedIn())
 	{
 		// user menu_
@@ -62,8 +63,9 @@ void EventManagerLab::handleUserAuth()
 
 // create Application Page
 void EventManagerLab::createApp() {
+
 	this->clear();
-	// dev_controlers();
+
 	// Create navigation
 	navbar_ = addWidget(std::make_unique<Wt::WTemplate>(tr("navbar")));
 	auto logo = navbar_->bindWidget("logo", std::make_unique<Wt::WImage>("https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"));
@@ -76,6 +78,7 @@ void EventManagerLab::createApp() {
 	// add menu_ items
 	auto home_page_menu_item = nav_menu_->addItem("Home", std::make_unique<HomePage>(login_));
 	auto page_two_menu_item = nav_menu_->addItem("Test", std::make_unique<TestPage>(login_));
+
 	// menu_ Item styles
 	Wt::WString list_item_styles = "bg-body-hover-border w-4/5 rounded-md sm:rounded-none h-6 h-full flex items-center justify-center";
 	home_page_menu_item->setStyleClass(list_item_styles);
@@ -131,8 +134,7 @@ void EventManagerLab::menuItemSelected(Wt::WMenuItem *item) {
 std::unique_ptr<Wt::WPushButton> EventManagerLab::createThemeSwitcher(){
 	auto theme_switcher = std::make_unique<Wt::WPushButton>(tr("sun-svg"));
     theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
-    theme_switcher->setStyleClass("relative w-10 h-5 m-1 mr-2 p-0 bg-white rounded-full shadow border-0 z-20");
-    theme_switcher->setText(tr("sun-svg"));
+    theme_switcher->setStyleClass("rounded-full border-0 p-0 flex justify-center items-center");
 	auto theme_switcher_ptr = theme_switcher.get();
 	// theme switcher toggle dark/light mode
     theme_switcher_ptr->clicked().connect(this, [=](){

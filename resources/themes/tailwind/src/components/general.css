@@ -21,27 +21,24 @@
 
 .bg-body-hover-border.itemselected.simple-menu-item {
   @apply bg-body border border-x-0 border-b-2 border-t-0 border-solid border-neutral-300 hover:bg-neutral-0 dark:hover:bg-neutral-700;
-
 }
 
 .bg-body-active {
   @apply bg-body border border-x-0 border-b-2 border-t-0 border-solid border-neutral-300 hover:bg-neutral-0 dark:hover:bg-neutral-700;
 }
 input {
-  @apply text-basic bg-body outline-none; 
+  @apply text-basic bg-body outline-none;
 }
 .input-rounded {
   @apply rounded-lg border-0 bg-white px-4 py-3 ps-10 font-medium shadow-md;
 }
 
-
 .input-float {
-  @apply block px-2.5 pb-2.5 pt-4 text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600;
+  @apply block appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0 dark:border-gray-600 dark:text-white dark:focus:border-blue-500;
 }
 .label-float {
-  @apply absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1 rounded-md;
+  @apply absolute left-1 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform rounded-md bg-white px-2 text-lg text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600 dark:bg-gray-900 dark:text-gray-400 peer-focus:dark:text-blue-500;
 }
-
 
 body {
   @apply m-0 bg-neutral-150 font-sans text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50;
@@ -54,25 +51,25 @@ svg {
   @apply text-gray-500;
 }
 
- /* basic transition classes */
-.animate {  
-  @apply ease-in-out duration-300 delay-75;
+/* basic transition classes */
+.animate {
+  @apply delay-75 duration-300 ease-in-out;
 }
 
 .animate-width {
-  @apply transition-width animate;
+  @apply animate transition-width;
 }
 
 .animate-opacity {
-  @apply transition-opacity animate;
+  @apply animate transition-opacity;
 }
 
 .animate-all {
-  @apply transition-all animate;
+  @apply animate transition-all;
 }
 
 .animate-spacing {
-  @apply transition-spacing animate;
+  @apply animate transition-spacing;
 }
 
 .bor-1 {
