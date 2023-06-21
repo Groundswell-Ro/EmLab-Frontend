@@ -1,12 +1,13 @@
 # Compiler settings
 CC = g++
-CXXFLAGS = -std=c++14 -I. -I../comunication -I../comunication/comm -DICE_CPP11_MAPPING
+CXXFLAGS = -std=c++14 -I. -I../comunication -I../comunication/comm -I../comunication/utils -DICE_CPP11_MAPPING
 
 # Makefile settings
 APPNAME = frontend
 EXT = .cpp
 SRCDIR = ./src
-CMMDIR = ../comunication/obj
+CMMDIR = ../comunication/comm
+UTILDIR = ../comunication/utils
 OBJDIR = ./src/obj
 
 # Linking lib
@@ -17,9 +18,10 @@ RLIB = --docroot . --http-address 0.0.0.0 --http-port 9090
 
 
 ############## Creating variables #############
-SRC = $(wildcard $(SRCDIR)/*$(EXT))
-OBJCOMM = $(wildcard $(CMMDIR)/*.o)
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
+SRC = $(wildcard $(SRCDIR)/*$(EXT)) 
+COMM = $(wildcard $(CMMDIR)/*$(EXT))
+UTIL = $(wildcard $(UTILDIR)/*$(EXT))
+OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o) $(UTIL:$(UTILDIR)/%$(EXT)=$(OBJDIR)/%.o) $(COMM:$(CMMDIR)/%$(EXT)=$(OBJDIR)/%.o)
 
 ########################################################################
 ####################### Targets beginning here #########################
@@ -33,6 +35,12 @@ $(APPNAME): $(OBJ) $(OBJCOMM)
 
 # Building rule for .o files and its .c/.cpp in combination with all .h
 $(OBJDIR)/%.o: $(SRCDIR)/%$(EXT) | gen_obj_dir
+	$(CC) $(CXXFLAGS) -o $@ -c $<
+
+$(OBJDIR)/%.o: $(CMMDIR)/%$(EXT)
+	$(CC) $(CXXFLAGS) -o $@ -c $<
+
+$(OBJDIR)/%.o: $(UTILDIR)/%$(EXT)
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 ################## Run #################

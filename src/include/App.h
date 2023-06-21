@@ -4,8 +4,9 @@
 // #include "Events.h"
 #include "Auth.h"
 // #include "AuthWidget.h"
-#include "HomePage.h"
+#include "PortofoliosPage.h"
 #include "TestPage.h"
+#include "UserSettingsPage.h"
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/WStackedWidget.h>
@@ -14,7 +15,8 @@
 #include <iostream>
 #include <Wt/WApplication.h>
 #include <Wt/WCheckBox.h>
-
+#include <Wt/WPopupMenu.h>
+#include <Wt/WMessageBox.h>
 class EventManagerLab : public Wt::WContainerWidget
 {
 public:
@@ -27,8 +29,8 @@ private:
     Wt::WTemplate* navbar_;
     Wt::WStackedWidget* stack_;
     Wt::WMenu* nav_menu_;
-    Wt::WMenu* user_menu_;
-    Wt::WTemplate* user_menu_wrapper_;
+
+    Wt::WPopupMenu* user_menu_;
 
     Wt::WMenuItem* current_menu_item_;
     void createAuth();

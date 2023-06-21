@@ -26,39 +26,41 @@ void EventManagerLab::handleUserAuth()
 
 	if (login_->isLoggedIn())
 	{
-		// user menu_
-		user_menu_ = user_menu_wrapper_->bindWidget("user-menu", std::make_unique<Wt::WMenu>(stack_));
-		user_menu_->setStyleClass("list-none m-0 p-1 text-center");
+		auto profile_btn = std::make_unique<Wt::WPushButton>();
 
-		auto profile = user_menu_->addItem("Profile",  std::make_unique<Wt::WText>("Profile"));
-		auto settings = user_menu_->addItem("Settings", std::make_unique<Wt::WText>("Settings"));
+		auto profile_img = std::make_unique<Wt::WImage>(Wt::WLink("resources/images/alex.jpg"));
+		profile_img->setStyleClass("btn m-0 p-0 bg-transparent w-8 h-8 rounded-full focus:ring-1 focus:ring-neutral-500");
+
+		profile_btn->addChild(std::move(profile_img));
+
+		auto user_menu_ptr = std::make_unique<Wt::WPopupMenu>(stack_);
+		user_menu_ = user_menu_ptr.get();
+		user_menu_->setStyleClass("p-3 m-3 bg-green-200");
+		auto profile = user_menu_->addItem("Profile",  std::make_unique<UserPortofolio>(login_));
+		auto settings = user_menu_->addItem("Settings", std::make_unique<UserSettingsPage>(login_));
 
 		profile->clicked().connect(this, [=](){ menuItemSelected(profile); });
 		settings->clicked().connect(this, [=](){ menuItemSelected(settings); });
 		
-		Wt::WString userMenuItemStyles = "bg-body-hover-border block rounded-md text-inherit mb-1 flex items-center px-4 py-2 text-sm";
-		profile->setStyleClass(userMenuItemStyles);
-		settings->setStyleClass(userMenuItemStyles);
+		Wt::WString user_menu_item_styles = "bg-body-hover-border block rounded-md text-inherit mb-1 flex items-center px-4 py-2 text-sm";
+		profile->setStyleClass(user_menu_item_styles);
+		settings->setStyleClass(user_menu_item_styles);
 
-		auto log_out = user_menu_wrapper_->bindWidget("auth-btn", std::make_unique<Wt::WPushButton>("Log Out"));
+		auto log_out = navbar_->bindWidget("auth-btn", std::make_unique<Wt::WPushButton>("Log Out"));
 		log_out->clicked().connect(this, [=](){
 			login_->logout();
 		});
+		profile_btn->setMenu(std::move(user_menu_ptr));
+		navbar_->bindWidget("user-menu", std::move(profile_btn));
 		
 	}else {
 		// remove user_menu_ widget
-		user_menu_wrapper_->bindEmpty("user-menu");
-		auto test = navbar_->bindWidget("user-menu", std::make_unique<Wt::WContainerWidget>());
-		test->setStyleClass("flex justify-center items-center");
-		test->addWidget(createThemeSwitcher());
+		auto login_btn = navbar_->bindWidget("user-menu", std::make_unique<Wt::WPushButton>("Log In"));
+		login_btn->setStyleClass("btn btn-primary");
 
-		auto log_in = test->addWidget(std::make_unique<Wt::WPushButton>("Log In"));
-		log_in->setStyleClass("btn btn-primary ms-auto");
-		log_in->clicked().connect(this, &EventManagerLab::createAuth);
+		login_btn->clicked().connect(this, &EventManagerLab::createAuth);
 	}
-	// select start page
-	// nav_menu_->select(1);
-	// menuItemSelected(nav_menu_->itemAt(1));
+
 }
 
 // create Application Page
@@ -76,18 +78,20 @@ void EventManagerLab::createApp() {
 	stack_->setStyleClass("flex-grow");
 	
 	// add menu_ items
-	auto home_page_menu_item = nav_menu_->addItem("Home", std::make_unique<HomePage>(login_));
+	auto portofolio_menu_item = nav_menu_->addItem("Home", std::make_unique<PortofoliosPage>(login_));
 	auto page_two_menu_item = nav_menu_->addItem("Test", std::make_unique<TestPage>(login_));
 
 	// menu_ Item styles
 	Wt::WString list_item_styles = "bg-body-hover-border w-4/5 rounded-md sm:rounded-none h-6 h-full flex items-center justify-center";
-	home_page_menu_item->setStyleClass(list_item_styles);
+	portofolio_menu_item->setStyleClass(list_item_styles);
 	page_two_menu_item->setStyleClass(list_item_styles);
 	Wt::WString menuItemStyles = "sm:!rounded-none p-3 text-inherit !m-0 font-medium";
-	home_page_menu_item->anchor()->setStyleClass(menuItemStyles); 
+	portofolio_menu_item->anchor()->setStyleClass(menuItemStyles); 
 	page_two_menu_item->anchor()->setStyleClass(menuItemStyles);
-	home_page_menu_item->clicked().connect(this, [=](){ menuItemSelected(home_page_menu_item); });
+
+	portofolio_menu_item->clicked().connect(this, [=](){ menuItemSelected(portofolio_menu_item); });
 	page_two_menu_item->clicked().connect(this, [=](){ menuItemSelected(page_two_menu_item); });
+	
 	// Hamburger Button to toggle menu_ opn mobile
 	auto hamburger_btn = navbar_->bindWidget("hamburger-button", std::make_unique<Wt::WPushButton>(tr("hamburger-svg")));
 	hamburger_btn->setTextFormat(Wt::TextFormat::XHTML);
@@ -100,24 +104,7 @@ void EventManagerLab::createApp() {
 			hamburger_btn->setText(tr("hamburger-svg"));
 		}
 	});
-
-		auto user_menu_temp = navbar_->bindWidget("user-menu", std::make_unique<Wt::WTemplate>(tr("user-menu")));
-		auto user_img = user_menu_temp->bindWidget("user-image", std::make_unique<Wt::WImage>("./resources/images/blank-profile-picture.png"));
-		user_menu_wrapper_ = user_menu_temp->bindWidget("user-menu-wrapper", std::make_unique<Wt::WTemplate>(tr("user-menu-wrapper")));
-		
-		// user menu_ toggle open/closed
-		user_img->clicked().connect(this, [=](){
-			if(user_menu_wrapper_->hasStyleClass("hidden")){
-				user_menu_wrapper_->removeStyleClass("hidden");
-			} else {
-				user_menu_wrapper_->addStyleClass("hidden");
-			}
-		});
-		
-		user_menu_wrapper_->bindWidget("theme-switcher", createThemeSwitcher());
-
-	
-	current_menu_item_ = home_page_menu_item;
+	current_menu_item_ = portofolio_menu_item;
 	current_menu_item_->addStyleClass("bg-body-active");
 }
 

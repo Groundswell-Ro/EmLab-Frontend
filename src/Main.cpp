@@ -9,17 +9,11 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	// Set up application resourses and settings
 	app->setTitle("Event Manager Lab");
 	// app->setCssTheme("");
+	// app->setCssTheme("polished");
 	// include tailwind css file
 	app->useStyleSheet("resources/themes/tailwind/dist/tailwind.css");
-	
-	// import resources
-	app->messageResourceBundle().use(app->appRoot() + "resources/templates/general");
-	app->messageResourceBundle().use(app->appRoot() + "resources/templates/svgs");
-	app->messageResourceBundle().use(app->appRoot() + "resources/templates/ProfilePage");
-	app->messageResourceBundle().use(app->appRoot() + "resources/templates/ProfileSettings");
-	app->messageResourceBundle().use(app->appRoot() + "resources/templates/EventData");
-	app->messageResourceBundle().use(app->appRoot() + "resources/templates/Authentification");
 
+	// import resources
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Auth");
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/General");
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Navbar");
