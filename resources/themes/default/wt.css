@@ -8,7 +8,7 @@
 .Wt-valid {
   background-color: #daf7da
 }
-
+/* Wt-popup Wt-popupmenu Wt-outset wt-reparented */
 /*
  * Effects
  */
@@ -252,8 +252,8 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 }
 
 .Wt-dialog .titlebar {
-  background: #888888; color: #FFFFFF;
-  padding: 2px 6px 3px;
+  /* background: #888888; color: #FFFFFF; */
+  /* padding: 2px 6px 3px; */
 }
 
 .Wt-dialog .movable .titlebar {
@@ -261,8 +261,8 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 }
 
 .Wt-dialog .titlebar h4 {
-  margin: 0px 2px;
-  font-size: 110%;
+  /* margin: 0px 2px;
+  font-size: 110%; */
 }
 
 .Wt-dialog .body, .Wt-dialog .footer {
@@ -357,9 +357,9 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 }
 
 .Wt-panel .titlebar {
-  padding: 0px 6px 3px;
+  /* padding: 0px 6px 3px;
   background: #888888; color: #FFFFFF;
-  font-size: 10pt;
+  font-size: 10pt; */
 }
 
 .Wt-panel .body {
@@ -395,9 +395,9 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 .Wt-popupmenu {
   position: absolute;
   display: none;
-  background: white;
-  color: black;
-  border: 1px solid #666666;
+  /* background: white; */
+  /* color: black; */
+  /* border: 1px solid #666666; */
   z-index: 200;
   cursor: default;
   list-style: none;
@@ -407,22 +407,22 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 
 .Wt-popupmenu li a {
   display: block;
-  padding: 2px 10px; 
+  /* padding: 2px 10px;  */
 }
 
 .Wt-popupmenu .Wt-padded {
-  margin-right: 3px;
-  margin-left: 24px;
-  padding-right: 24px;
+  /* margin-right: 3px; */
+  /* margin-left: 24px; */
+  /* padding-right: 24px; */
 }
 
 .Wt-popupmenu .active {
-  background: blue;
-  color: white;
+  /* background: blue; */
+  /* color: white; */
 }
 
 .Wt-popupmenu .Wt-disabled, .Wt-popupmenu .Wt-sectheader.active {
-  color: #AAA;
+  /* color: #AAA; */
 }
 
 .Wt-popupmenu .submenu {
@@ -432,15 +432,15 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 }
 
 .Wt-popupmenu .Wt-separator {
-  border-top: 1px solid #CCCCCC;
+  /* border-top: 1px solid #CCCCCC;
   border-bottom: 1px solid #DDDDDD;
   margin: 0px 3px;
-  padding: 0;
+  padding: 0; */
 }
 
 .Wt-popupmenu .Wt-sectheader, .Wt-popupmenu .Wt-sectheader.active {
-  background: transparent;
-  color: #AAA;
+  /* background: transparent;
+  color: #AAA; */
 }
 
 /*

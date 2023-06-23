@@ -1,13 +1,13 @@
 # Compiler settings
 CC = g++
-CXXFLAGS = -std=c++14 -I. -I../comunication -I../comunication/comm -I../comunication/utils -DICE_CPP11_MAPPING
+CXXFLAGS = -std=c++14 -I. -I../comunication -I../comunication/comm -DICE_CPP11_MAPPING
 
 # Makefile settings
 APPNAME = frontend
 EXT = .cpp
 SRCDIR = ./src
+UTILDIR = ./utils
 CMMDIR = ../comunication/comm
-UTILDIR = ../comunication/utils
 OBJDIR = ./src/obj
 
 # Linking lib
@@ -30,11 +30,14 @@ OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o) $(UTIL:$(UTILDIR)/%$(EXT)=$(OBJDIR)
 all: $(APPNAME)
 
 # Builds the app
-$(APPNAME): $(OBJ) $(OBJCOMM)
+$(APPNAME): $(OBJ) 
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
+# Includes all .h files
+-include $(DEP)
+
 # Building rule for .o files and its .c/.cpp in combination with all .h
-$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT) | gen_obj_dir
+$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT) 
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 $(OBJDIR)/%.o: $(CMMDIR)/%$(EXT)
@@ -77,7 +80,7 @@ endif
 
 ################### Display variables ###################
 echo:
-	@echo $(SRC)
-	@echo $(COMM)
 	@echo $(OBJ)
-	@echo $(DEP)
+	# @echo $(SRC)
+	# @echo $(COMM)
+	# @echo $(DEP)

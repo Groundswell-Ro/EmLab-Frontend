@@ -18,6 +18,7 @@
 #include <Wt/WAnimation.h>
 #include <Wt/WMenu.h>
 #include <Wt/WStackedWidget.h>
+
 #include <Ice/Ice.h>
 #include <stdexcept>
 

@@ -71,7 +71,3 @@ svg {
 .animate-spacing {
   @apply animate transition-spacing;
 }
-
-.bor-1 {
-  @apply border border-solid border-neutral-200;
-}

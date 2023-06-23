@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+
+    <message id='profile-dialog-content'>
+
+		${photo.uploder}
+		${username.input}
+		<div>
+			<div>First Service</div>
+		</div>
+    
+    </message>
+
+	<message id='photo.uploder'>
+		<div>
+			<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
+				${photo class="h-32 w-full rounded-full object-cover"}
+			</div>
+			${uploader class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none"}
+			<div class="mx-auto w-48 text-center text-xs text-gray-400">
+            	${uploder-status}
+			</div>
+		</div>
+	</message>
+
+	<message id='input.normal'>
+		<div>
+			<div class="mb-1 font-bold">${label-text}</div>
+			<div class="relative flex flex-col justify-stretch">
+				${icon class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${input class="input-rounded"}
+				${<end-icon>}
+					${end-icon class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
+				${</end-icon>}
+			</div>
+		</div>
+	</message>
+
+</messages>

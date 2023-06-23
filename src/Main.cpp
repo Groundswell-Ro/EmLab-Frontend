@@ -19,6 +19,8 @@ std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Navbar");
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/HomePage");
 	app->messageResourceBundle().use(app->appRoot() + "resources/xml/ProfilePage");
+	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Svg");
+	app->messageResourceBundle().use(app->appRoot() + "resources/xml/CreateProfileDialog");
 	
 	// app->require("resources/Js/CopyToClipboard.js");
 	app->require("resources/Js/Utility.js");

@@ -3,37 +3,40 @@
 UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
 {
-    setStyleClass("mx-auto w-full max-w-7xl !overflow-y-scroll");
+    setStyleClass("mx-auto w-full max-w-7xl overflow-y-auto");
 
     auto tmp = addWidget(std::make_unique<Wt::WTemplate>(tr("profile-content-widget")));
+    tmp->setCondition("if-no-profile", true);
+    auto create_profile_btn = tmp->bindWidget("create-profile-btn", std::make_unique<Wt::WPushButton>("create provider profile"));
     auto stack = tmp->bindWidget("stack", std::make_unique<Wt::WStackedWidget>());
     auto menu = tmp->bindWidget("menu", std::make_unique<Wt::WMenu>(stack));
-    // stack->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::Fade), true);
-    menu->setStyleClass("basic-widget mt-0 flex flex-col text-center min-w-[200px] max-w-[600px] list-none");
-    stack->setStyleClass("flex-grow");
+    stack->setStyleClass("flex-grow mt-3");
 
+    
     auto settings_general_tmp = createSettingsGeneralWidget("settings-widget");
     auto change_email_tmp = createChangeEmailWidget("settings-widget");
-    auto change_username_tmp = createChangeUsernameWidget("settings-widget");
+    // auto change_username_tmp = createChangeUsernameWidget("settings-widget");
     auto change_name_tmp = createChangeNameWidget("settings-widget");
     auto change_phone_tmp = createChangePhoneWidget("settings-widget");
     auto change_password_tmp = createChangePasswordWidget("settings-widget");
 
+
     auto menu_item_general = menu->addItem("General", std::move(settings_general_tmp));
     auto menu_item_email = menu->addItem("Change Email", std::move(change_email_tmp));
-    auto menu_item_username = menu->addItem("Change Username", std::move(change_username_tmp));
+    // auto menu_item_username = menu->addItem("Change Username", std::move(change_username_tmp));
     auto menu_item_name = menu->addItem("Change Name", std::move(change_name_tmp));
     auto menu_item_phone = menu->addItem("Change Phone", std::move(change_phone_tmp));
     auto menu_item_password = menu->addItem("Change Password", std::move(change_password_tmp));
 
-    Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
+    Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item text-bold [&>a]:px-8 [&>a]:py-2";
     menu_item_general->setStyleClass(menu_item_styles);
     menu_item_email->setStyleClass(menu_item_styles);
-    menu_item_username->setStyleClass(menu_item_styles);
+    // menu_item_username->setStyleClass(menu_item_styles);
     menu_item_name->setStyleClass(menu_item_styles);
     menu_item_phone->setStyleClass(menu_item_styles);
     menu_item_password->setStyleClass(menu_item_styles);
-    
+
+    create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
 
     menu->select(0);
 
@@ -199,3 +202,76 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std:
 
 return widget_tmp;
 }
+
+void UserSettingsPage::createProfileDialog()
+{
+    auto dialog = addChild(std::make_unique<Wt::WDialog>());
+    
+    auto header = dialog->titleBar();
+    auto content = dialog->contents();
+    auto footer = dialog->footer();
+
+    dialog->setMovable(false);
+    dialog->setStyleClass("basic-widget relative max-w-[95vw] min-h-[50%] max-h-[90%] shadow-lg overflow-x-hidden border-0");
+    content->setStyleClass("overflow-y-scroll");
+    footer->setStyleClass("flex justify-between items-center absolute bottom-0 left-0 w-full");
+
+    auto content_temp = content->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-dialog-content")));
+
+    auto photo_uploder_temp = content_temp->bindWidget("photo.uploder", std::make_unique<Wt::WTemplate>(tr("photo.uploder")));
+    auto username_input_temp = content_temp->bindWidget("username.input", std::make_unique<Wt::WTemplate>("input.normal"));
+
+    // header / footer setup
+    header->clear();
+    header->addWidget(std::make_unique<Wt::WText>("Create Provider Profile"))->setStyleClass("text-cemter text-2xl font-semibold");
+    auto cancel_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Cancel"));
+    auto create_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Create"));
+
+    create_btn->setStyleClass("btn btn-primary");
+    cancel_btn->setStyleClass("btn btn-danger");
+
+    create_btn->clicked().connect([=]{ dialog->accept(); });
+    cancel_btn->clicked().connect([=]{ dialog->reject(); });
+
+    dialog->finished().connect([=]{
+        if(dialog->result() == Wt::DialogCode::Accepted)
+        {
+            std::cout << "\n\n dialog accepted protocol here \n\n";
+        }else 
+        {
+            std::cout << "\n\n dialog rejected protocol here \n\n";
+        }
+        removeWidget(dialog);
+    });
+    dialog->show();
+
+}
+
+// void RegistrationFormView::setPhotoUploder()
+// {
+// 	profile_photo_uploder_ = bindWidget("photo-uploader", std::make_unique<Wt::WFileUpload>());
+// 	profile_photo_status_ = bindWidget("profile-photo-uploader-status", std::make_unique<Wt::WText>("Click to add profile picture"));
+// 	profile_photo_ = bindWidget("profile-photo", std::make_unique<Wt::WImage>(Wt::WLink("resources/images/blank-profile-picture.png")));
+// 	   // Upload automatically when the user entered a file.
+//     profile_photo_uploder_->changed().connect([=] {
+//         profile_photo_uploder_->upload();
+//         profile_photo_status_->setText("File upload is changed.");
+
+//     });
+
+//     // React to a succesprofile_photo_uploder_ll upload.
+//     profile_photo_uploder_->uploaded().connect([=] {
+//         profile_photo_status_->setText("File upload is finished.");
+//         photo_bytes_interface_ = Emlab::imageToBytes(profile_photo_uploder_->spoolFileName());
+// 		Wt::WString photoPath = "resources/registrationImages/" + profile_photo_uploder_->clientFileName();
+// 		std::cout << "\n\n Photo Path : " << photoPath.toUTF8() << "\n\n";
+//         auto conversion_result = Emlab::bytesToImage(photo_bytes_interface_, photoPath.toUTF8());
+// 		conversion_result ? std::cout << "\n\n Image saved \n\n" : std::cout << "\n\n Image not saved \n\n";
+// 		profile_photo_->setImageLink(Wt::WLink(photoPath.toUTF8()));
+//     });
+
+//     // React to a file upload problem.
+//     profile_photo_uploder_->fileTooLarge().connect([=] {
+//         profile_photo_status_->setText("File is too large.");
+//     });
+// }

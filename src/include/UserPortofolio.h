@@ -1,6 +1,6 @@
 #pragma once
 #include "LoginObj.h"
-#include <comm/ReviewInterface.h>
+#include "../../../comunication/comm/ReviewInterface.h"
 
 #include <Wt/WTemplate.h>
 #include <Wt/WContainerWidget.h>
@@ -26,18 +26,7 @@ private:
     std::unique_ptr<Wt::WContainerWidget> createGalery();
     std::unique_ptr<Wt::WContainerWidget> createServices();
     std::unique_ptr<Wt::WContainerWidget> createReviews();
-    std::unique_ptr<Wt::WContainerWidget> createSettings();
-
-    // those widgets are created into the settings page
-    std::unique_ptr<Wt::WTemplate> createSettingsGeneralWidget(std::string tempName);
-    std::unique_ptr<Wt::WTemplate> createChangeEmailWidget(std::string tempName);
-    std::unique_ptr<Wt::WTemplate> createChangeUsernameWidget(std::string tempName);
-    std::unique_ptr<Wt::WTemplate> createChangeNameWidget(std::string tempName);
-    std::unique_ptr<Wt::WTemplate> createChangePhoneWidget(std::string tempName);
-    std::unique_ptr<Wt::WTemplate> createChangePasswordWidget(std::string tempName);
 
 private:
     std::shared_ptr<Login> login_;
-
-
 };

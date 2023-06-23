@@ -32,9 +32,17 @@
 
     <!-- profile content -->
     <message id='profile-content-widget'>
+
         <div class="flex flex-col sm:flex-row">
-            ${menu class=""}
-            ${stack class="mt-0 ms-0 flex-grow"}
+            <div class="basic-widget text-center min-w-[200px] max-w-[600px]">
+
+            ${<if-no-profile>}
+                ${create-profile-btn class="btn btn-primary mx-auto calitalize"}
+            ${</if-no-profile>}
+
+            ${menu class="flex flex-col list-none p-0 m-1 space-y-3"}
+            </div>
+            ${stack class="mt-0 ms-0"}
         </div>
     </message>
 
@@ -63,7 +71,6 @@
         <hr class="w-full" />
 
     </message>
-
 
     <message id='info-content-widget'>
         <div class="space-y-5">

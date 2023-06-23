@@ -47,12 +47,7 @@
 			<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
 				${profile-photo class="h-32 w-full rounded-full object-cover"}
 			</div>
-
-			<!-- <button class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none">
-				${camera-svg}
-           				Browse Photo
-			</button> -->
-		${photo-uploader class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none"}
+			${photo-uploader class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none"}
 			<div class="mx-auto w-48 text-center text-xs text-gray-400">
             	${profile-photo-uploader-status}
 			</div>
@@ -63,7 +58,7 @@
 		</div>
 		<!-- UserName -->
 		<div>
-			<div for="text" class="mb-1 font-bold">Username</div>
+			<div for="text" class="mb-1 font-bold">Name</div>
 			<div class="relative flex flex-col justify-stretch">
 						${human-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
 						${user-name class="input-rounded"}
@@ -86,8 +81,8 @@
 			</div>
 		</div>
 		${password-requirments class="mb-4 mt-2 text-gray-600"}
+		<!-- Password -->
 		<div>
-			<!-- Password -->
 			<div class="mb-1 font-bold">Password</div>
 			<div class="relative flex flex-col justify-stretch">
 				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}

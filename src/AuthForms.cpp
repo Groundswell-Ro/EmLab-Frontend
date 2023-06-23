@@ -1,6 +1,5 @@
 #include "include/AuthForms.h"
 
-
 // login form fields
 const Wt::WFormModel::Field LoginFormModel::UserEmail = "user-email";
 const Wt::WFormModel::Field LoginFormModel::UserPassword = "user-password";

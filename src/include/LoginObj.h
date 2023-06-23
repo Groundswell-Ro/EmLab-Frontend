@@ -1,7 +1,7 @@
 #pragma once
-#include <comm/AuthInterface.h>
-#include <comm/EventInterface.h>
-#include <utils/Utils.h>
+#include "../../../comunication/comm/AuthInterface.h"
+#include "../../../comunication/comm/EventInterface.h"
+#include "../../utils/include/Utils.h"
 #include <Wt/WSignal.h>
 
 class Login

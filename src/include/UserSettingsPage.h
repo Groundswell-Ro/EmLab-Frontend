@@ -1,6 +1,6 @@
 #pragma once
 #include "LoginObj.h"
-#include <comm/ReviewInterface.h>
+#include "../../../comunication/comm/ReviewInterface.h"
 
 #include <Wt/WTemplate.h>
 #include <Wt/WContainerWidget.h>
@@ -14,6 +14,8 @@
 #include <Wt/WPushButton.h>
 #include <Wt/WAnimation.h>
 #include <Wt/WLineEdit.h>
+#include <Wt/WDialog.h>
+#include <Wt/WBreak.h>
 
 class UserSettingsPage : public Wt::WContainerWidget
 {
@@ -32,5 +34,6 @@ private:
 
 private:
     std::shared_ptr<Login> login_;
+    void createProfileDialog();
 
 };
