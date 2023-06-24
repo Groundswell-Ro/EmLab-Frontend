@@ -5,6 +5,8 @@
 @import "./components/table.css";
 @import "./components/panel.css";
 @import "./components/test.css";
+@import "./components/application.css";
+
 @tailwind base;
 * {
     scrollbar-width: thin;

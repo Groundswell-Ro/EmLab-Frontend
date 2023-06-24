@@ -2,54 +2,38 @@
 <messages>
 
     <message id="home-sidebar">
-        ${sidebar-toggler class="absolute top-0 -right-14 flex justify-center items-center btn btn-primary p-1.5 rounded-full animate-spacing shadow-md"}
-        ${calendar class="calendar w-full"}
-        <div class="relative mb-10">
-            ${add-event-btn class="btn btn-primary absolute top-0 left-0 animate-all"}
-            ${save-event-btn class="btn btn-primary absolute top-0 left-0 animate-all -translate-x-28"}
-            ${selected-date class="absolute top-2 right-12 underline underline-offset-4"}
-            ${cancel-event-btn class="btn btn-primary rounded-full p-1 absolute top-0 right-0 transition-opacity ease-in-out duration-300 delay-75 disabled:opacity-0 disabled:cursor-default"}
+        <div class="h-full overflow-y-scroll min-h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)]">
+            ${sidebar-toggler class="absolute top-0 -right-14 flex justify-center items-center btn btn-primary p-1.5 rounded-full animate-spacing shadow-md"}
+            ${calendar class="calendar w-full"}
+            <div class="relative mb-10">
+                ${add-event-btn class="btn btn-primary absolute top-0 left-0 animate-all"}
+                ${save-event-btn class="btn btn-primary absolute top-0 left-0 animate-all -translate-x-28"}
+                ${selected-date class="absolute top-2 right-12 underline underline-offset-4"}
+                ${cancel-event-btn class="btn btn-primary rounded-full p-1 absolute top-0 right-0 transition-opacity ease-in-out duration-300 delay-75 disabled:opacity-0 disabled:cursor-default"}
+            </div>
+            ${sidebar-content class="w-full"}
         </div>
-        ${sidebar-content class="w-full animate-width shadow-lg"}
-                  
     </message>
 
     <message id='sidebar-event-open'>
-        <div class="relative shadow-lg bg-body bor-1 m-1 p-1 py-5">
-            ${toggle-size-btn class="bg-transparent shadow-none absolute top-0 right-0 p-1 m-0 flex justify-center items-center rounded-md border-none"}
+        <div class="relative bg-body bor-1 m-1 py-5">
             ${event-view}
             
         </div>
     </message>
 
     <message id='event-view'>
+        <div class="overflow-y-scroll">
         ${event-data-panel}
+        </div>
     </message>
 
     <message id='event-form'>
-        <div class="w-full">
-
-            <div class="flex mb-2">
-                <span class="w-28 flex items-center">${clock-svg class="flex justify-center items-center me-1"}Start Time</span>
-                <span class="flex">
-                ${start-sub-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
-                ${start-time-input class="input-underline border-t w-16 px-1 text-center"}
-                ${start-add-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
-                </span>
-            </div>
-
-            <div class="flex mb-2">
-                <span class="w-28 flex items-center">${hourglass-svg class="flex justify-center items-center me-1"}Duration</span>
-                <div class="flex">
-                ${duration-sub-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
-                ${duration-time-input class="input-underline border-t w-16 px-1 text-center"}
-                ${duration-add-time-btn class="btn btn-primary p-0.5 m-0 rounded-none flex justify-center items-center"}
-                </div>
-            </div>
-
-            <div class="flex mb-3">
-                <span class="w-28 flex items-center">${clock-svg-fill class="flex justify-center items-center me-1"}End Time</span>
-                <span class="flex ms-7 text-sm cursor-default">${end-hour}</span>
+        <div class="mt-3">
+            <div class="flex flex-col items-stretch space-y-2">
+            ${time-input}
+            ${duration-input}
+            ${end-input}
             </div>
 
             <div class="flex flex-col items-stretch relative mb-3">
@@ -62,20 +46,6 @@
                 <label for="${id:description-input}" class="label-float flex items-center">${book-open-svg class="flex justify-center items-center me-1"}Description</label>
             </div>
         </div>
-    </message>
-
-    <message id='event-time-input'>
-        <div class="relative m-4 inline-flex w-48 items-end justify-between border text-center">
-            <button class="btn btn-primary">-</button>
-            <div class="absolute -top-2 left-1/2 -translate-x-1/2 bg-white px-2 backdrop-blur-sm">Time</div>
-            <div class="w-20 align-text-bottom text-black outline-none focus:border-none active:border-none">12:00 PM</div>
-            <button class="btn btn-primary">+</button>
-        </div>
-
-
-        ${minus}
-        ${input}
-        ${plus}
     </message>
 
 </messages>

@@ -13,4 +13,23 @@
 		</div>
 	</message>
 
+
+
+
+
+
+
+	<message id='time-input'>
+		<div class="bg-body h-8 relative m-2 mx-auto inline-flex w-full items-end justify-between border border-solid border-neutral-100 rounded-lg text-start">
+			<div class="absolute -top-3 left-1/2 border border-solid rounded-lg border-b-0 border-x-0 border-neutral-300 -translate-x-1/2 flex items-start bg-white px-1 text-gray-500">
+				${svg class="mx-1"}
+				${label-text class="capitalize"}
+				${svg class="mx-1"}
+			</div>
+			${sub-btn class="btn m-0 py-1 px-3 text-base"}
+			${display class="px-1 text-center w-full"}
+			${add-btn class="btn m-0 py-1 px-3 text-base"}
+		</div>
+    </message>
+
 </messages>

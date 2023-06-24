@@ -4,7 +4,7 @@
 Calendar::Calendar()
 {
   clicked().connect(this, &Calendar::onCellClicked);
-  setStyleClass("calendar flex justify-center w-full");
+  setStyleClass("calendar");
 	setSelectionMode(Wt::SelectionMode::Single);
 	setHorizontalHeaderFormat(Wt::CalendarHeaderFormat::SingleLetterDayNames);
 	select(Wt::WDate::currentDate());

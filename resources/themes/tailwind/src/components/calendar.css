@@ -1,15 +1,15 @@
-/* .calendar {
-    @apply min-w-[16rem];
-} */
+.calendar {
+    @apply min-w-[16rem] flex justify-center w-full;
+}
 .calendar > table {
-    @apply w-full text-basic;
+    @apply w-full text-basic rounded-xl;
 }
 .calendar.Wt-disabled * {
-    @apply bg-gray-200 hover:bg-gray-200;
+    @apply bg-gray-100 hover:bg-gray-100 cursor-not-allowed;
 }
 
 .calendar tbody {
-    @apply border;
+    @apply rounded-xl;
 }
 
 .calendar .Wt-cal-year

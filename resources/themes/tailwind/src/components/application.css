@@ -1,0 +1,12 @@
+.app {
+    @apply bg-yellow-50 flex flex-col min-h-screen;
+}
+
+.app-navbar {
+    @apply relative flex h-12 sm:h-14 shadow-md items-center px-2 border-solid bg-neutral-0;
+    /* dark:border-neutral-650 dark:!border-b */
+}
+
+.app-content {
+    @apply flex-grow flex flex-col items-stretch justify-stretch !overflow-y-scroll bg-neutral-50 [&>div]:flex-grow;
+}

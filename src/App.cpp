@@ -19,7 +19,7 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	
 	// Set up application resourses and settings
 	setTitle("Event Manager Lab");
-	setCssTheme("");
+	// setCssTheme("");
 	// setCssTheme("polished");
 	// include tailwind css file
 	useStyleSheet("resources/themes/tailwind/dist/tailwind.css");
@@ -41,8 +41,7 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 
 
 
-
-	// setStyleClass("flex flex-col h-screen");
+	root()->setStyleClass("app");
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 	createAuth();
@@ -126,11 +125,11 @@ void EventManagerLab::createApp() {
 	// Create navigation
 	navbar_ = root()->addWidget(std::make_unique<Wt::WTemplate>(Wt::WString::tr("navbar")));
 	auto logo = navbar_->bindWidget("logo", std::make_unique<Wt::WImage>("https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"));
-	
+	navbar_->setStyleClass("app-navbar");
 	// create nan_menu_ and stack_
 	stack_ = root()->addWidget(std::make_unique<Wt::WStackedWidget>());
 	nav_menu_ = navbar_->bindWidget("menu", std::make_unique<Wt::WMenu>(stack_));
-	stack_->setStyleClass("flex-grow !overflow-y-scroll");
+	stack_->setStyleClass("app-content");
 	
 	// add menu_ items
 	auto portofolio_menu_item = nav_menu_->addItem("Home", std::make_unique<PortofoliosPage>(login_));
