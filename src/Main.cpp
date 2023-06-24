@@ -2,47 +2,23 @@
 #include <Wt/WApplication.h>
 #include <Wt/WServer.h>
 #include <Wt/Dbo/Exception.h>
+#include <Wt/WEnvironment.h>
 
-std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment &env)
-{
-	auto app = std::make_unique<Wt::WApplication>(env);
-	// Set up application resourses and settings
-	app->setTitle("Event Manager Lab");
-	// app->setCssTheme("");
-	// app->setCssTheme("polished");
-	// include tailwind css file
-	app->useStyleSheet("resources/themes/tailwind/dist/tailwind.css");
 
-	// import resources
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Auth");
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/General");
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Navbar");
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/HomePage");
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/ProfilePage");
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/Svg");
-	app->messageResourceBundle().use(app->appRoot() + "resources/xml/CreateProfileDialog");
-	
-	// app->require("resources/Js/CopyToClipboard.js");
-	app->require("resources/Js/Utility.js");
-	app->require("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
-
-	
-	// Application content
-	app->root()->addWidget(std::make_unique<EventManagerLab>());
-
-	return app;
-}
 
 int main(int argc, char **argv)
 {
 	try
 	{
-		// Server setup
+		// // Server setup
 		Wt::WServer server{argc, argv, WTHTTP_CONFIGURATION};
 
-		server.addEntryPoint(Wt::EntryPointType::Application, createApplication);
+		server.addEntryPoint(Wt::EntryPointType::Application, [](Wt::WEnvironment const &env) {
+			return std::make_unique<EventManagerLab>(env);
+		});
 
 		server.run();
+
 	}
 	catch (Wt::WServer::Exception &e)
 	{

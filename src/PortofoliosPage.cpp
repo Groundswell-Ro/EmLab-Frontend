@@ -1,5 +1,14 @@
 #include "include/PortofoliosPage.h"
 
+#include <Wt/WString.h>
+#include <Wt/WDateTime.h>
+#include <Wt/WDoubleSpinBox.h>
+#include <Wt/WText.h>
+#include <Wt/WPanel.h>
+#include <Wt/WMenu.h>
+#include <Wt/WStackedWidget.h>
+#include <Wt/WAnimation.h>
+
 PortofoliosPage::PortofoliosPage(std::shared_ptr<Login> login)
     : WContainerWidget(),
 	login_(login)
@@ -7,7 +16,7 @@ PortofoliosPage::PortofoliosPage(std::shared_ptr<Login> login)
 	setStyleClass("relative w-full h-full flex");
 	if(login_->isLoggedIn())
 		createSidebar();
-	addWidget(std::make_unique<UserPortofolio>(login_));
+	// addWidget(std::make_unique<UserProfile>(login_));
 }
 
 void PortofoliosPage::createSidebar()
@@ -60,7 +69,7 @@ void PortofoliosPage::saveEvent()
 	eventInfo.location = location_input_->text().toUTF8();
 	eventInfo.description = description_input_->text().toUTF8();
 
-	auto event = login_->addEventInfo(eventInfo);
+	auto event = Emlab::Comunication::addEventInfo(login_->userToken(), eventInfo);
 	calendar_->enable();
 }
 

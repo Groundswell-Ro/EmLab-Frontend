@@ -1,5 +1,18 @@
 #include "include/UserSettingsPage.h"
 
+#include <Wt/WMenu.h>
+#include <Wt/WMenuItem.h>
+#include <Wt/WStackedWidget.h>
+#include <Wt/WLink.h>
+#include <Wt/WCssDecorationStyle.h>
+#include <Wt/WText.h>
+#include <Wt/WPushButton.h>
+#include <Wt/WAnimation.h>
+#include <Wt/WLineEdit.h>
+#include <Wt/WDialog.h>
+#include <Wt/WBreak.h>
+#include <Wt/WDialog.h>
+
 UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
 {
@@ -39,6 +52,7 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
     create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
 
     menu->select(0);
+    // createProfileDialog();
 
 }
 
@@ -211,19 +225,26 @@ void UserSettingsPage::createProfileDialog()
     auto content = dialog->contents();
     auto footer = dialog->footer();
 
-    dialog->setMovable(false);
+    // dialog->setMovable(false);
+    dialog->setResizable(true);
     dialog->setStyleClass("basic-widget relative max-w-[95vw] min-h-[50%] max-h-[90%] shadow-lg overflow-x-hidden border-0");
-    content->setStyleClass("overflow-y-scroll");
+    content->setStyleClass("overflow-y-scroll my-5");
     footer->setStyleClass("flex justify-between items-center absolute bottom-0 left-0 w-full");
 
     auto content_temp = content->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-dialog-content")));
 
-    auto photo_uploder_temp = content_temp->bindWidget("photo.uploder", std::make_unique<Wt::WTemplate>(tr("photo.uploder")));
-    auto username_input_temp = content_temp->bindWidget("username.input", std::make_unique<Wt::WTemplate>("input.normal"));
+    auto photo_uploder = content_temp->bindWidget("photo.uploder.template", std::make_unique<PhotoUploder>());
+   
+    auto username_input_temp = content_temp->bindWidget("username.input", std::make_unique<Wt::WTemplate>(tr("input.basic.template")));
+    username_input_temp->bindString("label-text", "username");
+    username_input_temp->bindWidget("icon", std::make_unique<Wt::WTemplate>(tr("human-svg")));
+    auto username_input = username_input_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    
 
     // header / footer setup
     header->clear();
     header->addWidget(std::make_unique<Wt::WText>("Create Provider Profile"))->setStyleClass("text-cemter text-2xl font-semibold");
+    header->setStyleClass("text-center");
     auto cancel_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Cancel"));
     auto create_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Create"));
 
@@ -246,32 +267,3 @@ void UserSettingsPage::createProfileDialog()
     dialog->show();
 
 }
-
-// void RegistrationFormView::setPhotoUploder()
-// {
-// 	profile_photo_uploder_ = bindWidget("photo-uploader", std::make_unique<Wt::WFileUpload>());
-// 	profile_photo_status_ = bindWidget("profile-photo-uploader-status", std::make_unique<Wt::WText>("Click to add profile picture"));
-// 	profile_photo_ = bindWidget("profile-photo", std::make_unique<Wt::WImage>(Wt::WLink("resources/images/blank-profile-picture.png")));
-// 	   // Upload automatically when the user entered a file.
-//     profile_photo_uploder_->changed().connect([=] {
-//         profile_photo_uploder_->upload();
-//         profile_photo_status_->setText("File upload is changed.");
-
-//     });
-
-//     // React to a succesprofile_photo_uploder_ll upload.
-//     profile_photo_uploder_->uploaded().connect([=] {
-//         profile_photo_status_->setText("File upload is finished.");
-//         photo_bytes_interface_ = Emlab::imageToBytes(profile_photo_uploder_->spoolFileName());
-// 		Wt::WString photoPath = "resources/registrationImages/" + profile_photo_uploder_->clientFileName();
-// 		std::cout << "\n\n Photo Path : " << photoPath.toUTF8() << "\n\n";
-//         auto conversion_result = Emlab::bytesToImage(photo_bytes_interface_, photoPath.toUTF8());
-// 		conversion_result ? std::cout << "\n\n Image saved \n\n" : std::cout << "\n\n Image not saved \n\n";
-// 		profile_photo_->setImageLink(Wt::WLink(photoPath.toUTF8()));
-//     });
-
-//     // React to a file upload problem.
-//     profile_photo_uploder_->fileTooLarge().connect([=] {
-//         profile_photo_status_->setText("File is too large.");
-//     });
-// }

@@ -1,5 +1,9 @@
 #include "include/TestPage.h"
 
+#include <Wt/WText.h>
+#include <Wt/WTemplate.h>
+#include <Wt/WApplication.h>
+#include <Wt/WPushButton.h>
 
 TestPage::TestPage(std::shared_ptr<Login> login)
     : WContainerWidget(),
@@ -37,7 +41,7 @@ void TestPage::createEventsTable()
 
 void TestPage::populateEventsTable()
 {
-	Emlab::SeqEventData seqEventData = login_->getEventsData();;
+	Emlab::SeqEventData seqEventData = Emlab::Comunication::getEventsData(login_->userToken());
 	while(events_table_->rowCount() > 1)
 	{
 		events_table_->removeRow(1);
@@ -61,7 +65,7 @@ void TestPage::populateEventsTable()
 			del_btn->setTextFormat(Wt::TextFormat::XHTML);
 			del_btn->setStyleClass("btn btn-danger");
 			del_btn->clicked().connect([=] {
-				login_->delEvent(event.eventInfo.id);
+				Emlab::Comunication::delEvent(login_->userToken(), event.eventInfo.id);
 				populateEventsTable();
 			});
 		}

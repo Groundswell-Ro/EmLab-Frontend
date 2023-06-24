@@ -1,5 +1,7 @@
 {
   "files.associations": {
+    ".css": "tailwindcss",
+    ".xml": "html",
     "cctype": "cpp",
     "clocale": "cpp",
     "cmath": "cpp",
@@ -63,6 +65,13 @@
     "streambuf": "cpp",
     "thread": "cpp",
     "cinttypes": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "filesystem": "cpp",
+    "codecvt": "cpp",
+    "iomanip": "cpp",
+    "complex": "cpp",
+    "optional": "cpp",
+    "typeindex": "cpp",
+    "variant": "cpp"
   }
 }

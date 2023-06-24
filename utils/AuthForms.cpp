@@ -109,7 +109,7 @@ void LoginFormView::process()
 	{
 		std::cout << "\n\n model VALID \n\n";
 
-		Emlab::LoginReturn loginReturn = login_->loginUser(model_->getData());
+		Emlab::LoginReturn loginReturn = Emlab::Comunication::loginUser(model_->getData());
 		switch (loginReturn.loginResponse)
 		{
 		case Emlab::LoginResponse::NotIdentified:
@@ -268,7 +268,7 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	bindWidget("sign-up-btn", std::move(submitBtn));
 
 	profile_registration_status_ = bindWidget("submit-info", std::make_unique<Wt::WText>("submit info"));
-	setPhotoUploder();
+	photo_uploder_ = bindWidget("photo-uploader", std::make_unique<PhotoUploder>());
 	updateView(model_.get());
 }
 
@@ -288,10 +288,10 @@ void RegistrationFormView::process()
 			return;
 		}
 		auto registrationInfo = model_->getData();
-		registrationInfo.photo = photo_bytes_interface_;
+		registrationInfo.photo = photo_uploder_->getImageData();
 		registrationInfo.role = role_->checkedButton()->text().toUTF8();
 
-		Emlab::RegistrationResponse registrationResponse = login_->registerUser(registrationInfo);
+		Emlab::RegistrationResponse registrationResponse = Emlab::Comunication::registerUser(registrationInfo);
 
 		if (registrationResponse == Emlab::RegistrationResponse::RegistrationSuccessful)
 		{
@@ -301,7 +301,7 @@ void RegistrationFormView::process()
 			loginInfo.email = model_->valueText(model_->UserEmail).toUTF8();
 			loginInfo.password = model_->valueText(model_->UserPassword).toUTF8();
 
-			Emlab::LoginReturn loginReturn = login_->loginUser(loginInfo);
+			Emlab::LoginReturn loginReturn = Emlab::Comunication::loginUser(loginInfo);
 			login_->login(loginReturn);
 		}else if (registrationResponse == Emlab::RegistrationResponse::EmailAlreadyExists)
 		{
@@ -330,43 +330,3 @@ void RegistrationFormView::process()
 	}
 }
 
-void RegistrationFormView::setPhotoUploder()
-{
-	profile_photo_uploder_ = bindWidget("photo-uploader", std::make_unique<Wt::WFileUpload>());
-	profile_photo_status_ = bindWidget("profile-photo-uploader-status", std::make_unique<Wt::WText>("Click to add profile picture"));
-	profile_photo_ = bindWidget("profile-photo", std::make_unique<Wt::WImage>(Wt::WLink("resources/images/blank-profile-picture.png")));
-	   // Upload automatically when the user entered a file.
-    profile_photo_uploder_->changed().connect([=] {
-        profile_photo_uploder_->upload();
-        profile_photo_status_->setText("File upload is changed.");
-
-    });
-
-    // React to a succesprofile_photo_uploder_ll upload.
-    profile_photo_uploder_->uploaded().connect([=] {
-        profile_photo_status_->setText("File upload is finished.");
-        photo_bytes_interface_ = Emlab::imageToBytes(profile_photo_uploder_->spoolFileName());
-		Wt::WString photoPath = "resources/registrationImages/" + profile_photo_uploder_->clientFileName();
-		std::cout << "\n\n Photo Path : " << photoPath.toUTF8() << "\n\n";
-        auto conversion_result = Emlab::bytesToImage(photo_bytes_interface_, photoPath.toUTF8());
-		conversion_result ? std::cout << "\n\n Image saved \n\n" : std::cout << "\n\n Image not saved \n\n";
-		profile_photo_->setImageLink(Wt::WLink(photoPath.toUTF8()));
-    });
-
-    // React to a file upload problem.
-    profile_photo_uploder_->fileTooLarge().connect([=] {
-        profile_photo_status_->setText("File is too large.");
-    });
-}
-
-void RegistrationFormView::dev_setValues()
-{
-	model_->setValue(model_->UserName, "test");
-	model_->setValue(model_->UserPhone, "1234567890");
-	model_->setValue(model_->UserEmail, "test1@gmail.com");
-	model_->setValue(model_->UserPassword, "asdfghj1");
-	model_->setValue(model_->UserPasswordRepeat, "asdfghj1");
-
-	updateView(model_.get());
-
-}

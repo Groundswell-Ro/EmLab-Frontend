@@ -1,4 +1,9 @@
 #include "include/Auth.h"
+
+#include <Wt/WTemplate.h>
+#include <Wt/WTemplate.h>
+#include <Wt/WPushButton.h>
+#include <Wt/WSignal.h>
 #include <Wt/WLineEdit.h>
 
 Auth::Auth(std::shared_ptr<Login> login) 

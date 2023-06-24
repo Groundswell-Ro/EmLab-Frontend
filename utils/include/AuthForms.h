@@ -1,5 +1,6 @@
 #pragma once
 #include "LoginObj.h"
+#include "../../utils/include/PhotoUploder.h"
 
 #include <Wt/WFormModel.h>
 #include <Wt/WTemplateFormView.h>
@@ -17,7 +18,7 @@
 #include <Wt/WFileUpload.h>
 #include <Wt/WRadioButton.h>
 #include <Wt/WRadioButton.h>
-
+#include <Wt/WLink.h>
 // Ice
 #include <Ice/Ice.h>
 #include <stdexcept>
@@ -86,16 +87,11 @@ public:
 	Wt::WLineEdit* phone_;
 	Wt::WLineEdit* password_;
 	Wt::WLineEdit* password_repeat_;
-	Wt::WFileUpload* profile_photo_uploder_;
+	PhotoUploder* photo_uploder_;
 	Wt::WImage* profile_photo_;
 	std::shared_ptr<Wt::WButtonGroup> role_;
 	void process();
-	void dev_setValues();
 private:
-
-	Emlab::ImageData photo_bytes_interface_;
-
 	std::shared_ptr<RegistrationFormModel> model_;
 	std::shared_ptr<Login> login_;
-	void setPhotoUploder();
 };

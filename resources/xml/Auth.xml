@@ -44,13 +44,8 @@
 	<message id='sign-up-content'>
 		<!-- Photo -->
 		<div>
-			<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
-				${profile-photo class="h-32 w-full rounded-full object-cover"}
-			</div>
-			${photo-uploader class="mx-auto flex cursor-pointer items-center justify-between rounded-lg border-0 bg-white px-4 py-2 text-left font-medium  shadow-sm hover:bg-gray-100 focus:outline-none"}
-			<div class="mx-auto w-48 text-center text-xs text-gray-400">
-            	${profile-photo-uploader-status}
-			</div>
+			${photo-uploader}
+
 		</div>
 		<div>
 			${user_role_client}

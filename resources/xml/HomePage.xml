@@ -18,6 +18,7 @@
         <div class="relative shadow-lg bg-body bor-1 m-1 p-1 py-5">
             ${toggle-size-btn class="bg-transparent shadow-none absolute top-0 right-0 p-1 m-0 flex justify-center items-center rounded-md border-none"}
             ${event-view}
+            
         </div>
     </message>
 
@@ -64,6 +65,14 @@
     </message>
 
     <message id='event-time-input'>
+        <div class="relative m-4 inline-flex w-48 items-end justify-between border text-center">
+            <button class="btn btn-primary">-</button>
+            <div class="absolute -top-2 left-1/2 -translate-x-1/2 bg-white px-2 backdrop-blur-sm">Time</div>
+            <div class="w-20 align-text-bottom text-black outline-none focus:border-none active:border-none">12:00 PM</div>
+            <button class="btn btn-primary">+</button>
+        </div>
+
+
         ${minus}
         ${input}
         ${plus}

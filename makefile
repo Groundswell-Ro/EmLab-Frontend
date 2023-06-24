@@ -1,6 +1,6 @@
 # Compiler settings
 CC = g++
-CXXFLAGS = -std=c++14 -I. -I../comunication -I../comunication/comm -DICE_CPP11_MAPPING
+CXXFLAGS = -std=c++14 -I. -I../comunication/comm -DICE_CPP11_MAPPING
 
 # Makefile settings
 APPNAME = frontend
@@ -11,7 +11,7 @@ CMMDIR = ../comunication/comm
 OBJDIR = ./src/obj
 
 # Linking lib
-LDFLAGS =  -lwthttp -lwt -lwtdbo -lIce++11 -lpthread -lssl -lcrypto
+LDFLAGS =  -lwthttp -lwt -lwtdbo -lIce++11 -lpthread -lssl -lcrypto -lboost_filesystem
 
 # Runtime lib
 RLIB = --docroot . --http-address 0.0.0.0 --http-port 9090
@@ -22,6 +22,7 @@ SRC = $(wildcard $(SRCDIR)/*$(EXT))
 COMM = $(wildcard $(CMMDIR)/*$(EXT))
 UTIL = $(wildcard $(UTILDIR)/*$(EXT))
 OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o) $(UTIL:$(UTILDIR)/%$(EXT)=$(OBJDIR)/%.o) $(COMM:$(CMMDIR)/%$(EXT)=$(OBJDIR)/%.o)
+DEP = $(OBJ:$(OBJDIR)/%.o=$(OBJDIR)/%.d)
 
 ########################################################################
 ####################### Targets beginning here #########################
@@ -32,6 +33,13 @@ all: $(APPNAME)
 # Builds the app
 $(APPNAME): $(OBJ) 
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+# Creates the dependecy rules
+$(OBJDIR)/%.d: $(SRCDIR)/%$(EXT)
+	@$(CXX) $(CXXFLAGS) $< -MM -MT $(@:.d=.o) >$@
+
+$(OBJDIR)/%.d: $(UTILDIR)/%$(EXT)
+	@$(CXX) $(CXXFLAGS) $< -MM -MT $(@:.d=.o) >$@
 
 # Includes all .h files
 -include $(DEP)
@@ -59,11 +67,15 @@ dbg:
 .PHONY: gen_obj_dir
 gen_obj_dir:
 	mkdir -p $(OBJDIR)
+
 ################### Cleaning rules ###################
 # Cleans complete project
 .PHONY: clean
 clean:
 	$(RM) $(APPNAME) $(DEP) $(OBJ)
+
+cleanDependencies:
+	$(RM) $(DEP)
 
 ################### Tailwind commands ###################
 startTailwind: buildTailwindModules
@@ -80,7 +92,4 @@ endif
 
 ################### Display variables ###################
 echo:
-	@echo $(OBJ)
-	# @echo $(SRC)
-	# @echo $(COMM)
-	# @echo $(DEP)
+	@echo $(DEP)

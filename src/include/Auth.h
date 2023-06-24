@@ -1,8 +1,4 @@
-#include "AuthForms.h"
-#include <Wt/WTemplate.h>
-#include <Wt/WTemplate.h>
-#include <Wt/WPushButton.h>
-#include <Wt/WSignal.h>
+#include "../../utils/include/AuthForms.h"
 
 class Auth : public Wt::WTemplate
 {

@@ -1,21 +1,14 @@
 #pragma once
-#include "LoginObj.h"
-#include "../../../comunication/comm/ReviewInterface.h"
 
-#include <Wt/WTemplate.h>
-#include <Wt/WContainerWidget.h>
-#include <Wt/WMenu.h>
-#include <Wt/WMenuItem.h>
-#include <Wt/WStackedWidget.h>
-#include <Wt/WLink.h>
-#include <Wt/WCssDecorationStyle.h>
-#include <Wt/WText.h>
+#include "../../utils/include/LoginObj.h"
+#include "../../utils/include/PhotoUploder.h"
+
 #include <Wt/WImage.h>
-#include <Wt/WPushButton.h>
-#include <Wt/WAnimation.h>
-#include <Wt/WLineEdit.h>
-#include <Wt/WDialog.h>
-#include <Wt/WBreak.h>
+#include <Wt/WContainerWidget.h>
+#include <Wt/WTemplate.h>
+
+
+// #include 
 
 class UserSettingsPage : public Wt::WContainerWidget
 {

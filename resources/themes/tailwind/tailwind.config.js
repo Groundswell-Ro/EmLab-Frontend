@@ -5,6 +5,8 @@ module.exports = {
     "../../xml/**/*.xml",
     "../../../src/*.cpp",
     "../../../src/include/*.h",
+    "../../../utils/*.cpp",
+    "../../../utils/include/*.h",
   ],
   corePlugins: { preflight: false },
   darkMode: "class",

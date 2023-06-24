@@ -1,26 +1,13 @@
 #pragma once
-#include "Calendar.h"
-#include "LoginObj.h"
-#include "UserPortofolio.h"
+#include "../../utils/include/Calendar.h"
+#include "../../utils/include/LoginObj.h"
 
 #include <Wt/WContainerWidget.h>
 #include <Wt/WTemplate.h>
-#include <Wt/WLineEdit.h>
-#include <Wt/WString.h>
 #include <Wt/WPushButton.h>
+#include <Wt/WLineEdit.h>
 #include <Wt/WTimeEdit.h>
-#include <Wt/WDateTime.h>
-#include <Wt/WDoubleSpinBox.h>
 #include <Wt/WTextArea.h>
-#include <Wt/WText.h>
-#include <Wt/WTemplate.h>
-#include <Wt/WPanel.h>
-#include <Wt/WAnimation.h>
-#include <Wt/WMenu.h>
-#include <Wt/WStackedWidget.h>
-
-#include <Ice/Ice.h>
-#include <stdexcept>
 
 class PortofoliosPage : public Wt::WContainerWidget
 {

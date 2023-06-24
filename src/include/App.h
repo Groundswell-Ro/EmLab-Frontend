@@ -1,28 +1,24 @@
 #pragma once
-#include "LoginObj.h"
-// #include "ProfilePage.h"
-// #include "Events.h"
-#include "Auth.h"
-// #include "AuthWidget.h"
-#include "PortofoliosPage.h"
-#include "TestPage.h"
-#include "UserSettingsPage.h"
+#include "../../utils/include/LoginObj.h"
+#include <Wt/WApplication.h>
 
 #include <Wt/WContainerWidget.h>
+
 #include <Wt/WStackedWidget.h>
-#include <Wt/WMenu.h>
 #include <Wt/WTemplate.h>
-#include <iostream>
-#include <Wt/WApplication.h>
-#include <Wt/WCheckBox.h>
+#include <Wt/WString.h>
+#include <Wt/WMenu.h>
 #include <Wt/WPopupMenu.h>
-#include <Wt/WMessageBox.h>
-class EventManagerLab : public Wt::WContainerWidget
+#include <Wt/WMenuItem.h>
+#include <Wt/WEnvironment.h>
+#include <Wt/WServer.h>
+#include <Wt/Dbo/Exception.h>
+
+class EventManagerLab : public Wt::WApplication
 {
 public:
-    EventManagerLab();
-
-
+    EventManagerLab(const Wt::WEnvironment &env);
+    ~EventManagerLab();
 private:
     std::shared_ptr<Login> login_;
 

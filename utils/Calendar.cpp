@@ -1,14 +1,5 @@
 #include "include/Calendar.h"
-#include <iostream>
-#include <Wt/WApplication.h>
-#include <Wt/WEnvironment.h>
-#include <Wt/Utils.h>
-#include <cstdlib>
-#include <Wt/WText.h>
-#include <Wt/WComboBox.h>
-#include <Wt/WInPlaceEdit.h>
-#include <Wt/WLineEdit.h>
-#include <Wt/WCalendar.h>
+
 
 Calendar::Calendar()
 {

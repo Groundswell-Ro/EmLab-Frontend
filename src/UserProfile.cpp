@@ -1,6 +1,16 @@
-#include "include/UserPortofolio.h"
+#include "include/UserProfile.h"
 
-UserPortofolio::UserPortofolio(std::shared_ptr<Login> login)
+#include <Wt/WMenu.h>
+#include <Wt/WMenuItem.h>
+#include <Wt/WStackedWidget.h>
+#include <Wt/WLink.h>
+#include <Wt/WCssDecorationStyle.h>
+#include <Wt/WText.h>
+#include <Wt/WPushButton.h>
+#include <Wt/WAnimation.h>
+#include <Wt/WLineEdit.h>
+
+UserProfile::UserProfile(std::shared_ptr<Login> login)
 :   Wt::WTemplate(tr("profile")),
     login_(login)
 {
@@ -39,7 +49,7 @@ UserPortofolio::UserPortofolio(std::shared_ptr<Login> login)
     menu->select(info_menu);
 }
 
-std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createInfo()
+std::unique_ptr<Wt::WContainerWidget> UserProfile::createInfo()
 {
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
     returnWidget->setStyleClass("basic-widget mt-0");
@@ -47,7 +57,7 @@ std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createInfo()
     return returnWidget;
 }
 
-std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createGalery()
+std::unique_ptr<Wt::WContainerWidget> UserProfile::createGalery()
 {
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
     auto tmp = returnWidget->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-content-widget")));
@@ -72,7 +82,7 @@ std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createGalery()
     return returnWidget;
 }
 
-std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createServices()
+std::unique_ptr<Wt::WContainerWidget> UserProfile::createServices()
 {
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
     
@@ -141,7 +151,7 @@ std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createServices()
     return returnWidget;
 }
 
-std::unique_ptr<Wt::WContainerWidget> UserPortofolio::createReviews()
+std::unique_ptr<Wt::WContainerWidget> UserProfile::createReviews()
 {
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
     returnWidget->setStyleClass("basic-widget mt-0");
