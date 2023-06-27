@@ -1,11 +1,11 @@
-#include "include/TestPage.h"
+#include "include/OrganizerPage.h"
 
 #include <Wt/WText.h>
 #include <Wt/WTemplate.h>
 #include <Wt/WApplication.h>
 #include <Wt/WPushButton.h>
 
-TestPage::TestPage(std::shared_ptr<Login> login)
+OrganizerPage::OrganizerPage(std::shared_ptr<Login> login)
     : WContainerWidget(),
 	login_(login)
 {
@@ -15,7 +15,7 @@ TestPage::TestPage(std::shared_ptr<Login> login)
 	createEventsTable();
 }
 
-void TestPage::createEventsTable()
+void OrganizerPage::createEventsTable()
 {
 	auto table_wrapper = addWidget(std::make_unique<Wt::WContainerWidget>());
 	table_wrapper->setStyleClass("max-w-screen-xl m-auto");
@@ -31,7 +31,7 @@ void TestPage::createEventsTable()
 	events_table_->elementAt(0, 5)->addNew<Wt::WText>("Description");
 
 	refresh->setTextFormat(Wt::TextFormat::XHTML);
-	refresh->clicked().connect(this, &TestPage::populateEventsTable);
+	refresh->clicked().connect(this, &OrganizerPage::populateEventsTable);
 
 	if(!login_->isLoggedIn()) return;
 	populateEventsTable();
@@ -39,7 +39,7 @@ void TestPage::createEventsTable()
 
 } 
 
-void TestPage::populateEventsTable()
+void OrganizerPage::populateEventsTable()
 {
 	Emlab::SeqEventData seqEventData = Emlab::Comunication::getEventsData(login_->userToken());
 	while(events_table_->rowCount() > 1)
@@ -72,7 +72,7 @@ void TestPage::populateEventsTable()
 	}
 }
 
-void TestPage::createButtonsExampla() 
+void OrganizerPage::createButtonsExampla() 
 {
     auto btn_Wrapper = addWidget(std::make_unique<Wt::WContainerWidget>());
 	btn_Wrapper->addStyleClass("block");

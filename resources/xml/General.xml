@@ -8,11 +8,29 @@
 			<div class="mb-1 font-bold">Email</div>
 			<div class="relative flex flex-col justify-stretch">
 				${email-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${user-email class="input-rounded"}
+				${user-email class="rounded-lg border-0 bg-white px-4 py-3 ps-10 font-medium shadow-md"}
 			</div>
 		</div>
 	</message>
 
+
+
+	<message id='input-template-normal'>
+		<div class="mb-1 font-bold">${label}</div>
+		<div class="relative flex flex-col justify-stretch">
+
+			${<if-start-svg>}
+				${start-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+			${</if-start-svg>}
+			
+			${input class="rounded-lg !border-0 bg-white px-4 py-3 ps-10 font-medium shadow-md ring-0"}
+
+			${<if-end-svg>}
+				${end-svg class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
+			${</if-end-svg>}
+
+		</div>
+	</message>
 
 
 
@@ -23,7 +41,7 @@
 		<div class="bg-body h-8 relative m-2 mx-auto inline-flex w-full items-end justify-between border border-solid border-neutral-100 rounded-lg text-start">
 			<div class="absolute -top-3 left-1/2 border border-solid rounded-lg border-b-0 border-x-0 border-neutral-300 -translate-x-1/2 flex items-start bg-white px-1 text-gray-500">
 				${svg class="mx-1"}
-				${label-text class="capitalize"}
+				${label class="capitalize"}
 				${svg class="mx-1"}
 			</div>
 			${sub-btn class="btn m-0 py-1 px-3 text-base"}

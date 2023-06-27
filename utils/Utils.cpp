@@ -63,30 +63,6 @@ namespace Emlab
         return true;
         }
 
-        // // Check if the data starts with the BMP header
-        // if (fileSize > 1 && header[0] == 0x42 && header[1] == 0x4d) {
-        //     // The file is a BMP file
-        //     return true;
-        // }
-
-        // // Check if the data starts with the PNG header
-        // if (fileSize > 7 && header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4e && header[3] == 0x47 && header[4] == 0x0d && header[5] == 0x0a && header[6] == 0x1a && header[7] == 0x0a) {
-        //     // The file is a PNG file
-        //     return true;
-        // }
-
-        // // Check if the data starts with the GIF header
-        // if (fileSize > 2 && header[0] == 0x47 && header[1] == 0x49 && header[2] == 0x46) {
-        //     // The file is a GIF file
-        //     return true;
-        // }
-
-        // // Check if the data starts with the TIFF header
-        // if (fileSize > 1 && (header[0] == 0x49 && header[1] == 0x49) || (header[0] == 0x4d && header[1] == 0x4d)) {
-        //     // The file is a TIFF file
-        //     return true;
-        // }
-
         // If none of the above checks passed, assume the file is not a valid image
         return false;
     }

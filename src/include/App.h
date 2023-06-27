@@ -1,7 +1,9 @@
 #pragma once
 #include "../../utils/include/LoginObj.h"
-#include <Wt/WApplication.h>
+#include "FindServicesPage.h"
+#include "OrganizerPage.h"
 
+#include <Wt/WApplication.h>
 #include <Wt/WContainerWidget.h>
 
 #include <Wt/WStackedWidget.h>
@@ -26,6 +28,9 @@ private:
     Wt::WStackedWidget* stack_;
     Wt::WMenu* nav_menu_;
 
+    FindServicesPage* services_page_;
+    OrganizerPage* organizer_page_;
+    
     Wt::WPopupMenu* user_menu_;
 
     Wt::WMenuItem* current_menu_item_;

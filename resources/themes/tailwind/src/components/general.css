@@ -71,3 +71,9 @@ svg {
 .animate-spacing {
   @apply animate transition-spacing;
 }
+
+
+
+.basic-widget {
+  @apply bg-body mx-0 my-3 rounded-md p-4 shadow-md sm:m-3;
+}

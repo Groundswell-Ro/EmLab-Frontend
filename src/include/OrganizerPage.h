@@ -4,10 +4,10 @@
 #include <Wt/WTable.h>
 
 
-class TestPage : public Wt::WContainerWidget
+class OrganizerPage : public Wt::WContainerWidget
 {
 public:
-    TestPage(std::shared_ptr<Login> login);
+    OrganizerPage(std::shared_ptr<Login> login);
     Wt::WTable* events_table_;
 
 private:

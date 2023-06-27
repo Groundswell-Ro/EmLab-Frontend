@@ -11,10 +11,13 @@
 #include <Wt/WTextArea.h>
 #include <Wt/WDate.h>
 #include <Wt/WTime.h>
-class PortofoliosPage : public Wt::WContainerWidget
+class FindServicesPage : public Wt::WContainerWidget
 {
 public:
-    PortofoliosPage(std::shared_ptr<Login> login);
+    FindServicesPage(std::shared_ptr<Login> login);
+
+    void addSidebar();
+    void removeSidebar();
 private:
 
     Wt::WTemplate*      profile_;
@@ -39,7 +42,7 @@ private:
     Wt::WDate event_date = Wt::WDate::currentDate();
     Wt::WTime event_time = Wt::WTime(12,0,0);
 
-    void createSidebar();
+
 
     void calendarClicked(const Wt::WDate date);
 

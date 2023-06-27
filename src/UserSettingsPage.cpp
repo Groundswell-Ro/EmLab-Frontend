@@ -12,6 +12,7 @@
 #include <Wt/WDialog.h>
 #include <Wt/WBreak.h>
 #include <Wt/WDialog.h>
+#include <Wt/WTextArea.h>
 
 UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
@@ -52,7 +53,7 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
     create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
 
     menu->select(0);
-    // createProfileDialog();
+    createProfileDialog();
 
 }
 
@@ -220,39 +221,50 @@ return widget_tmp;
 void UserSettingsPage::createProfileDialog()
 {
     auto dialog = addChild(std::make_unique<Wt::WDialog>());
+    dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 500));
+    dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+    dialog->rejectWhenEscapePressed();
     
     auto header = dialog->titleBar();
     auto content = dialog->contents();
     auto footer = dialog->footer();
 
-    // dialog->setMovable(false);
-    dialog->setResizable(true);
-    dialog->setStyleClass("basic-widget relative max-w-[95vw] min-h-[50%] max-h-[90%] shadow-lg overflow-x-hidden border-0");
+    dialog->setResizable(false);
+    dialog->setMovable(false);
+    // dialog->setStyleClass("basic-widget relative max-w-[95vw] min-h-[50%] max-h-[90%] shadow-lg overflow-x-hidden border-0");
     content->setStyleClass("overflow-y-scroll my-5");
-    footer->setStyleClass("flex justify-between items-center absolute bottom-0 left-0 w-full");
+    // footer->setStyleClass("flex justify-between items-center absolute bottom-0 left-0 w-full");
 
     auto content_temp = content->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-dialog-content")));
 
-    auto photo_uploder = content_temp->bindWidget("photo.uploder.template", std::make_unique<PhotoUploder>());
-   
-    auto username_input_temp = content_temp->bindWidget("username.input", std::make_unique<Wt::WTemplate>(tr("input.basic.template")));
-    username_input_temp->bindString("label-text", "username");
-    username_input_temp->bindWidget("icon", std::make_unique<Wt::WTemplate>(tr("human-svg")));
-    auto username_input = username_input_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
-    
+    auto photo_uploder = content_temp->bindWidget("photo-uploder-template", std::make_unique<PhotoUploder>());
+    photo_uploder->setPhoto(login_->getUserPhotoPath() + "/profile.jpg");
+    photo_uploder->status_->setText("Is this photo ok as your profile photo?");
 
+    auto username_input_temp = content_temp->bindWidget("username-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    username_input_temp->setCondition("if-start-svg", true);
+    username_input_temp->bindString("label", "Username");
+    username_input_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("human-svg")));
+    auto username_input = username_input_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    username_input->setAutoComplete(false);
+
+
+    auto about_self_temp = content_temp->bindWidget("about-self-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    about_self_temp->bindString("label", "About self as a sevice\'s provider");
+    auto about_self_input = about_self_temp->bindWidget("input", std::make_unique<Wt::WTextArea>());
+    about_self_input->addStyleClass("resize-none resize-y");
     // header / footer setup
     header->clear();
     header->addWidget(std::make_unique<Wt::WText>("Create Provider Profile"))->setStyleClass("text-cemter text-2xl font-semibold");
     header->setStyleClass("text-center");
-    auto cancel_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Cancel"));
-    auto create_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Create"));
+    // auto cancel_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Cancel"));
+    // auto create_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Create"));
 
-    create_btn->setStyleClass("btn btn-primary");
-    cancel_btn->setStyleClass("btn btn-danger");
+    // create_btn->setStyleClass("btn btn-primary");
+    // cancel_btn->setStyleClass("btn btn-danger");
 
-    create_btn->clicked().connect([=]{ dialog->accept(); });
-    cancel_btn->clicked().connect([=]{ dialog->reject(); });
+    // create_btn->clicked().connect([=]{ dialog->accept(); });
+    // cancel_btn->clicked().connect([=]{ dialog->reject(); });
 
     dialog->finished().connect([=]{
         if(dialog->result() == Wt::DialogCode::Accepted)
@@ -264,6 +276,6 @@ void UserSettingsPage::createProfileDialog()
         }
         removeWidget(dialog);
     });
-    dialog->show();
+    // dialog->show();
 
 }

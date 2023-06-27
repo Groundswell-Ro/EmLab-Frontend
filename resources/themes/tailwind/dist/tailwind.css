@@ -377,6 +377,35 @@ svg{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.basic-widget{
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(12 12 12 / var(--tw-text-opacity));
+}
+
+:is(.dark .basic-widget){
+  --tw-bg-opacity: 1;
+  background-color: rgb(35 35 36 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(249 250 251 / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px){
+  .basic-widget{
+    margin: 0.75rem;
+  }
+}
+
 /* DEFAULT  */
 
 .btn-light-default:hover{
@@ -2409,35 +2438,6 @@ svg{
   display: none !important;
 }
 
-.basic-widget{
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-  border-radius: 0.375rem;
-  padding: 1rem;
-  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(12 12 12 / var(--tw-text-opacity));
-}
-
-:is(.dark .basic-widget){
-  --tw-bg-opacity: 1;
-  background-color: rgb(35 35 36 / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: rgb(249 250 251 / var(--tw-text-opacity));
-}
-
-@media (min-width: 640px){
-  .basic-widget{
-    margin: 0.75rem;
-  }
-}
-
 .btn-user-image{
   position: relative;
   border-radius: 9999px !important;
@@ -2571,6 +2571,40 @@ svg{
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 9999px;
+}
+
+.Wt-dialog{
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 24rem !important;
+  border-width: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(12 12 12 / var(--tw-text-opacity));
+}
+
+:is(.dark .Wt-dialog){
+  --tw-bg-opacity: 1;
+  background-color: rgb(35 35 36 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(249 250 251 / var(--tw-text-opacity));
+}
+
+@media (min-width: 640px){
+  .Wt-dialog{
+    margin: 0.75rem;
+    max-width: none;
+  }
 }
 
 .app{
@@ -2981,10 +3015,6 @@ svg{
   margin-top: 0.75rem;
 }
 
-.mt-5{
-  margin-top: 1.25rem;
-}
-
 .block{
   display: block;
 }
@@ -3077,10 +3107,6 @@ svg{
   min-height: calc(100vh - 5rem);
 }
 
-.min-h-screen{
-  min-height: 100vh;
-}
-
 .w-1\/2{
   width: 50%;
 }
@@ -3167,10 +3193,6 @@ svg{
   min-width: min-content;
 }
 
-.max-w-2xl{
-  max-width: 42rem;
-}
-
 .max-w-3xl{
   max-width: 48rem;
 }
@@ -3252,6 +3274,10 @@ svg{
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+
+.resize-none{
+  resize: none;
 }
 
 .resize-y{
@@ -3407,6 +3433,10 @@ svg{
 
 .border-0{
   border-width: 0px;
+}
+
+.\!border-0{
+  border-width: 0px !important;
 }
 
 .border-x-0{
@@ -3907,6 +3937,12 @@ svg{
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.ring-0{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
 .ring-black{
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(0 0 0 / var(--tw-ring-opacity));
@@ -3995,11 +4031,6 @@ svg{
 
 .disabled\:opacity-0:disabled{
   opacity: 0;
-}
-
-:is(.dark .dark\:border-gray-900){
-  --tw-border-opacity: 1;
-  border-color: rgb(17 24 39 / var(--tw-border-opacity));
 }
 
 @media (min-width: 640px){

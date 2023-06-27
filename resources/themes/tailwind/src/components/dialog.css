@@ -1,0 +1,5 @@
+@import url("general.css");
+
+.Wt-dialog {
+    @apply basic-widget !max-w-sm sm:max-w-none border-0 !mx-auto;
+}

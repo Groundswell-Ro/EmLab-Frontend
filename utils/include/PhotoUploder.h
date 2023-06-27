@@ -14,11 +14,15 @@ public:
     ~PhotoUploder();
     Wt::WFileUpload *fileUpload_;
     Emlab::ImageData getImageData();
+
+    void setPhoto(std::string photoPath);
+
+    Wt::WText *status_;
+
 private:
     void uploderChanged();
     void uploderUploded();
     void uploderFileToLarge();
-    Wt::WText *status_;
     Wt::WImage *photo_;
     Wt::WString destination = "resources/temp_images/";
     

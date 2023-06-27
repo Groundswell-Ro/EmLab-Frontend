@@ -3,8 +3,6 @@
 #include "include/UserSettingsPage.h"
 #include "include/UserProfile.h"
 #include "include/Auth.h"
-#include "include/PortofoliosPage.h"
-#include "include/TestPage.h"
 
 #include <iostream>
 #include <Wt/WCheckBox.h>
@@ -42,60 +40,55 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 
 
 	root()->setStyleClass("app");
+	createApp();
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
+
 	createAuth();
 }
 
 EventManagerLab::~EventManagerLab()
 {
 	if(login_->isLoggedIn()) {
-		std::cout << "\n\n user is logged in an i shoud delete photos \n this is the application talking \n\n";	
 		login_->logout();
 	}
 }
 
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
-	root()->clear();
-	auto auth = root()->addWidget(std::make_unique<Auth>(login_));
-	// auth->dev_loginUser("testfsdf1@gmail.com", "asdfghj1");
-	// auth->dev_loginUser("client1@gmail.com", "asdfghj1");
-	auth->dev_loginUser("user1@gmail.com", "asdfghj1");
-	// auth->dev_loginUser("provider@gmail.com", "asdfghj1");
+	auto auth = root()->addChild(std::make_unique<Auth>(login_));
+	auth->dev_loginUser("victor@gmail.com", "asdfghj1");
+
 }
 
 // handle app state depending on user login status
 void EventManagerLab::handleUserAuth() 
 {	
-	createApp();
-
 	if (login_->isLoggedIn())
 	{
-		
 		auto profile_img = Wt::WLink(login_->getUserPhotoPath() + "/profile.jpg");
 
 		auto profile_btn = std::make_unique<Wt::WPushButton>();
 		profile_btn->setIcon(profile_img);
-
+		services_page_->addSidebar();
 		profile_btn->setStyleClass("btn-user-image my-1 me-1 p-0 after:bg-green-400 ");
 		auto user_menu_ptr = std::make_unique<Wt::WPopupMenu>(stack_);
-		// user_menu_ptr->
+
 		user_menu_ = user_menu_ptr.get();
 
 		auto logout_btn = std::make_unique<Wt::WMenuItem>("Log Out");
 
 		user_menu_->setStyleClass("basic-widget px-1 py-2");
-		auto profile = user_menu_->addItem("Profile",  std::make_unique<UserProfile>(login_));
+		// auto profile = user_menu_->addItem("Profile",  std::make_unique<UserProfile>(login_));
 		auto settings = user_menu_->addItem("Settings", std::make_unique<UserSettingsPage>(login_));
 		auto logout = user_menu_->addItem(std::move(logout_btn));
 
 		logout->clicked().connect(this, [=]() { login_->logout(); });
-		profile->clicked().connect(this, [=](){ menuItemSelected(profile); });
+		// profile->clicked().connect(this, [=](){ menuItemSelected(profile); });
 		settings->clicked().connect(this, [=](){ menuItemSelected(settings); });
 		
 		Wt::WString user_menu_item_styles = "bg-body-hover-border block rounded-md text-inherit flex items-center text-sm [&>a]:px-8 [&>a]:py-2";
-		profile->setStyleClass(user_menu_item_styles);
+		// profile->setStyleClass(user_menu_item_styles);
 		settings->setStyleClass(user_menu_item_styles);
 		logout->setStyleClass("btn btn-primary text-xs ms-auto w-fit");
 
@@ -111,7 +104,7 @@ void EventManagerLab::handleUserAuth()
 		// remove user_menu_ widget
 		auto login_btn = navbar_->bindWidget("user-menu", std::make_unique<Wt::WPushButton>("Log In"));
 		login_btn->setStyleClass("btn btn-primary");
-
+		services_page_->removeSidebar();
 		login_btn->clicked().connect(this, &EventManagerLab::createAuth);
 	}
 
@@ -120,7 +113,7 @@ void EventManagerLab::handleUserAuth()
 // create Application Page
 void EventManagerLab::createApp() {
 
-	root()->clear();
+	// root()->clear();
 
 	// Create navigation
 	navbar_ = root()->addWidget(std::make_unique<Wt::WTemplate>(Wt::WString::tr("navbar")));
@@ -132,8 +125,12 @@ void EventManagerLab::createApp() {
 	stack_->setStyleClass("app-content");
 	
 	// add menu_ items
-	auto portofolio_menu_item = nav_menu_->addItem("Home", std::make_unique<PortofoliosPage>(login_));
-	auto page_two_menu_item = nav_menu_->addItem("Test", std::make_unique<TestPage>(login_));
+	auto services_page = std::make_unique<FindServicesPage>(login_);
+	auto organizer_page = std::make_unique<OrganizerPage>(login_);
+	services_page_ = services_page.get();
+	organizer_page_ = organizer_page.get();
+	auto portofolio_menu_item = nav_menu_->addItem("Find services", std::move(services_page));
+	auto page_two_menu_item = nav_menu_->addItem("Organizer", std::move(organizer_page));
 
 	// menu_ Item styles
 	Wt::WString list_item_styles = "bg-body-hover-border w-4/5 rounded-md sm:rounded-none h-6 h-full flex items-center justify-center";

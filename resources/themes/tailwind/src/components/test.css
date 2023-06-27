@@ -6,10 +6,6 @@
   @apply !hidden;
 }
 
-.basic-widget {
-  @apply bg-body mx-0 my-3 rounded-md p-4 shadow-md sm:m-3;
-}
-
 .btn-user-image {
   @apply btn focus:ring-1 !rounded-full focus:ring-neutral-500 [&>img]:w-10 [&>img]:h-10 [&>img]:rounded-full relative after:absolute after:bottom-[2px] after:right-[2px] after:rounded-full after:p-1 after:content-[''] after:ring-1 after:ring-white focus:!ring-4 !ring-neutral-150;
 }

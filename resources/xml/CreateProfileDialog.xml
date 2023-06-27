@@ -2,10 +2,11 @@
 <messages>
 
     <message id='profile-dialog-content'>
-	<div class="flex flex-col items-center justify-center">
-		${photo.uploder.template class="w-full "}
-		${username.input class="w-full"}
-		<div>
+	<div class="">
+		${photo-uploder-template class="mb-4"}
+		${username-input class="mb-4"}
+		${about-self-input class="mb-4"}
+		<div calss="text-bold text-gray-400 ">
 			<div>
 				To create a profile you need at least one service :) 
 			</div>
@@ -29,22 +30,6 @@
 					${status class="text-green-800"}
 				</div>
 			${uploader class="w-full my-2"}
-		</div>
-	</message>
-
-
-
-
-	<message id='input.basic.template'>
-		<div>
-			<div class="mb-1 font-bold capitalize">${label-text}</div>
-			<div class="relative flex flex-col justify-stretch">
-				${icon class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${input class="px-4 py-2 ps-10 border border-dashed rounded-md"}
-				${<end-icon>}
-					${end-icon class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
-				${</end-icon>}
-			</div>
 		</div>
 	</message>
 

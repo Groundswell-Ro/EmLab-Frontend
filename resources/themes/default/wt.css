@@ -49,7 +49,7 @@ span.Wt-disabled, fieldset.Wt-disabled legend {
 
 .Wt-dialogcover.in {
   filter: alpha(opacity=50);
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 /*

@@ -185,8 +185,7 @@ Emlab::RegistrationInfo RegistrationFormModel::getData()
 RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr<Login> login)
 	: Wt::WTemplateFormView(tr(temp_str)),
 	model_(std::make_shared<RegistrationFormModel>()),
-	login_(login),
-	role_(std::make_shared<Wt::WButtonGroup>())
+	login_(login)
 {
 	bindWidget("human-svg", std::make_unique<Wt::WText>(tr("human-svg")));
 	bindWidget("key-svg", std::make_unique<Wt::WText>(tr("key-svg")));
@@ -196,13 +195,6 @@ RegistrationFormView::RegistrationFormView(std::string temp_str, std::shared_ptr
 	bindString("password-status", "to short");
 	bindWidget("password-requirments", std::make_unique<Wt::WText>(tr("password-requirments")));
 
-	auto client_role = bindWidget("user_role_client", std::make_unique<Wt::WRadioButton>(Emlab::CLIENTROLE));
-	auto provider_role = bindWidget("user_role_provider", std::make_unique<Wt::WRadioButton>(Emlab::PROVIDERROLE));
-	
-	role_->addButton(client_role);
-	role_->addButton(provider_role);
-
-	role_->setCheckedButton(client_role);
 	
 	// link Form Model Fields to FormWidget and set up the view
 	auto username_input = std::make_unique<Wt::WLineEdit>();
@@ -289,7 +281,7 @@ void RegistrationFormView::process()
 		}
 		auto registrationInfo = model_->getData();
 		registrationInfo.photo = photo_uploder_->getImageData();
-		registrationInfo.role = role_->checkedButton()->text().toUTF8();
+		registrationInfo.role = Emlab::CLIENTROLE;
 
 		Emlab::RegistrationResponse registrationResponse = Emlab::Comunication::registerUser(registrationInfo);
 

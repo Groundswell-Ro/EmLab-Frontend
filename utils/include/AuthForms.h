@@ -89,7 +89,6 @@ public:
 	Wt::WLineEdit* password_repeat_;
 	PhotoUploder* photo_uploder_;
 	Wt::WImage* profile_photo_;
-	std::shared_ptr<Wt::WButtonGroup> role_;
 	void process();
 private:
 	std::shared_ptr<RegistrationFormModel> model_;

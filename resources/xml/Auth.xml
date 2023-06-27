@@ -1,35 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <messages>
 
-	<message id="auth">
-		<div class="max-w-2xl bg-body mx-auto px-4 py-10">
-			${header class="text-center text-3xl font-bold mb-5"}
-			<hr class="border-gray-50 dark:border-gray-900" />
-			${content class="mb-5 mt-5 max-w-md mx-auto space-y-5"}
-		</div>
-	</message>
-
 	<message id='login-content'>
-		<!-- Logo -->
-		<div class="shadow-inset relative mx-auto mb-4 h-32 w-32 rounded-full border bg-gray-100">
-			<img class="h-32 w-full rounded-full object-cover" src="./resources/images/blank-profile-picture.png" alt="profile photo" />
-		</div>
-		<!-- Email -->
+		<div class="text-center text-xl font-bold">Login</div>
 		<div>
-			<div class="mb-1 font-bold">Email</div>
-			<div class="relative flex flex-col justify-stretch">
-				${email-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${user-email class="input-rounded"}
-			</div>
-		</div>
-		<!-- Password -->
-		<div>
-			<div class="mb-1 font-bold">Password</div>
-			<div class="relative flex flex-col justify-stretch">
-				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${user-password class="input-rounded"}
-				${user-password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
-			</div>
+			${email-input class="mb-4"}
+			${password-input class="mb-4"}
 		</div>
 		<!-- Buttons -->
 		<div class="flex justify-between">
@@ -37,7 +13,9 @@
 			${login-button class="btn btn-primary px-3 py-2 m-0"}
 		</div>
 		<!-- Submit Info -->
-		${submit-info class="text-red-500"}
+		<div class="text-red-500">
+			${submit-info}
+		</div>
 
 	</message>
 
@@ -45,59 +23,19 @@
 		<!-- Photo -->
 		<div>
 			${photo-uploader}
-
 		</div>
 		<div>
-			${user_role_client}
-			${user_role_provider}
-		</div>
-		<!-- UserName -->
-		<div>
-			<div for="text" class="mb-1 font-bold">Name</div>
-			<div class="relative flex flex-col justify-stretch">
-						${human-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-						${user-name class="input-rounded"}
-			</div>
-		</div>
-		<!-- Phone -->
-		<div>
-			<div class="mb-1 font-bold">Phone</div>
-			<div class="relative flex flex-col justify-stretch">
-				${phone-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${user-phone class="input-rounded"}
-			</div>
-		</div>
-		<!-- Email -->
-		<div>
-			<div class="mb-1 font-bold">Email</div>
-			<div class="relative flex flex-col justify-stretch">
-						${email-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-						${user-email class="input-rounded"}
-			</div>
-		</div>
-		${password-requirments class="mb-4 mt-2 text-gray-600"}
-		<!-- Password -->
-		<div>
-			<div class="mb-1 font-bold">Password</div>
-			<div class="relative flex flex-col justify-stretch">
-				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${user-password class="input-rounded"}
-				${password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
-			</div>
-		</div>
-		<!-- Repeat Password -->
-		<div class="mb-4">
-			<div class="mb-1 font-bold">Repeat Password</div>
-			<div class="relative flex flex-col justify-stretch">
-				${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-				${user-password-repeat class="input-rounded"}
-				${password-repeat-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
-			</div>
+			${name-input class="mb-4"}
+			${email-input class="mb-4"}
+			${phone-input class="mb-4"}
+			${password-input class="mb-4"}
+			${password-requirments class="mb-4"}
+			${password-repeat-input class="mb-4"}
 		</div>
 		<!-- Buttons -->
 		<div class="w-full flex justify-between">
-				${back-to-login class="btn btn-seccondary w-32 px-5 py-2"}
-				${sign-up-btn class="btn btn-primary w-32 px-5 py-2"}
+			${back-to-login class="btn btn-seccondary w-32 px-5 py-2"}
+			${submit-btn class="btn btn-primary w-32 px-5 py-2"}
 		</div>
 		${submit-info class="text-red-500"}
 	

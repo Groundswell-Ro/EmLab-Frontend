@@ -6,7 +6,7 @@ PhotoUploder::PhotoUploder(std::string templateName)
 {
 
 	fileUpload_ = bindWidget("uploader", std::make_unique<Wt::WFileUpload>());
-	status_ = bindWidget("status", std::make_unique<Wt::WText>("Click bellow to add profile picture"));
+	status_ = bindWidget("status", std::make_unique<Wt::WText>("Click bellow to add picture"));
 	photo_ = bindWidget("photo", std::make_unique<Wt::WImage>(Wt::WLink("resources/images/blank-profile-picture.png")));
 
     fileUpload_->changed().connect(this, &PhotoUploder::uploderChanged);
@@ -33,7 +33,7 @@ void PhotoUploder::uploderUploded()
     status_->setText("File upload is finished.");
     if(!Emlab::validateImage(fileUpload_->spoolFileName())){
         status_->setText("Photo is not a Photo.");
-        photo_->setImageLink(Wt::WLink("resources/images/blank-profile-picture.png"));
+        setPhoto("resources/images/blank-profile-picture.png");
         status_->toggleStyleClass("!text-red-300", true);
         return;
     }
@@ -48,7 +48,7 @@ void PhotoUploder::uploderUploded()
     // Emlab::moveFile(source.toUTF8(), destination.toUTF8() + clientFileName.toUTF8(), clientFileName.toUTF8());
     auto treansfer_result = Emlab::bytesToImage(Emlab::imageToBytes(source.toUTF8()), destination.toUTF8() + clientFileName.toUTF8());
     if(treansfer_result){
-        photo_->setImageLink(Wt::WLink(Wt::WString(destination + clientFileName).toUTF8()));
+        setPhoto(Wt::WString(destination + clientFileName).toUTF8());
     }else {
         std::cout <<"\n\n result <" << treansfer_result << ">\n\n";
     }
@@ -63,4 +63,9 @@ void PhotoUploder::uploderFileToLarge()
 Emlab::ImageData PhotoUploder::getImageData()
 {
     return Emlab::imageToBytes(destination.toUTF8() + fileUpload_->clientFileName().toUTF8());
+}
+
+void PhotoUploder::setPhoto(std::string photoPath)
+{
+    photo_->setImageLink(Wt::WLink(photoPath));
 }

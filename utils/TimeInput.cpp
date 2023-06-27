@@ -11,15 +11,15 @@ TimeInput::TimeInput(DisplayType displayType, std::string tempName)
 
     if(displayType == DisplayType::START) {
         std::cout << "\n\n time input \n\n";
-        bindWidget("label-text", std::make_unique<Wt::WText>("start"));
+        bindWidget("label", std::make_unique<Wt::WText>("start"));
         bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("clock-svg-sm")));
     }else if(displayType == DisplayType::DURATION) {
         std::cout << "\n\n duration input \n\n";
-        bindWidget("label-text", std::make_unique<Wt::WText>("duration"));
+        bindWidget("label", std::make_unique<Wt::WText>("duration"));
         bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("hourglass-svg-sm")));
     }else if(displayType == DisplayType::END) {
         std::cout << "\n\n end input \n\n";
-        bindWidget("label-text", std::make_unique<Wt::WText>("end"));
+        bindWidget("label", std::make_unique<Wt::WText>("end"));
         bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("clock-svg-sm")));
     }
 
@@ -38,7 +38,6 @@ void TimeInput::setValue(std::string value)
 {
     display_->setText(value);
 }
-
 
 void TimeInput::hideButtons()
 {
