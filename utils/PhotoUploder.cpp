@@ -1,57 +1,87 @@
 #include "include/PhotoUploder.h"
 #include <cstdlib>
+#include <Wt/WCssDecorationStyle.h>
 
-PhotoUploder::PhotoUploder(std::string templateName)
- :   WTemplate(tr(templateName))
+PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
 {
+    destination += userPath;
+    singlePhoto_ = singlePhoto;
 
-	fileUpload_ = bindWidget("uploader", std::make_unique<Wt::WFileUpload>());
-	status_ = bindWidget("status", std::make_unique<Wt::WText>("Click bellow to add picture"));
-	photo_ = bindWidget("photo", std::make_unique<Wt::WImage>(Wt::WLink("resources/images/blank-profile-picture.png")));
+    setTemplateText(tr("photo.uploder.template"));
+	file_uploder_ = bindWidget("uploader", std::make_unique<Wt::WFileUpload>());
 
-    fileUpload_->changed().connect(this, &PhotoUploder::uploderChanged);
-    fileUpload_->uploaded().connect(this, &PhotoUploder::uploderUploded);
-    fileUpload_->fileTooLarge().connect(this, &PhotoUploder::uploderFileToLarge);
+	status_ = bindWidget("status", std::make_unique<Wt::WText>("Click above to add a photo"));
+	uploder_content_ = bindWidget("uploder-content", std::make_unique<Wt::WContainerWidget>());
+
+    // file_uploder_->setMultiple(!singlePhoto);
+    file_uploder_->changed().connect(this, &PhotoUploder::uploderChanged);
+    file_uploder_->uploaded().connect(this, &PhotoUploder::uploderUploded);
+    file_uploder_->fileTooLarge().connect(this, &PhotoUploder::uploderFileToLarge);
+
+
+    if(!singlePhoto){
+        auto add_photo_btn = uploder_content_->addWidget(std::make_unique<Wt::WText>("Add Photo"));
+        add_photo_btn->addStyleClass("btn w-1/3 m-0 p-0 rounded-md absolute -top-6");
+
+        file_uploder_->setDisplayWidget(add_photo_btn);
+        uploder_content_->addStyleClass("border border-solid border-gray-300 rounded-md bg-center flex justify-start items-start flex-wrap overflow-visible");
+
+        auto background_style = Wt::WCssDecorationStyle();
+        background_style.setBackgroundImage(Wt::WLink("resources/images/profile-cover/photos.png"));
+        uploder_content_->setDecorationStyle(background_style);
+    }else {
+        setSinglePhoto("resources/images/blank-profile-picture.png");
+    }
+
 }
 
 PhotoUploder::~PhotoUploder()
 {
-    if(fileUpload_->multiple()){
-        std::cout << "\n\n Multiple files have not been implemented yet\n\n";
+    if(singlePhoto_){
+        Emlab::deleteFile(destination.toUTF8() + file_uploder_->clientFileName().toUTF8());
     }else {
-        Emlab::deleteFile(destination.toUTF8() + fileUpload_->clientFileName().toUTF8());
+        for(auto photo : photos_){
+            Emlab::deleteFile(photo);
+        }
     }
 }
  
 void PhotoUploder::uploderChanged()
 {
-    fileUpload_->upload();
+    file_uploder_->upload();
 }
 
 void PhotoUploder::uploderUploded()
 {
-    status_->setText("File upload is finished.");
-    if(!Emlab::validateImage(fileUpload_->spoolFileName())){
+    status_->setText("File upload is succesfull.");
+    
+    Wt::WString source = file_uploder_->spoolFileName();
+    Wt::WString clientFileName = file_uploder_->clientFileName().toUTF8();
+
+   
+    if(!Emlab::validateImage(file_uploder_->spoolFileName())){
         status_->setText("Photo is not a Photo.");
-        setPhoto("resources/images/blank-profile-picture.png");
         status_->toggleStyleClass("!text-red-300", true);
+        if(singlePhoto_)
+            setSinglePhoto("resources/images/blank-profile-picture.png");
         return;
     }
 
     status_->setText("Photo is valid.");
     status_->toggleStyleClass("!text-red-300", false);
 
-    Wt::WString source = fileUpload_->spoolFileName();
-    Wt::WString clientFileName = fileUpload_->clientFileName().toUTF8();
-    
-
-    // Emlab::moveFile(source.toUTF8(), destination.toUTF8() + clientFileName.toUTF8(), clientFileName.toUTF8());
     auto treansfer_result = Emlab::bytesToImage(Emlab::imageToBytes(source.toUTF8()), destination.toUTF8() + clientFileName.toUTF8());
     if(treansfer_result){
-        setPhoto(Wt::WString(destination + clientFileName).toUTF8());
+        if(singlePhoto_)
+            setSinglePhoto(Wt::WString(destination + clientFileName).toUTF8());
+        else{
+            photos_.push_back(Wt::WString(destination + clientFileName).toUTF8());
+            setMultiplePhotosDisplay();
+        }
     }else {
         std::cout <<"\n\n result <" << treansfer_result << ">\n\n";
     }
+
 }
 
 void PhotoUploder::uploderFileToLarge()
@@ -62,10 +92,44 @@ void PhotoUploder::uploderFileToLarge()
 
 Emlab::ImageData PhotoUploder::getImageData()
 {
-    return Emlab::imageToBytes(destination.toUTF8() + fileUpload_->clientFileName().toUTF8());
+    return Emlab::imageToBytes(destination.toUTF8() + file_uploder_->clientFileName().toUTF8());
 }
 
-void PhotoUploder::setPhoto(std::string photoPath)
+// this is used only when the photo uploder is set to a single photo
+void PhotoUploder::setSinglePhoto(std::string photoPath)
 {
-    photo_->setImageLink(Wt::WLink(photoPath));
+    uploder_content_->clear();
+
+    auto img_btn = uploder_content_->addWidget(std::make_unique<Wt::WPushButton>("Change"));
+    auto img_background = Wt::WCssDecorationStyle();
+    img_background.setBackgroundImage(Wt::WLink(photoPath));
+    img_btn->setDecorationStyle(img_background);
+    img_btn->setStyleClass("h-32 w-32 bg-cover !border-none rounded-full object-cover block mx-auto cursor-pointer hover-increse-size !text-transparent hover:!text-white transition-all text-2xl font-bold ");
+    file_uploder_->setDisplayWidget(img_btn);
+}
+
+void PhotoUploder::setMultiplePhotosDisplay()
+{
+    for(const std::string photoPath : photos_){
+        photos_.push_back(photoPath);
+        auto btn_background = Wt::WCssDecorationStyle();
+        auto img_btn = uploder_content_->addWidget(std::make_unique<Wt::WPushButton>("Delete"));
+        btn_background.setBackgroundImage(Wt::WLink(photoPath));
+        img_btn->setDecorationStyle(btn_background);
+        status_->toggleStyleClass("!text-red-300", false);
+        img_btn->setStyleClass("w-1/3 h-32 bg-cover !border-none rounded-md object-cover cursor-pointer !text-transparent hover:!text-red-800 transition-all text-2xl font-bold ");
+
+        img_btn->clicked().connect([=](){
+            uploder_content_->removeWidget(img_btn);
+            status_->setText("Photo is deleted.");
+            status_->toggleStyleClass("!text-red-300", true);
+            photos_.erase(std::remove(photos_.begin(), photos_.end(), photoPath), photos_.end());
+        });
+    }
+
+    std::cout << "\n\n";
+    for(auto& photo : photos_){
+        std::cout << "\n" << photo << "\n";
+    }
+    std::cout << "\n\n";
 }

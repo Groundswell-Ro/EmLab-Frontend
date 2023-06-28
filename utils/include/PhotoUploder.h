@@ -6,25 +6,30 @@
 #include <Wt/WImage.h>
 #include <Wt/WLink.h>
 #include <Wt/WFileDropWidget.h>
+#include <Wt/WPushButton.h>
 
 class PhotoUploder : public Wt::WTemplate
 {
 public:
-    PhotoUploder(std::string tamplateName = "photo.uploder.template");
+    PhotoUploder(std::string userPath = "", bool singlePhoto = true);
     ~PhotoUploder();
-    Wt::WFileUpload *fileUpload_;
     Emlab::ImageData getImageData();
 
-    void setPhoto(std::string photoPath);
-
+    Wt::WFileUpload *file_uploder_;
+    Wt::WContainerWidget* uploder_content_;
     Wt::WText *status_;
 
+    void setSinglePhoto(std::string photoPath);
+    void setMultiplePhotosDisplay();
+    
 private:
     void uploderChanged();
     void uploderUploded();
     void uploderFileToLarge();
-    Wt::WImage *photo_;
     Wt::WString destination = "resources/temp_images/";
+    bool singlePhoto_;
+    // photos path are stored here
+    std::vector<std::string> photos_;
     
 };
 

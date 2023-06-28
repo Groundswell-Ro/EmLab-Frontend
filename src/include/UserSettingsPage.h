@@ -28,5 +28,7 @@ private:
 private:
     std::shared_ptr<Login> login_;
     void createProfileDialog();
+    void createProviderProfile();
+
 
 };

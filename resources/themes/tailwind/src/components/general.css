@@ -77,3 +77,11 @@ svg {
 .basic-widget {
   @apply bg-body mx-0 my-3 rounded-md p-4 shadow-md sm:m-3;
 }
+
+.hover-increse-size {
+  @apply transition duration-300 ease-in-out hover:scale-110;
+}
+
+.border-red {
+  @apply !border border-solid border-red-500;
+}

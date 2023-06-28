@@ -2,19 +2,24 @@
 <messages>
 
     <message id='profile-dialog-content'>
-	<div class="">
-		${photo-uploder-template class="mb-4"}
+	<div class="relative max-h-[90vh] !overflow-y-scroll">
+		${photo-uploder class="my-4"}
 		${username-input class="mb-4"}
 		${about-self-input class="mb-4"}
-		<div calss="text-bold text-gray-400 ">
-			<div>
-				To create a profile you need at least one service :) 
+		<div calss="space-y-3">
+			<div class="text-lg text-center font-semibold">
+				Profile requiers at least one service
 			</div>
-			<div>
-				Lets create your first one togather :D
-			</div>
+
 		</div>
-    
+		${service-title-input class="mb-4"}
+		${service-description-input class="mb-8"}
+		
+		${service-photo-uploder}
+
+		<div>
+			${submit-btn class="btn btn-primary mx-auto"}
+		</div>
 	</div>
     </message>
 
@@ -22,19 +27,17 @@
 
 
 	<message id='photo.uploder.template'>
-		<div class="">
-			<div class="shadow-lg h-32 w-32 rounded-full mx-auto">
-				${photo class="h-32 w-32 rounded-full object-cover"}
+		<div class="relative">
+			<div class="text-center whitespace-nowrap text-xs absolute -top-4 right-0">
+				${status class="text-green-800"}
 			</div>
-				<div class="text-center whitespace-nowrap text-xs">
-					${status class="text-green-800"}
-				</div>
-			${uploader class="w-full my-2"}
+			<div class="">
+				${uploder-content class="min-h-[8rem] min-w-[99%]"}
+
+			</div>
+			${uploader class="!hidden"}
 		</div>
 	</message>
-
-
-
 
 
 </messages>

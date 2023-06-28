@@ -13,6 +13,8 @@
 #include <Wt/WBreak.h>
 #include <Wt/WDialog.h>
 #include <Wt/WTextArea.h>
+#include <Wt/WRegExpValidator.h>
+#include <Wt/WLengthValidator.h>
 
 UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
@@ -221,24 +223,28 @@ return widget_tmp;
 void UserSettingsPage::createProfileDialog()
 {
     auto dialog = addChild(std::make_unique<Wt::WDialog>());
-    dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 500));
     dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
     dialog->rejectWhenEscapePressed();
-    
+    dialog->setClosable(true);
+    // dialog->setTitleBarEnabled(false);
+
     auto header = dialog->titleBar();
     auto content = dialog->contents();
-    auto footer = dialog->footer();
 
+    header->clear();
+    header->setStyleClass("text-center [&*h4]:!hidden");
+    auto title = header->addWidget(std::make_unique<Wt::WText>("Create your provider profile"));
+    title->setStyleClass("text-2xl font-semibold my-3");
     dialog->setResizable(false);
     dialog->setMovable(false);
-    // dialog->setStyleClass("basic-widget relative max-w-[95vw] min-h-[50%] max-h-[90%] shadow-lg overflow-x-hidden border-0");
-    content->setStyleClass("overflow-y-scroll my-5");
-    // footer->setStyleClass("flex justify-between items-center absolute bottom-0 left-0 w-full");
 
     auto content_temp = content->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-dialog-content")));
+    auto close_btn = header->addWidget(std::make_unique<Wt::WPushButton>("X"));
+    close_btn->clicked().connect(dialog, &Wt::WDialog::reject);
+    close_btn->setStyleClass("btn btn-danger flex justify-center items-center absolute top-0 right-0 rounded-full p-2 m-2 cursor-pointer");
 
-    auto photo_uploder = content_temp->bindWidget("photo-uploder-template", std::make_unique<PhotoUploder>());
-    photo_uploder->setPhoto(login_->getUserPhotoPath() + "/profile.jpg");
+    auto photo_uploder = content_temp->bindWidget("photo-uploder", std::make_unique<PhotoUploder>());
+    photo_uploder->setSinglePhoto(login_->getUserPhotoPath() + "/profile.jpg");
     photo_uploder->status_->setText("Is this photo ok as your profile photo?");
 
     auto username_input_temp = content_temp->bindWidget("username-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
@@ -253,18 +259,22 @@ void UserSettingsPage::createProfileDialog()
     about_self_temp->bindString("label", "About self as a sevice\'s provider");
     auto about_self_input = about_self_temp->bindWidget("input", std::make_unique<Wt::WTextArea>());
     about_self_input->addStyleClass("resize-none resize-y");
-    // header / footer setup
-    header->clear();
-    header->addWidget(std::make_unique<Wt::WText>("Create Provider Profile"))->setStyleClass("text-cemter text-2xl font-semibold");
-    header->setStyleClass("text-center");
-    // auto cancel_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Cancel"));
-    // auto create_btn = footer->addWidget(std::make_unique<Wt::WPushButton>("Create"));
+    auto submit_btn = content_temp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("Create profile"));
 
-    // create_btn->setStyleClass("btn btn-primary");
-    // cancel_btn->setStyleClass("btn btn-danger");
 
-    // create_btn->clicked().connect([=]{ dialog->accept(); });
-    // cancel_btn->clicked().connect([=]{ dialog->reject(); });
+    auto service_title_input = content_temp->bindWidget("service-title-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    service_title_input->bindString("label", "Service title");
+    auto service_title_input_input = service_title_input->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    service_title_input_input->setAutoComplete(false);
+
+    auto service_description_input = content_temp->bindWidget("service-description-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    service_description_input->bindString("label", "Service description");
+    auto service_description_input_input = service_description_input->bindWidget("input", std::make_unique<Wt::WTextArea>());
+    service_description_input_input->addStyleClass("resize-none resize-y");
+
+    auto service_photo_uploder = content_temp->bindWidget("service-photo-uploder", std::make_unique<PhotoUploder>(login_->user().email + "/temporary/", false));
+
+    submit_btn->setStyleClass("btn btn-primary");
 
     dialog->finished().connect([=]{
         if(dialog->result() == Wt::DialogCode::Accepted)
@@ -277,5 +287,88 @@ void UserSettingsPage::createProfileDialog()
         removeWidget(dialog);
     });
     // dialog->show();
+    dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 500));
+
+
+    submit_btn->clicked().connect(this, [=](){
+
+        // validation
+        auto short_validator = Wt::WRegExpValidator("^[a-zA-Z ]{3,50}$");
+        auto long_validator = Wt::WLengthValidator(10, 500);
+        short_validator.setMandatory(true);
+        long_validator.setMandatory(true);
+        short_validator.setInvalidBlankText("This field is required");
+        long_validator.setInvalidBlankText("This field is required");
+        short_validator.setInvalidNoMatchText("Try using just letters and spaces");
+        long_validator.setInvalidTooLongText("maximum of 500 characters");
+        long_validator.setInvalidTooShortText("minimum of 10 characters");
+        
+        auto username_validation_result = short_validator.validate(username_input->text());
+        auto about_self_validation_result = long_validator.validate(about_self_input->text());
+        auto service_title_validation_result = short_validator.validate(service_title_input_input->text());
+        auto service_description_validation_result = long_validator.validate(service_description_input_input->text());
+    
+        username_input_temp->setCondition("if-error-message", true);
+        about_self_temp->setCondition("if-error-message", true);
+        service_title_input->setCondition("if-error-message", true);
+        service_description_input->setCondition("if-error-message", true);
+
+        username_input_temp->bindEmpty("error");
+        about_self_temp->bindEmpty("error");
+        service_title_input->bindEmpty("error");
+        service_description_input->bindEmpty("error");
+
+        switch (username_validation_result.state()) {
+            case Wt::ValidationState::InvalidEmpty:
+                username_input_temp->bindWidget("error", std::make_unique<Wt::WText>(username_validation_result.message()));
+                return;
+            case Wt::ValidationState::Invalid:
+                username_input_temp->bindWidget("error", std::make_unique<Wt::WText>(username_validation_result.message()));
+                return;
+            default:
+                username_input_temp->setCondition("if-error-message", false);
+        }
+
+        switch (about_self_validation_result.state()) {
+            case Wt::ValidationState::InvalidEmpty:
+                about_self_temp->bindWidget("error", std::make_unique<Wt::WText>(about_self_validation_result.message()));
+                return;
+            case Wt::ValidationState::Invalid:
+                about_self_temp->bindWidget("error", std::make_unique<Wt::WText>(about_self_validation_result.message()));
+                return;
+            default:
+                about_self_temp->setCondition("if-error-message", false);
+        }
+
+        switch (service_title_validation_result.state()) {
+            case Wt::ValidationState::InvalidEmpty:
+                service_title_input->bindWidget("error", std::make_unique<Wt::WText>(service_title_validation_result.message()));
+                return;
+            case Wt::ValidationState::Invalid:
+                service_title_input->bindWidget("error", std::make_unique<Wt::WText>(service_title_validation_result.message()));
+                return;
+            default:
+                service_title_input->setCondition("if-error-message", false);
+        }
+
+        switch (service_description_validation_result.state()) {
+            case Wt::ValidationState::InvalidEmpty:
+                service_description_input->bindWidget("error", std::make_unique<Wt::WText>(service_description_validation_result.message()));
+                return;
+            case Wt::ValidationState::Invalid:
+                service_description_input->bindWidget("error", std::make_unique<Wt::WText>(service_description_validation_result.message()));
+                return;
+            default:
+                service_description_input->setCondition("if-error-message", false);
+        }
+
+
+        // gather data
+
+        // send data
+
+        // responde
+    });
+
 
 }
