@@ -1,10 +1,11 @@
 #include "include/PhotoUploder.h"
 #include <cstdlib>
 #include <Wt/WCssDecorationStyle.h>
+#include <Wt/WApplication.h>
 
 PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
 {
-    destination += userPath;
+    destination += Wt::WApplication::instance()->sessionId() + "/";
     singlePhoto_ = singlePhoto;
 
     setTemplateText(tr("photo.uploder.template"));
@@ -20,7 +21,8 @@ PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
 
 
     if(!singlePhoto){
-        auto add_photo_btn = uploder_content_->addWidget(std::make_unique<Wt::WText>("Add Photo"));
+        setCondition("if-multiple", true);
+        auto add_photo_btn = bindWidget("add-photo-btn", std::make_unique<Wt::WPushButton>("Add Photo"));
         add_photo_btn->addStyleClass("btn w-1/3 m-0 p-0 rounded-md absolute -top-6");
 
         file_uploder_->setDisplayWidget(add_photo_btn);
@@ -30,7 +32,7 @@ PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
         background_style.setBackgroundImage(Wt::WLink("resources/images/profile-cover/photos.png"));
         uploder_content_->setDecorationStyle(background_style);
     }else {
-        setSinglePhoto("resources/images/blank-profile-picture.png");
+        setSinglePhoto();
     }
 
 }
@@ -38,9 +40,11 @@ PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
 PhotoUploder::~PhotoUploder()
 {
     if(singlePhoto_){
+        std::cout << "\n\n deleting file <" << destination.toUTF8() + file_uploder_->clientFileName().toUTF8() << ">\n\n";
         Emlab::deleteFile(destination.toUTF8() + file_uploder_->clientFileName().toUTF8());
     }else {
         for(auto photo : photos_){
+            std::cout << "\n\n deleting file <" << photo << ">\n\n";
             Emlab::deleteFile(photo);
         }
     }
@@ -58,28 +62,31 @@ void PhotoUploder::uploderUploded()
     Wt::WString source = file_uploder_->spoolFileName();
     Wt::WString clientFileName = file_uploder_->clientFileName().toUTF8();
 
-   
+    // validation
     if(!Emlab::validateImage(file_uploder_->spoolFileName())){
         status_->setText("Photo is not a Photo.");
         status_->toggleStyleClass("!text-red-300", true);
         if(singlePhoto_)
-            setSinglePhoto("resources/images/blank-profile-picture.png");
+            setSinglePhoto();
         return;
     }
-
+    
+    // response
     status_->setText("Photo is valid.");
     status_->toggleStyleClass("!text-red-300", false);
 
+    // transfer
     auto treansfer_result = Emlab::bytesToImage(Emlab::imageToBytes(source.toUTF8()), destination.toUTF8() + clientFileName.toUTF8());
     if(treansfer_result){
-        if(singlePhoto_)
+        if(singlePhoto_){
             setSinglePhoto(Wt::WString(destination + clientFileName).toUTF8());
+        }
         else{
             photos_.push_back(Wt::WString(destination + clientFileName).toUTF8());
             setMultiplePhotosDisplay();
         }
     }else {
-        std::cout <<"\n\n result <" << treansfer_result << ">\n\n";
+        std::cout <<"\n\n transfer result <" << treansfer_result << ">\n\n";
     }
 
 }
@@ -96,13 +103,27 @@ Emlab::ImageData PhotoUploder::getImageData()
 }
 
 // this is used only when the photo uploder is set to a single photo
-void PhotoUploder::setSinglePhoto(std::string photoPath)
+void PhotoUploder::setSinglePhoto(Wt::WString photo_path)
 {
-    uploder_content_->clear();
 
+    uploder_content_->clear();
     auto img_btn = uploder_content_->addWidget(std::make_unique<Wt::WPushButton>("Change"));
     auto img_background = Wt::WCssDecorationStyle();
-    img_background.setBackgroundImage(Wt::WLink(photoPath));
+    
+    if(photo_path == ""){
+        std::cout << "\n\n setSinglePhoto = '' \n\n";
+        img_background.setBackgroundImage(Wt::WLink(default_photo_path_.toUTF8()));
+    }else{
+        if(photos_.size() > 0){
+            Emlab::deleteFile(photos_[0]);
+            photos_.clear();
+        }
+        photos_.push_back(photo_path.toUTF8());
+        std::cout << "\n\n setSinglePhoto = " << photo_path.toUTF8() << "\n\n";
+        img_background.setBackgroundImage(Wt::WLink(photo_path.toUTF8()));
+    } 
+
+        
     img_btn->setDecorationStyle(img_background);
     img_btn->setStyleClass("h-32 w-32 bg-cover !border-none rounded-full object-cover block mx-auto cursor-pointer hover-increse-size !text-transparent hover:!text-white transition-all text-2xl font-bold ");
     file_uploder_->setDisplayWidget(img_btn);
@@ -110,6 +131,7 @@ void PhotoUploder::setSinglePhoto(std::string photoPath)
 
 void PhotoUploder::setMultiplePhotosDisplay()
 {
+    uploder_content_->clear();
     for(const std::string photoPath : photos_){
         photos_.push_back(photoPath);
         auto btn_background = Wt::WCssDecorationStyle();

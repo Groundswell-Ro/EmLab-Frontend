@@ -20,15 +20,15 @@ private:
     // those widgets are created into the settings page
     std::unique_ptr<Wt::WTemplate> createSettingsGeneralWidget(std::string tempName);
     std::unique_ptr<Wt::WTemplate> createChangeEmailWidget(std::string tempName);
-    std::unique_ptr<Wt::WTemplate> createChangeUsernameWidget(std::string tempName);
     std::unique_ptr<Wt::WTemplate> createChangeNameWidget(std::string tempName);
     std::unique_ptr<Wt::WTemplate> createChangePhoneWidget(std::string tempName);
     std::unique_ptr<Wt::WTemplate> createChangePasswordWidget(std::string tempName);
-
 private:
     std::shared_ptr<Login> login_;
     void createProfileDialog();
     void createProviderProfile();
+
+    Emlab::ChangeUniqueDataResponse changeEmail(std::string email);
 
 
 };

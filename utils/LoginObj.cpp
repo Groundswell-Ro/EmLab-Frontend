@@ -26,6 +26,7 @@ void Login::login(Emlab::LoginReturn loginReturn)
 	user_.loginResponse = loginReturn.loginResponse;
 	user_.email = loginReturn.email;
 	user_.name = loginReturn.name;
+	user_.phone = loginReturn.phone;
 	user_.token = loginReturn.token;
 	Emlab::bytesToImage(Emlab::Comunication::getUserPhotoWithToken(loginReturn.token), getUserPhotoPath() + "/profile.jpg");
 	changed_.emit();

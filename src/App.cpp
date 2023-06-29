@@ -32,7 +32,7 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	messageResourceBundle().use(appRoot() + "resources/xml/ProfilePage");
 	messageResourceBundle().use(appRoot() + "resources/xml/Svg");
 	messageResourceBundle().use(appRoot() + "resources/xml/CreateProfileDialog");
-	
+	messageResourceBundle().use(appRoot() + "resources/xml/SettingsPage");
 	// require("resources/Js/CopyToClipboard.js");
 	require("resources/Js/Utility.js");
 	require("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
@@ -57,7 +57,8 @@ EventManagerLab::~EventManagerLab()
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	auto auth = root()->addChild(std::make_unique<Auth>(login_));
-	auth->dev_loginUser("victor@gmail.com", "asdfghj1");
+	auth->dev_loginUser("client1@gmail.com", "asdfghj1");
+	// auth->dev_loginUser("alex@gmail.com", "asdfghj1");
 
 }
 
@@ -66,7 +67,7 @@ void EventManagerLab::handleUserAuth()
 {	
 	if (login_->isLoggedIn())
 	{
-		auto profile_img = Wt::WLink(login_->getUserPhotoPath() + "/profile.jpg");
+		auto profile_img = Wt::WLink(sessionId() + "/profile.jpg");
 
 		auto profile_btn = std::make_unique<Wt::WPushButton>();
 		profile_btn->setIcon(profile_img);
@@ -96,12 +97,10 @@ void EventManagerLab::handleUserAuth()
 		profile_btn->setMenu(std::move(user_menu_ptr));
 		navbar_->bindWidget("user-menu", std::move(profile_btn));
 
-		// settings->clicked().emit(Wt::WMouseEvent());
-		// user_menu_->select(settings);
-		nav_menu_->select(0);
+		user_menu_->select(settings);
+		// nav_menu_->select(0);
 		
 	}else {
-		// remove user_menu_ widget
 		auto login_btn = navbar_->bindWidget("user-menu", std::make_unique<Wt::WPushButton>("Log In"));
 		login_btn->setStyleClass("btn btn-primary");
 		services_page_->removeSidebar();

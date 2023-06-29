@@ -19,7 +19,7 @@ public:
     Wt::WContainerWidget* uploder_content_;
     Wt::WText *status_;
 
-    void setSinglePhoto(std::string photoPath);
+    void setSinglePhoto(Wt::WString photo_path = "");
     void setMultiplePhotosDisplay();
     
 private:
@@ -27,10 +27,11 @@ private:
     void uploderUploded();
     void uploderFileToLarge();
     Wt::WString destination = "resources/temp_images/";
+    Wt::WString default_photo_path_ = "resources/images/blank-profile-picture.png";
+
     bool singlePhoto_;
     // photos path are stored here
     std::vector<std::string> photos_;
-    
 };
 
 

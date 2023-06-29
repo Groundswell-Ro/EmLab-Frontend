@@ -22,13 +22,13 @@
 		${</if-error-message>}
 		<div class="relative flex flex-col justify-stretch">
 			${<if-start-svg>}
-				${start-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
+				${start-svg class="absolute left-0 bottom-1/2 translate-y-1/2 cursor-pointer px-3"}
 			${</if-start-svg>}
 			
-			${input class="rounded-lg !border-0 bg-white px-4 py-3 ps-10 font-medium shadow-md ring-0"}
+			${input class="input-style-1 text-md"}
 
 			${<if-end-svg>}
-				${end-svg class="absolute bottom-0 right-0 cursor-pointer px-3 py-1"}
+				${end-svg class="absolute right-0 bottom-1/2 translate-y-1/2 cursor-pointer px-3 "}
 			${</if-end-svg>}
 
 		</div>

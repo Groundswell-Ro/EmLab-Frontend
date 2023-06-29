@@ -294,7 +294,6 @@ void Auth::createSignUp() {
         registrationInfo.photo = photo_uploder_->getImageData();
 
         auto registration_response = trySignUp(registrationInfo);
-	// enum RegistrationResponse { RegistrationSuccessful ,EmailAlreadyExists, PhoneAlreadyExists };
         if(registration_response == Emlab::RegistrationResponse::RegistrationSuccessful)
         {
             registration_template_->bindString("submit-info", "Registration successful");
@@ -379,7 +378,7 @@ void Auth::dev_loginUser(Wt::WString user_email, Wt::WString user_password) {
     loginInfo.email = user_email.toUTF8();
     loginInfo.password = user_password.toUTF8();
     login_->login(tryLogin(loginInfo));
-    done(Wt::DialogCode::Accepted);
+    // done(Wt::DialogCode::Accepted);
 
 }
 

@@ -1,4 +1,7 @@
 #include "include/UserSettingsPage.h"
+#include "../../comunication/comm/AuthInterface.h"
+#include <stdexcept>
+#include <Ice/Ice.h>
 
 #include <Wt/WMenu.h>
 #include <Wt/WMenuItem.h>
@@ -15,6 +18,7 @@
 #include <Wt/WTextArea.h>
 #include <Wt/WRegExpValidator.h>
 #include <Wt/WLengthValidator.h>
+#include <Wt/WMessageBox.h>
 
 UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
@@ -54,8 +58,8 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 
     create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
 
-    menu->select(0);
-    createProfileDialog();
+    menu->select(menu_item_email);
+    // createProfileDialog();
 
 }
 
@@ -78,60 +82,121 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
     
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
     tmp->bindString("title", "email");
-    tmp->bindString("current-data", "croitoriu.93@gmail.com");
-    tmp->bindWidget("icon-svg", std::make_unique<Wt::WTemplate>(tr("email-svg")));
+    tmp->bindString("current-data", login_->user().email);
     tmp->bindEmpty("submit-info");
-    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-green-400 font-semibold\">Validated</div>"));
-    auto email_input = tmp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-red-400 font-semibold\">Not Validated</div>"));
+    
+    auto email_temp = tmp->bindWidget("input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    email_temp->setCondition("if-start-svg", true);
+    email_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("email-svg")));
+    email_temp->bindString("label", "New Email");
+    auto email_input = email_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    email_input->setPlaceholderText("New Email");
+    auto email_validator = Wt::WRegExpValidator("(?!(^[.-].*|[^@]*[.-]@|.*\\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~.-]+@)(?!-.*|.*-\\.)([a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,15}");
+    email_validator.setMandatory(true);
+    email_validator.setInvalidNoMatchText("Email is not valid address, \"example.address@mail.com\"");
+    email_validator.setInvalidBlankText("Email is empty");
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
 
     submit_btn->clicked().connect(this, [=](){
-        tmp->bindString("submit-info", "Email changed successfully!");
+        // validate
+        auto validation_result = email_validator.validate(email_input->text());
+        if(validation_result.state() == Wt::ValidationState::InvalidEmpty){
+            tmp->bindString("submit-info", validation_result.message());
+            return;
+        }else if (validation_result.state() == Wt::ValidationState::Invalid){
+            tmp->bindString("submit-info", validation_result.message());
+            return;
+        }else if (email_input->text() == login_->user().email){
+            tmp->bindString("submit-info", "Email is the same as the current one!");
+            return;
+        }
+        // send data
+        auto messageBox = addChild(std::make_unique<Wt::WMessageBox>(
+                  "Change Email / Identity",
+                  "<div>Are your sure you want to try to change your Email ?</div>"
+                  "<div>This is also the way you login !!!</div>",
+                  Wt::Icon::Information,
+                  Wt::StandardButton::Yes | Wt::StandardButton::No));
+
+        messageBox->setModal(false);
+        messageBox->buttonClicked().connect([=] {
+            if(messageBox->buttonResult() == Wt::StandardButton::Yes){
+                auto emailChangeResponse = changeEmail(email_input->text().toUTF8());
+                if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::Changed){
+                    tmp->bindString("submit-info", "Email changed successfully!");
+                    tmp->bindString("current-data", email_input->text());
+                }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::NotChanged){
+                    tmp->bindString("submit-info", "Email not changed!, make a photo and show the developer!:D");
+                }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::AllreadyExists){
+                    tmp->bindString("submit-info", "Email allready exists!");
+                }
+            }
+            removeChild(messageBox);
+        });
+        messageBox->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+        messageBox->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 300));
+        // response
+        // if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::Changed){
+        //     tmp->bindString("submit-info", "Email changed successfully!");
+        //     tmp->bindString("current-data", email_input->text());
+        // }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::NotChanged){
+        //     tmp->bindString("submit-info", "Email not changed!");
+        // }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::AllreadyExists){
+        //     tmp->bindString("submit-info", "Email allready exists!");
+        // }
     });
     return widget_tmp;
 }
 
-std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeUsernameWidget(std::string tempName)
-{
-auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
-    widget_tmp->bindString("title", "change username");
-
-    auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
-    tmp->bindString("title", "username");
-
-    tmp->bindString("current-data", "maxuli");
-
-    tmp->bindWidget("icon-svg", std::make_unique<Wt::WTemplate>(tr("human-svg")));
-    tmp->bindEmpty("submit-info");
-    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-green-400 font-semibold\">Validated</div>"));
-    auto email_input = tmp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
-    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
-
-
-    submit_btn->clicked().connect(this, [=](){
-        tmp->bindString("submit-info", "Email changed successfully!");
-    });
-return widget_tmp;
-}
-
 std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::string tempName)
 {
-auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
-    widget_tmp->bindString("title", "change name");
-
+    auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
+    widget_tmp->bindString("title", "change username");
+    
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
     tmp->bindString("title", "name");
-    
-    tmp->bindString("current-data", "alexandru dan croitoriu");
-
-    tmp->bindWidget("icon-svg", std::make_unique<Wt::WTemplate>(tr("human-svg")));
+    tmp->bindString("current-data", login_->user().name);
     tmp->bindEmpty("submit-info");
-    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-green-400 font-semibold\">Validated</div>"));
-    auto email_input = tmp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
-    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
+    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-red-400 font-semibold\">Not Validated</div>"));
 
+    auto name_temp = tmp->bindWidget("input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    name_temp->setCondition("if-start-svg", true);
+    name_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("human-svg")));
+    name_temp->bindString("label", "New Name");
+    auto name_input = name_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    name_input->setPlaceholderText("New Username");
+    auto name_validator = Wt::WRegExpValidator("^[a-zA-Z ]{3,50}$");
+    name_validator.setInvalidNoMatchText("Username should be between 3 and 50 characters long and contain only letters");
+    name_validator.setInvalidBlankText("Username is empty");
+
+    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
-        tmp->bindString("submit-info", "Email changed successfully!");
+        // validation
+        auto validation_result = name_validator.validate(name_input->text());
+        if(validation_result.state() == Wt::ValidationState::InvalidEmpty){
+            tmp->bindString("submit-info", validation_result.message());
+            return;
+        }else if (validation_result.state() == Wt::ValidationState::Invalid){
+            tmp->bindString("submit-info", validation_result.message());
+            return;
+        }
+        // send data
+        try {
+            Ice::CommunicatorHolder ich = Ice::initialize();
+            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+            if (!authInterface)
+            {
+                throw std::runtime_error("Invalid proxy");
+            }
+            authInterface->setName(login_->userToken(), name_input->text().toUTF8());
+            tmp->bindString("submit-info", "Name changed successfully!");
+            tmp->bindString("current-data", name_input->text());
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
+            tmp->bindString("submit-info", "Name failed changing!");
+        }
     });
 return widget_tmp;
 }
@@ -139,85 +204,211 @@ return widget_tmp;
 std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePhoneWidget(std::string tempName)
 {
 auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
-    widget_tmp->bindString("title", "change phone");
+    widget_tmp->bindString("title", "change phone number");
 
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
-    tmp->bindString("title", "phone");
-
-    tmp->bindString("current-data", "0773 132 455");
-
-    tmp->bindWidget("icon-svg", std::make_unique<Wt::WTemplate>(tr("phone-svg")));
+    tmp->bindString("title", "phone number");
+    std::string phone = login_->user().phone;
+    phone.insert(4, " ");
+    phone.insert(8, " ");
+    tmp->bindString("current-data", phone);
     tmp->bindEmpty("submit-info");
-    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-green-400 font-semibold\">Validated</div>"));
-    auto email_input = tmp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
-    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
+    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-red-400 font-semibold\">Not Validated</div>"));
+    std::cout << "\n\n\n\n current phone number :" << login_->user().phone << "\n\n\n\n";
+    auto phone_temp = tmp->bindWidget("input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    phone_temp->setCondition("if-start-svg", true);
+    phone_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("phone-svg")));
+    phone_temp->bindString("label", "New Phone Number");
+    auto phone_input = phone_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    phone_input->setPlaceholderText("New Phone Number");
+    phone_input->setInputMask("9999999999");
+    auto phone_validator =  Wt::WRegExpValidator("^\\d{10}$");
+    phone_validator.setMandatory(true);
+    phone_validator.setInvalidNoMatchText("Phone number should be10 numbers long, 0000 000 000");
+    phone_validator.setInvalidBlankText("Phone number is empty");
 
+    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
-        tmp->bindString("submit-info", "Email changed successfully!");
+        // validation
+        auto validation_result = phone_validator.validate(phone_input->text());
+        if(validation_result.state() == Wt::ValidationState::InvalidEmpty){
+            tmp->bindString("submit-info", validation_result.message());
+            return;
+        }else if (validation_result.state() == Wt::ValidationState::Invalid){
+            tmp->bindString("submit-info", validation_result.message());
+            return;
+        }
+        // send data
+        try {
+            Ice::CommunicatorHolder ich = Ice::initialize();
+            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+            if (!authInterface)
+            {
+                throw std::runtime_error("Invalid proxy");
+            }
+            authInterface->changePhone(login_->userToken(), phone_input->text().toUTF8());
+            tmp->bindString("submit-info", "Phone number changed successfully!");
+            auto phone = phone_input->text().toUTF8();
+            phone.insert(4, " ");
+            phone.insert(8, " ");
+            tmp->bindString("current-data", phone);
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
+            // tmp->bindString("submit-info", "Phone number failed changing!");
+        }
     });
-    return widget_tmp;
+return widget_tmp;
+
 }
 
 std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std::string tempName)
 {
     auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
     widget_tmp->bindString("title", "change password");
-
+    
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-change-password-widget")));
     tmp->bindString("title", "password");
-
-    tmp->bindWidget("key-svg", std::make_unique<Wt::WText>(tr("key-svg")));
-    tmp->bindWidget("password-requirments", std::make_unique<Wt::WTemplate>(tr("password-requirments")));
     tmp->bindEmpty("submit-info");
-    auto old_password = tmp->bindWidget("old-password", std::make_unique<Wt::WLineEdit>());
-    auto new_password = tmp->bindWidget("new-password", std::make_unique<Wt::WLineEdit>());
-    auto repeat_password = tmp->bindWidget("repeat-password", std::make_unique<Wt::WLineEdit>());
+    tmp->bindEmpty("validation-state");
+    tmp->bindEmpty("current-data");
+    tmp->bindWidget("password-requirments", std::make_unique<Wt::WTemplate>(tr("password-requirments")));
+
+    auto password_temp = tmp->bindWidget("password-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    password_temp->setCondition("if-start-svg", true);
+    password_temp->setCondition("if-end-svg", true);
+    password_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("key-svg")));
+    password_temp->bindString("label", "New Password");
+    auto password_input = password_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    password_input->setPlaceholderText("New Password");
+    password_input->setEchoMode(Wt::EchoMode::Password);
+    auto password_eye = password_temp->bindWidget("end-svg", std::make_unique<Wt::WTemplate>(tr("eye-svg")));
+
+    auto new_password_temp = tmp->bindWidget("new_password-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    new_password_temp->setCondition("if-start-svg", true);
+    new_password_temp->setCondition("if-end-svg", true);
+    new_password_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("key-svg")));
+    new_password_temp->bindString("label", "New Password");
+    auto new_password_input = new_password_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    new_password_input->setPlaceholderText("New Password");
+    new_password_input->setEchoMode(Wt::EchoMode::Password);
+    auto new_password_eye = new_password_temp->bindWidget("end-svg", std::make_unique<Wt::WTemplate>(tr("eye-svg")));
+ 
+    auto new_password_repeat_temp = tmp->bindWidget("new_password-repeat-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
+    new_password_repeat_temp->setCondition("if-start-svg", true);
+    new_password_repeat_temp->setCondition("if-end-svg", true);
+    new_password_repeat_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("key-svg")));
+    new_password_repeat_temp->bindString("label", "New Password");
+    auto new_password_repeat_input = new_password_repeat_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
+    new_password_repeat_input->setPlaceholderText("New Password");
+    new_password_repeat_input->setEchoMode(Wt::EchoMode::Password);
+    auto new_password_repeat_eye = new_password_repeat_temp->bindWidget("end-svg", std::make_unique<Wt::WTemplate>(tr("eye-svg")));
+
+    password_eye->clicked().connect(this, [=](){
+        if(password_input->echoMode() == Wt::EchoMode::Password){
+            password_input->setEchoMode(Wt::EchoMode::Normal);
+            password_eye->bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("eye-slash-svg")));
+        }else{
+            password_input->setEchoMode(Wt::EchoMode::Password);
+            password_eye->bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("eye-svg")));
+        }
+    });
+
+    new_password_eye->clicked().connect(this, [=](){
+        if(new_password_input->echoMode() == Wt::EchoMode::Password){
+            new_password_input->setEchoMode(Wt::EchoMode::Normal);
+            new_password_eye->bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("eye-slash-svg")));
+        }else{
+            new_password_input->setEchoMode(Wt::EchoMode::Password);
+            new_password_eye->bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("eye-svg")));
+        }
+    });
+
+    new_password_repeat_eye->clicked().connect(this, [=](){
+        if(new_password_repeat_input->echoMode() == Wt::EchoMode::Password){
+            new_password_repeat_input->setEchoMode(Wt::EchoMode::Normal);
+            new_password_repeat_eye->bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("eye-slash-svg")));
+        }else{
+            new_password_repeat_input->setEchoMode(Wt::EchoMode::Password);
+            new_password_repeat_eye->bindWidget("svg", std::make_unique<Wt::WTemplate>(tr("eye-svg")));
+        }
+    });
+
+
+    auto password_validator =  Wt::WRegExpValidator("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
+    password_validator.setMandatory(true);
+    password_validator.setInvalidNoMatchText("Password must contain at least 6 characters, including letters and numbers");
+    password_validator.setInvalidBlankText("field is empty");
     
-    auto old_pass_eye_btn = tmp->bindWidget("old-password-eye", std::make_unique<Wt::WTemplate>(tr("eye-crossed-svg")));
-    auto new_pass_eye_btn = tmp->bindWidget("new-password-eye", std::make_unique<Wt::WTemplate>(tr("eye-crossed-svg")));
-    auto repeat_pass_eye_btn = tmp->bindWidget("repeat-password-eye", std::make_unique<Wt::WTemplate>(tr("eye-crossed-svg")));
+    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
+    submit_btn->clicked().connect(this, [=](){
+        // validation
+        auto password_validation = password_validator.validate(password_input->text());
+        auto new_password_validation = password_validator.validate(new_password_input->text());
 
-    auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("Submit"));
+        // reset error message display
+        password_temp->setCondition("if-error-message", false);
+        new_password_temp->setCondition("if-error-message", false);
+        new_password_repeat_temp->setCondition("if-error-message", false);
 
-    old_password->setEchoMode(Wt::EchoMode::Password);
-    new_password->setEchoMode(Wt::EchoMode::Password);
-    repeat_password->setEchoMode(Wt::EchoMode::Password);
+        if(password_validation.state() == Wt::ValidationState::Invalid){
+            password_temp->setCondition("if-error-message", true);
+            password_temp->bindWidget("error", std::make_unique<Wt::WText>(password_validation.message()));
+            return;
+        }else if(password_validation.state() == Wt::ValidationState::InvalidEmpty){
+            password_temp->setCondition("if-error-message", true);
+            password_temp->bindWidget("error", std::make_unique<Wt::WText>(password_validation.message()));
+            return;
+        }else if(new_password_validation.state() == Wt::ValidationState::Invalid){
+            new_password_temp->setCondition("if-error-message", true);
+            new_password_temp->bindWidget("error", std::make_unique<Wt::WText>(new_password_validation.message()));
+            return;
+        } else if(new_password_validation.state() == Wt::ValidationState::InvalidEmpty){
+            new_password_temp->setCondition("if-error-message", true);
+            new_password_temp->bindWidget("error", std::make_unique<Wt::WText>(new_password_validation.message()));
+            return;
+        } else if(new_password_input->text() != new_password_repeat_input->text()){
+            new_password_repeat_temp->setCondition("if-error-message", true);
+            new_password_repeat_temp->bindWidget("error", std::make_unique<Wt::WText>("Passwords do not match"));
+            return;
+        }if(password_input->text() == new_password_input->text()){
+            new_password_temp->setCondition("if-error-message", true);
+            tmp->bindWidget("submit-info", std::make_unique<Wt::WText>("<p class='text-red-400'>New password must be different from old password</p>"));
+            return;
+        }
+        std::cout << "\n\n validation passed \n\n";
+        
+        // send data
+        try {
+            Ice::CommunicatorHolder ich = Ice::initialize();
+            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+            if (!authInterface)
+            {
+                throw std::runtime_error("Invalid proxy");
+            }
+            auto old_password = password_input->text().toUTF8();
+            auto new_password = new_password_input->text().toUTF8();
+            Emlab::ChangePasswordResponse response = authInterface->changePassword(login_->userToken(), old_password, new_password);
+            // respond
+            switch(response){
+                case Emlab::ChangePasswordResponse::PasswordChanged:
+                    tmp->bindString("submit-info", "<p class='text-green-400'>Password changed successfully</p>");
+                break;
+                case Emlab::ChangePasswordResponse::PasswordNotChanged:
+                    tmp->bindString("submit-info", "<p class='text-red-400'>Password failed changing! make a photo and tell the developer to check this out</p>");
+                break;
+                case Emlab::ChangePasswordResponse::OldPasswordIncorrect:
+                    tmp->bindString("submit-info", "<p class='text-red-400'>Old password is incorrect</p>");
+                break;
+            }
 
-	old_pass_eye_btn->clicked().connect(this, [=](){
-        if(old_password->echoMode() == Wt::EchoMode::Password)
-        {
-            old_password->setEchoMode(Wt::EchoMode::Normal);
-            old_pass_eye_btn->setTemplateText(tr("eye-svg"));
-                }else {
-            old_password->setEchoMode(Wt::EchoMode::Password);
-            old_pass_eye_btn->setTemplateText(tr("eye-crossed-svg"));
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
+            tmp->bindString("submit-info", "<p class='text-red-400'>Password failed changing! make a photo and tell the developer to check this out</p>");
         }
     });
-
-    new_pass_eye_btn->clicked().connect(this, [=](){
-        if(new_password->echoMode() == Wt::EchoMode::Password)
-        {
-            new_password->setEchoMode(Wt::EchoMode::Normal);
-            new_pass_eye_btn->setTemplateText(tr("eye-svg"));
-                }else {
-            new_password->setEchoMode(Wt::EchoMode::Password);
-            new_pass_eye_btn->setTemplateText(tr("eye-crossed-svg"));
-        }
-    });
-
-    repeat_pass_eye_btn->clicked().connect(this, [=](){
-        if(repeat_password->echoMode() == Wt::EchoMode::Password)
-        {
-            repeat_password->setEchoMode(Wt::EchoMode::Normal);
-            repeat_pass_eye_btn->setTemplateText(tr("eye-svg"));
-                }else {
-            repeat_password->setEchoMode(Wt::EchoMode::Password);
-            repeat_pass_eye_btn->setTemplateText(tr("eye-crossed-svg"));
-        }
-    });
-
-
-return widget_tmp;
+    return widget_tmp;
 }
 
 void UserSettingsPage::createProfileDialog()
@@ -232,7 +423,7 @@ void UserSettingsPage::createProfileDialog()
     auto content = dialog->contents();
 
     header->clear();
-    header->setStyleClass("text-center [&*h4]:!hidden");
+    header->setStyleClass("text-center");
     auto title = header->addWidget(std::make_unique<Wt::WText>("Create your provider profile"));
     title->setStyleClass("text-2xl font-semibold my-3");
     dialog->setResizable(false);
@@ -244,7 +435,8 @@ void UserSettingsPage::createProfileDialog()
     close_btn->setStyleClass("btn btn-danger flex justify-center items-center absolute top-0 right-0 rounded-full p-2 m-2 cursor-pointer");
 
     auto photo_uploder = content_temp->bindWidget("photo-uploder", std::make_unique<PhotoUploder>());
-    photo_uploder->setSinglePhoto(login_->getUserPhotoPath() + "/profile.jpg");
+    // login_->getUserPhotoPath() + "/profile.jpg"
+    photo_uploder->setSinglePhoto();
     photo_uploder->status_->setText("Is this photo ok as your profile photo?");
 
     auto username_input_temp = content_temp->bindWidget("username-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
@@ -371,4 +563,26 @@ void UserSettingsPage::createProfileDialog()
     });
 
 
+}
+
+
+Emlab::ChangeUniqueDataResponse UserSettingsPage::changeEmail(std::string email)
+{
+    Emlab::ChangeUniqueDataResponse emailChangeResponse;
+     try
+        {
+            Ice::CommunicatorHolder ich = Ice::initialize();
+            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+            if (!authInterface)
+            {
+                throw std::runtime_error("Invalid proxy");
+            }
+            emailChangeResponse = authInterface->changeEmail(login_->userToken(), email);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << std::endl;
+        }   
+    return emailChangeResponse;
 }

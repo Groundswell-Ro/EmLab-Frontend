@@ -148,68 +148,7 @@
     </message>
 
 
-    <!-- templates for settings widget -->
-    <message id='settings-widget'>
-        <div class="basic-widget mt-0 ms-0">
-            <div class="text-gray-500 font-semibold text-2xl my-5 capitalize underline">${title}</div>
-            ${data-form-widget}
-        </div>
-    </message>
-
-    <message id='settings-general-data-widget'>
-        general data widge5t here
-    </message>
-
-    <message id='data-form-widget'>
-        <div class="max-w-md">
-            <div class="mb-1 font-semibold flex justify-between">
-                <div class="capitalize">current ${title}:</div>
-                <div class="font-bold mx-3">${current-data}</div>
-                ${validation-state}
-            </div>
-            <div class="mb-1 font-semibold capitalize">new ${title}:</div>
-                <div class="relative flex flex-col justify-stretch">
-                    ${icon-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-                    ${input class="input-rounded"}
-            </div>
-            <div class="flex my-2">
-                ${submit-info}
-                ${submit-btn class="btn btn-primary ms-auto"}
-            </div>
-        </div>
-    </message>
-
-    <message id='data-change-password-widget'>
-        <div class="space-y-5 max-w-md mx-auto sm:mx-0">
-            <div>
-                <div class="mb-1 font-semibold capitalize">old ${title}</div>
-                <div class="relative flex flex-col justify-stretch">
-                    ${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-                    ${old-password class="input-rounded"}
-                    ${old-password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1 text-gray-200"}
-                </div>
-            </div>
-            <div>
-                <div class="mb-1 font-semibold capitalize">new ${title}</div>
-                <div class="relative flex flex-col justify-stretch">
-                    ${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-                    ${new-password class="input-rounded"}
-                    ${new-password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1 text-gray-200"}
-                </div>
-            </div>
-            <div>
-                <div class="mb-1 font-semibold capitalize">repeat ${title}</div>
-                <div class="relative flex flex-col justify-stretch">
-                    ${key-svg class="absolute bottom-0 left-0 flex items-center p-2 leading-3"}
-                    ${repeat-password class="input-rounded"}
-                    ${repeat-password-eye class="absolute bottom-0 right-0 cursor-pointer px-3 py-1 text-gray-200"}
-                </div>
-            </div>
-            ${submit-info}
-            ${password-requirments}
-            ${submit-btn class="btn btn-primary ms-auto"}
-        </div>
-    </message>
+  
 
     <!-- delete later -->
     <message id='service-description-test'>

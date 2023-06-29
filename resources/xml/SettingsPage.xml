@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+
+    <message id='settings-widget'>
+        <div class="basic-widget mt-0 ms-0">
+            <div class="text-gray-500 font-semibold text-2xl my-5 capitalize underline">${title}</div>
+            ${data-form-widget}
+        </div>
+    </message>
+
+    <message id='settings-general-data-widget'>
+        general data widge5t here
+    </message>
+
+    <message id='data-form-widget'>
+        <div class="max-w-md">
+            <div class="mb-1 font-semibold flex justify-between">
+                <div class="capitalize">current ${title}:</div>
+                <div class="font-bold mx-3">${current-data}</div>
+                ${validation-state}
+            </div>
+            ${input}
+            <div class="flex my-2">
+                <p class="text-red-500">${submit-info}</p>
+                ${submit-btn class="btn btn-primary ms-auto"}
+            </div>
+        </div>
+    </message>
+
+    <message id='data-change-password-widget'>
+        <div class="space-y-5 max-w-md mx-auto sm:mx-0">
+            <div>
+                <div class="mb-1 font-semibold capitalize">old ${title}</div>
+                <div class="relative flex flex-col justify-stretch">
+                   ${password-input}
+                </div>
+            </div>
+            <div>
+                <div class="mb-1 font-semibold capitalize">new ${title}</div>
+                <div class="relative flex flex-col justify-stretch">
+                    ${new_password-input}
+                </div>
+            </div>
+            <div>
+                <div class="mb-1 font-semibold capitalize">repeat ${title}</div>
+                <div class="relative flex flex-col justify-stretch">
+                   ${new_password-repeat-input}
+                </div>
+            </div>
+            ${submit-info}
+            ${password-requirments}
+            ${submit-btn class="btn btn-primary ms-auto"}
+        </div>
+    </message>
+
+</messages>
