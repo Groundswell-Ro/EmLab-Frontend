@@ -21,7 +21,7 @@
             </div>
             ${input}
             <div class="flex my-2">
-                <p class="text-red-500">${submit-info}</p>
+                ${submit-info}
                 ${submit-btn class="btn btn-primary ms-auto"}
             </div>
         </div>
@@ -50,6 +50,25 @@
             ${submit-info}
             ${password-requirments}
             ${submit-btn class="btn btn-primary ms-auto"}
+        </div>
+    </message>
+
+    <message id='email-change-confirmation'>
+        <div class="text-center text-xl font-bold mb-3">Change Email</div>
+        <div class="space-y-2">
+            <div class="text-yellow-500 underline">WORNING !!!</div>
+            <div class="">Your email is the way you identify on this app</div>
+            <div class="">if you change it you will have to login with the new email address:</div>
+            <div class="font-bold">
+                <span class="underline text-red-500">${old-email}</span> 
+                <span class="text-yellow-400">---></span>
+
+                <span class="underline text-green-500">${new-email}</span>
+            </div>
+        </div>
+        <div class="flex justify-between mt-5">
+            ${cancel-btn class="btn btn-seccondary"}
+            ${change-btn class="btn btn-primary"}
         </div>
     </message>
 

@@ -57,7 +57,7 @@ EventManagerLab::~EventManagerLab()
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	auto auth = root()->addChild(std::make_unique<Auth>(login_));
-	auth->dev_loginUser("client1@gmail.com", "asdfghj1");
+	// auth->dev_loginUser("client33@gmail.com", "asdfghj1");
 	// auth->dev_loginUser("alex@gmail.com", "asdfghj1");
 
 }

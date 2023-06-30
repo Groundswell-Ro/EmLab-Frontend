@@ -11,10 +11,8 @@ class Auth : public Wt::WDialog
 {
 public:
     Auth(std::shared_ptr<Login> login);
+    ~Auth();
     
-    // Wt::WTemplate* login_template_;
-    // RegistrationFormView* registration_view;
-
     Wt::WTemplate* registration_template_;
     Wt::WTemplate* login_template_;
     

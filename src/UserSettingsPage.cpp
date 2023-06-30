@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <Ice/Ice.h>
 
+#include <Wt/WApplication.h>
 #include <Wt/WMenu.h>
 #include <Wt/WMenuItem.h>
 #include <Wt/WStackedWidget.h>
@@ -112,39 +113,49 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
             return;
         }
         // send data
-        auto messageBox = addChild(std::make_unique<Wt::WMessageBox>(
-                  "Change Email / Identity",
-                  "<div>Are your sure you want to try to change your Email ?</div>"
-                  "<div>This is also the way you login !!!</div>",
-                  Wt::Icon::Information,
-                  Wt::StandardButton::Yes | Wt::StandardButton::No));
+        auto confirmation_dialog = Wt::WApplication::instance()->root()->addChild(std::make_unique<Wt::WDialog>());
+        confirmation_dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+        confirmation_dialog->titleBar()->clear();
+        // confirmation_dialog->rejectWhenEscapePressed();
+        confirmation_dialog->setModal(true);
+        confirmation_dialog->setMovable(false);
 
-        messageBox->setModal(false);
-        messageBox->buttonClicked().connect([=] {
-            if(messageBox->buttonResult() == Wt::StandardButton::Yes){
+        auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("email-change-confirmation")));
+        temp->bindString("old-email", login_->user().email);
+        temp->bindString("new-email", email_input->text());
+
+        auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Email"));
+        auto cancel_btn = temp->bindWidget("cancel-btn", std::make_unique<Wt::WPushButton>("Cancel"));
+
+        cancel_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::reject);
+        change_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::accept);
+
+        confirmation_dialog->finished().connect([=](Wt::DialogCode code){
+            if(code == Wt::DialogCode::Accepted){
                 auto emailChangeResponse = changeEmail(email_input->text().toUTF8());
+                confirmation_dialog->setModal(false);
+                confirmation_dialog->setMovable(false);
+                
+                confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 300));
+                // response
                 if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::Changed){
-                    tmp->bindString("submit-info", "Email changed successfully!");
+                    tmp->bindString("submit-info", "<p class='text-green-600'>Email changed successfully!</p>");
                     tmp->bindString("current-data", email_input->text());
                 }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::NotChanged){
-                    tmp->bindString("submit-info", "Email not changed!, make a photo and show the developer!:D");
+                    tmp->bindString("submit-info", "<p class='text-yellow-600'>Email not changed!</p>");
                 }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::AllreadyExists){
-                    tmp->bindString("submit-info", "Email allready exists!");
+                    tmp->bindString("submit-info", "<p class='text-red-600'>Email allready exists!</p>");
                 }
+            }else {
+                tmp->bindString("submit-info", "Email not changed!");
             }
-            removeChild(messageBox);
+            confirmation_dialog->removeFromParent();
         });
-        messageBox->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
-        messageBox->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 300));
-        // response
-        // if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::Changed){
-        //     tmp->bindString("submit-info", "Email changed successfully!");
-        //     tmp->bindString("current-data", email_input->text());
-        // }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::NotChanged){
-        //     tmp->bindString("submit-info", "Email not changed!");
-        // }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::AllreadyExists){
-        //     tmp->bindString("submit-info", "Email allready exists!");
-        // }
+
+        
+        confirmation_dialog->show();
+        confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
+
     });
     return widget_tmp;
 }
@@ -214,7 +225,6 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
     tmp->bindString("current-data", phone);
     tmp->bindEmpty("submit-info");
     tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-red-400 font-semibold\">Not Validated</div>"));
-    std::cout << "\n\n\n\n current phone number :" << login_->user().phone << "\n\n\n\n";
     auto phone_temp = tmp->bindWidget("input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
     phone_temp->setCondition("if-start-svg", true);
     phone_temp->bindWidget("start-svg", std::make_unique<Wt::WTemplate>(tr("phone-svg")));

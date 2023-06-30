@@ -49,9 +49,12 @@ Auth::Auth(std::shared_ptr<Login> login)
     createLogin();
     enterPressed().connect(this, [=](){ submit_btn_->clicked().emit(Wt::WMouseEvent()); });
 
-
     setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 500));
 
+}
+
+Auth::~Auth() {
+    std::cout << "\n\n\n auth deconstructor here \n\n\n";
 }
 
 void Auth::createLogin()
@@ -130,7 +133,7 @@ void Auth::createLogin()
         } else if (loginReturn.loginResponse == Emlab::LoginResponse::LoggedIn) {
             login_template_->bindString("submit-info", "Congrats you are logged in");
             login_->login(loginReturn);
-            done(Wt::DialogCode::Accepted);
+            closeDialog();
         } else if (loginReturn.loginResponse == Emlab::LoginResponse::IncorectPassword) {
             login_template_->bindString("submit-info", "Password is incorrect");
         } else if (loginReturn.loginResponse == Emlab::LoginResponse::ThrottlingActivated) {
@@ -301,7 +304,7 @@ void Auth::createSignUp() {
             loginInfo.email = registrationInfo.email;
             loginInfo.password = registrationInfo.password;
             login_->login(tryLogin(loginInfo));
-            done(Wt::DialogCode::Accepted);
+            closeDialog();
         } else if (registration_response == Emlab::RegistrationResponse::EmailAlreadyExists)
         {
             registration_template_->bindString("submit-info", "Email already exists");
@@ -368,9 +371,9 @@ Emlab::RegistrationResponse Auth::trySignUp(Emlab::RegistrationInfo registration
 
 void Auth::closeDialog()
 {
-    reject();
+    done(Wt::DialogCode::Accepted);
+    removeFromParent();
 }
-
 
 void Auth::dev_loginUser(Wt::WString user_email, Wt::WString user_password) {
 
@@ -378,7 +381,7 @@ void Auth::dev_loginUser(Wt::WString user_email, Wt::WString user_password) {
     loginInfo.email = user_email.toUTF8();
     loginInfo.password = user_password.toUTF8();
     login_->login(tryLogin(loginInfo));
-    // done(Wt::DialogCode::Accepted);
+    closeDialog();
 
 }
 
