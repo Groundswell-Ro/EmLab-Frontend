@@ -49,7 +49,7 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
     auto menu_item_phone = menu->addItem("Change Phone", std::move(change_phone_tmp));
     auto menu_item_password = menu->addItem("Change Password", std::move(change_password_tmp));
 
-    Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item text-bold [&>a]:px-8 [&>a]:py-2";
+    Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
     menu_item_general->setStyleClass(menu_item_styles);
     menu_item_email->setStyleClass(menu_item_styles);
     // menu_item_username->setStyleClass(menu_item_styles);
@@ -59,7 +59,7 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 
     create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
 
-    menu->select(menu_item_email);
+    menu->select(menu_item_general);
     // createProfileDialog();
 
 }
@@ -70,7 +70,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createSettingsGeneralWidget(std
     returnWidget->bindString("title", "general");
 
     auto tmp = returnWidget->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("settings-general-data-widget")));
-    
+    tmp->bindWidget("theme-switcher", createThemeSwitcher());
 
     return returnWidget;
 }
@@ -95,8 +95,8 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
     email_input->setPlaceholderText("New Email");
     auto email_validator = Wt::WRegExpValidator("(?!(^[.-].*|[^@]*[.-]@|.*\\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~.-]+@)(?!-.*|.*-\\.)([a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,15}");
     email_validator.setMandatory(true);
-    email_validator.setInvalidNoMatchText("Email is not valid address, \"example.address@mail.com\"");
-    email_validator.setInvalidBlankText("Email is empty");
+    email_validator.setInvalidNoMatchText("<p class='text-red-600'>Email is not valid address, \"example.address@mail.com\"</p>");
+    email_validator.setInvalidBlankText("<p class='text-red-600'>Email is empty</p>");
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
 
     submit_btn->clicked().connect(this, [=](){
@@ -109,20 +109,20 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
             tmp->bindString("submit-info", validation_result.message());
             return;
         }else if (email_input->text() == login_->user().email){
-            tmp->bindString("submit-info", "Email is the same as the current one!");
+            tmp->bindString("submit-info", "<p class\text-red-600'>Email is the same as the current one!</p>");
             return;
         }
         // send data
         auto confirmation_dialog = Wt::WApplication::instance()->root()->addChild(std::make_unique<Wt::WDialog>());
         confirmation_dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
         confirmation_dialog->titleBar()->clear();
-        // confirmation_dialog->rejectWhenEscapePressed();
+        confirmation_dialog->rejectWhenEscapePressed();
         confirmation_dialog->setModal(true);
         confirmation_dialog->setMovable(false);
 
         auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("email-change-confirmation")));
-        temp->bindString("old-email", login_->user().email);
-        temp->bindString("new-email", email_input->text());
+        temp->bindString("old-value", login_->user().email);
+        temp->bindString("new-value", email_input->text());
 
         auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Email"));
         auto cancel_btn = temp->bindWidget("cancel-btn", std::make_unique<Wt::WPushButton>("Cancel"));
@@ -132,28 +132,27 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
 
         confirmation_dialog->finished().connect([=](Wt::DialogCode code){
             if(code == Wt::DialogCode::Accepted){
-                auto emailChangeResponse = changeEmail(email_input->text().toUTF8());
-                confirmation_dialog->setModal(false);
-                confirmation_dialog->setMovable(false);
+                auto email_Change_Response = changeEmail(email_input->text().toUTF8());
+
                 
                 confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 300));
                 // response
-                if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::Changed){
+                if(email_Change_Response == Emlab::ChangeUniqueDataResponse::Changed){
                     tmp->bindString("submit-info", "<p class='text-green-600'>Email changed successfully!</p>");
-                    tmp->bindString("current-data", email_input->text());
-                }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::NotChanged){
+                    login_->setUserEmail(email_input->text().toUTF8());
+                    tmp->bindString("current-data", login_->user().email);
+                }else if(email_Change_Response == Emlab::ChangeUniqueDataResponse::NotChanged){
                     tmp->bindString("submit-info", "<p class='text-yellow-600'>Email not changed!</p>");
-                }else if(emailChangeResponse == Emlab::ChangeUniqueDataResponse::AllreadyExists){
+                }else if(email_Change_Response == Emlab::ChangeUniqueDataResponse::AllreadyExists){
                     tmp->bindString("submit-info", "<p class='text-red-600'>Email allready exists!</p>");
                 }
             }else {
-                tmp->bindString("submit-info", "Email not changed!");
+                tmp->bindString("submit-info", "<p class='text-green-600'>Email not changed!</p>");
             }
             confirmation_dialog->removeFromParent();
         });
-
         
-        confirmation_dialog->show();
+        // confirmation_dialog->show();
         confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
 
     });
@@ -169,7 +168,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
     tmp->bindString("title", "name");
     tmp->bindString("current-data", login_->user().name);
     tmp->bindEmpty("submit-info");
-    tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-red-400 font-semibold\">Not Validated</div>"));
+    tmp->bindEmpty("validation-state");
 
     auto name_temp = tmp->bindWidget("input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
     name_temp->setCondition("if-start-svg", true);
@@ -178,8 +177,9 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
     auto name_input = name_temp->bindWidget("input", std::make_unique<Wt::WLineEdit>());
     name_input->setPlaceholderText("New Username");
     auto name_validator = Wt::WRegExpValidator("^[a-zA-Z ]{3,50}$");
-    name_validator.setInvalidNoMatchText("Username should be between 3 and 50 characters long and contain only letters");
-    name_validator.setInvalidBlankText("Username is empty");
+    name_validator.setMandatory(true);
+    name_validator.setInvalidNoMatchText("<p class='text-red-600'>Username should be between 3 and 50 characters long and contain only letters</p>");
+    name_validator.setInvalidBlankText("<p class='text-red-600'>Username is empty</p>");
 
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
@@ -191,23 +191,49 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
         }else if (validation_result.state() == Wt::ValidationState::Invalid){
             tmp->bindString("submit-info", validation_result.message());
             return;
+        }else if (login_->user().name == name_input->text().toUTF8()){
+            tmp->bindString("submit-info", "<p class='text-red-600'>Name is the same as the current one!</p>");
+            return;
         }
         // send data
-        try {
-            Ice::CommunicatorHolder ich = Ice::initialize();
-            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
-            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
-            if (!authInterface)
-            {
-                throw std::runtime_error("Invalid proxy");
+        auto confirmation_dialog = Wt::WApplication::instance()->root()->addChild(std::make_unique<Wt::WDialog>());
+        confirmation_dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+        confirmation_dialog->titleBar()->clear();
+        confirmation_dialog->rejectWhenEscapePressed();
+        confirmation_dialog->setModal(true);
+        confirmation_dialog->setMovable(false);
+
+        auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("name-change-confirmation")));
+        temp->bindString("old-value", login_->user().name);
+        temp->bindString("new-value", name_input->text());
+
+        auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Name"));
+        auto cancel_btn = temp->bindWidget("cancel-btn", std::make_unique<Wt::WPushButton>("Cancel"));
+
+        cancel_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::reject);
+        change_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::accept);
+
+        confirmation_dialog->finished().connect([=](Wt::DialogCode code){
+            if(code == Wt::DialogCode::Accepted){
+                auto result = setName(name_input->text().toUTF8());
+                // response
+                if(result)
+                {
+                    tmp->bindString("submit-info", "<p class='text-green-600'>Name changed successfully!</p>");
+                    login_->setUserName(name_input->text().toUTF8());
+                    tmp->bindString("current-data", login_->user().name);
+                    
+                }else {
+                    tmp->bindString("submit-info", "<p class='text-red-600'>Name not changed! make a picture and show the developer :)</p>");
+                }
+
+            }else {
+                tmp->bindString("submit-info", "<p class='text-red-600'>Name not changed!</p>");
             }
-            authInterface->setName(login_->userToken(), name_input->text().toUTF8());
-            tmp->bindString("submit-info", "Name changed successfully!");
-            tmp->bindString("current-data", name_input->text());
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            tmp->bindString("submit-info", "Name failed changing!");
-        }
+            confirmation_dialog->removeFromParent();
+        });
+    confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
+
     });
 return widget_tmp;
 }
@@ -234,8 +260,8 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
     phone_input->setInputMask("9999999999");
     auto phone_validator =  Wt::WRegExpValidator("^\\d{10}$");
     phone_validator.setMandatory(true);
-    phone_validator.setInvalidNoMatchText("Phone number should be10 numbers long, 0000 000 000");
-    phone_validator.setInvalidBlankText("Phone number is empty");
+    phone_validator.setInvalidNoMatchText("<p class='text-red-600'>Phone number should be10 numbers long, 0000 000 000</p>");
+    phone_validator.setInvalidBlankText("<p class='text-red-600'>Phone number is empty</p>");
 
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
@@ -247,26 +273,53 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
         }else if (validation_result.state() == Wt::ValidationState::Invalid){
             tmp->bindString("submit-info", validation_result.message());
             return;
+        }else if (login_->user().phone == phone_input->text().toUTF8()){
+            tmp->bindString("submit-info", "<p class='text-red-600'>Phone number is the same as the current one!</p>");
+            return;
         }
-        // send data
-        try {
-            Ice::CommunicatorHolder ich = Ice::initialize();
-            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
-            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
-            if (!authInterface)
-            {
-                throw std::runtime_error("Invalid proxy");
+        
+        auto confirmation_dialog = Wt::WApplication::instance()->root()->addChild(std::make_unique<Wt::WDialog>());
+        confirmation_dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+        confirmation_dialog->titleBar()->clear();
+        confirmation_dialog->rejectWhenEscapePressed();
+        confirmation_dialog->setModal(true);
+        confirmation_dialog->setMovable(false);
+
+        auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("phone-change-confirmation")));
+        temp->bindString("old-value", login_->user().phone);
+        temp->bindString("new-value", phone_input->text());
+
+        auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Phone Number"));
+        auto cancel_btn = temp->bindWidget("cancel-btn", std::make_unique<Wt::WPushButton>("Cancel"));
+
+        cancel_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::reject);
+        change_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::accept);
+
+        confirmation_dialog->finished().connect([=](Wt::DialogCode code){
+            if(code == Wt::DialogCode::Accepted){
+                // send data
+                auto phone_change_response = changePhone(phone_input->text().toUTF8());
+                // response
+                if(phone_change_response == Emlab::ChangeUniqueDataResponse::Changed)
+                {
+                    tmp->bindString("submit-info", "<p class='text-green-600'>Phone number changed successfully!</p>");
+                    auto phone = phone_input->text().toUTF8();
+                    phone.insert(4, " ");
+                    phone.insert(8, " ");
+                    tmp->bindString("current-data", phone);
+                    login_->setUserPhone(phone_input->text().toUTF8());
+                }else if (phone_change_response == Emlab::ChangeUniqueDataResponse::NotChanged)
+                    tmp->bindString("submit-info", "<p class='text-red-600'>Phone number not changed! make a picture and show the developer :)</p>");
+                else if (phone_change_response == Emlab::ChangeUniqueDataResponse::AllreadyExists)
+                    tmp->bindString("submit-info", "<p class='text-red-600'>Phone number allready exists!</p>");
+
+            }else {
+                tmp->bindString("submit-info", "<p class='text-green-600'>Phone number not changed!</p>");
             }
-            authInterface->changePhone(login_->userToken(), phone_input->text().toUTF8());
-            tmp->bindString("submit-info", "Phone number changed successfully!");
-            auto phone = phone_input->text().toUTF8();
-            phone.insert(4, " ");
-            phone.insert(8, " ");
-            tmp->bindString("current-data", phone);
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            // tmp->bindString("submit-info", "Phone number failed changing!");
-        }
+        });
+        confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
+
+
     });
 return widget_tmp;
 
@@ -347,8 +400,8 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std:
 
     auto password_validator =  Wt::WRegExpValidator("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
     password_validator.setMandatory(true);
-    password_validator.setInvalidNoMatchText("Password must contain at least 6 characters, including letters and numbers");
-    password_validator.setInvalidBlankText("field is empty");
+    password_validator.setInvalidNoMatchText("<p class='text-red-600'>Password must contain at least 6 characters, including letters and numbers</p>");
+    password_validator.setInvalidBlankText("<p class='text-red-600'>Field is empty</p>");
     
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
@@ -382,41 +435,48 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std:
             new_password_repeat_temp->bindWidget("error", std::make_unique<Wt::WText>("Passwords do not match"));
             return;
         }if(password_input->text() == new_password_input->text()){
-            new_password_temp->setCondition("if-error-message", true);
             tmp->bindWidget("submit-info", std::make_unique<Wt::WText>("<p class='text-red-400'>New password must be different from old password</p>"));
             return;
         }
         std::cout << "\n\n validation passed \n\n";
         
-        // send data
-        try {
-            Ice::CommunicatorHolder ich = Ice::initialize();
-            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
-            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
-            if (!authInterface)
-            {
-                throw std::runtime_error("Invalid proxy");
-            }
-            auto old_password = password_input->text().toUTF8();
-            auto new_password = new_password_input->text().toUTF8();
-            Emlab::ChangePasswordResponse response = authInterface->changePassword(login_->userToken(), old_password, new_password);
-            // respond
-            switch(response){
-                case Emlab::ChangePasswordResponse::PasswordChanged:
-                    tmp->bindString("submit-info", "<p class='text-green-400'>Password changed successfully</p>");
-                break;
-                case Emlab::ChangePasswordResponse::PasswordNotChanged:
-                    tmp->bindString("submit-info", "<p class='text-red-400'>Password failed changing! make a photo and tell the developer to check this out</p>");
-                break;
-                case Emlab::ChangePasswordResponse::OldPasswordIncorrect:
-                    tmp->bindString("submit-info", "<p class='text-red-400'>Old password is incorrect</p>");
-                break;
-            }
+        auto confirmation_dialog = Wt::WApplication::instance()->root()->addChild(std::make_unique<Wt::WDialog>());
+        confirmation_dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+        confirmation_dialog->titleBar()->clear();
+        confirmation_dialog->rejectWhenEscapePressed();
+        confirmation_dialog->setModal(true);
+        confirmation_dialog->setMovable(false);
 
-        } catch (const std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            tmp->bindString("submit-info", "<p class='text-red-400'>Password failed changing! make a photo and tell the developer to check this out</p>");
-        }
+        auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("password-change-confirmation")));
+
+
+        auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Password"));
+        auto cancel_btn = temp->bindWidget("cancel-btn", std::make_unique<Wt::WPushButton>("Cancel"));
+
+        cancel_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::reject);
+        change_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::accept);
+
+        confirmation_dialog->finished().connect(this, [=](Wt::DialogCode code){
+            if(code == Wt::DialogCode::Accepted){
+                // send data
+                auto response = changePassword(password_input->text().toUTF8(), new_password_input->text().toUTF8());
+                switch(response){
+                    case Emlab::ChangePasswordResponse::PasswordChanged:
+                        tmp->bindString("submit-info", "<p class='text-green-600'>Password changed successfully</p>");
+                    break;
+                    case Emlab::ChangePasswordResponse::PasswordNotChanged:
+                        tmp->bindString("submit-info", "<p class='text-red-400'>Password failed changing! make a photo and tell the developer to check this out</p>");
+                    break;
+                    case Emlab::ChangePasswordResponse::OldPasswordIncorrect:
+                        tmp->bindString("submit-info", "<p class='text-red-400'>Old password is incorrect</p>");
+                    break;
+                }
+            }else {
+                tmp->bindString("submit-info", "<p class='text-green-600'>Password change canceled</p>");
+            }
+        });
+        confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
+
     });
     return widget_tmp;
 }
@@ -575,6 +635,38 @@ void UserSettingsPage::createProfileDialog()
 
 }
 
+// create theme switcher light/dark mode
+std::unique_ptr<Wt::WPushButton> UserSettingsPage::createThemeSwitcher(){
+	auto theme_switcher = std::make_unique<Wt::WPushButton>(Wt::WString::tr("sun-svg"));
+    theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
+    theme_switcher->setStyleClass("rounded-full border-0 p-0 flex justify-center items-center");
+	auto theme_switcher_ptr = theme_switcher.get();
+	// theme switcher toggle dark/light mode
+    theme_switcher_ptr->clicked().connect(this, [=](){
+        bool darkMode = Wt::WApplication::instance()->htmlClass() == "dark";
+        if(darkMode){
+            theme_switcher_ptr->setText(Wt::WString::tr("sun-svg"));
+            Wt::WApplication::instance()->setHtmlClass("");
+         }else {
+            theme_switcher_ptr->setText(Wt::WString::tr("moon-svg"));
+            Wt::WApplication::instance()->setHtmlClass("dark");
+        }
+        try {
+            Ice::CommunicatorHolder ich = Ice::initialize();
+            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+            if (!authInterface)
+            {
+                throw std::runtime_error("Invalid proxy");
+            }
+            authInterface->setDarkMode(login_->userToken(), !darkMode);
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
+        }
+    });
+	return theme_switcher;
+}
+
 
 Emlab::ChangeUniqueDataResponse UserSettingsPage::changeEmail(std::string email)
 {
@@ -595,4 +687,62 @@ Emlab::ChangeUniqueDataResponse UserSettingsPage::changeEmail(std::string email)
             std::cerr << e.what() << std::endl;
         }   
     return emailChangeResponse;
+}
+
+Emlab::ChangeUniqueDataResponse UserSettingsPage::changePhone(std::string phone)
+{
+    Emlab::ChangeUniqueDataResponse phoneChangeResponse;
+     try
+        {
+            Ice::CommunicatorHolder ich = Ice::initialize();
+            auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+            auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+            if (!authInterface)
+            {
+                throw std::runtime_error("Invalid proxy");
+            }
+            phoneChangeResponse = authInterface->changePhone(login_->userToken(), phone);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << std::endl;
+        }   
+    return phoneChangeResponse;
+}
+
+bool UserSettingsPage::setName(std::string name)
+{
+    try {
+        Ice::CommunicatorHolder ich = Ice::initialize();
+        auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+        auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+        if (!authInterface)
+        {
+            throw std::runtime_error("Invalid proxy");
+        }
+        authInterface->setName(login_->userToken(), name);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+    return true;
+}
+
+Emlab::ChangePasswordResponse UserSettingsPage::changePassword(std::string oldPassword, std::string newPassword)
+{
+    Emlab::ChangePasswordResponse passwordChangeResponse;
+    try {
+    Ice::CommunicatorHolder ich = Ice::initialize();
+    auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+    auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+    if (!authInterface)
+    {
+        throw std::runtime_error("Invalid proxy");
+    }
+    passwordChangeResponse = authInterface->changePassword(login_->userToken(), oldPassword, newPassword);
+
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    return passwordChangeResponse;
 }

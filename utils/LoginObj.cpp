@@ -28,6 +28,11 @@ void Login::login(Emlab::LoginReturn loginReturn)
 	user_.name = loginReturn.name;
 	user_.phone = loginReturn.phone;
 	user_.token = loginReturn.token;
+	user_.darkMode = loginReturn.darkMode;
+	std::cout << "\n\n email: " << user_.email << "\n\n";
+	std::cout << "\n\n name: " << user_.name << "\n\n";
+	std::cout << "\n\n phone: " << user_.phone << "\n\n";
+	std::cout << "\n\n token: " << user_.token << "\n\n";
 	Emlab::bytesToImage(Emlab::Comunication::getUserPhotoWithToken(loginReturn.token), getUserPhotoPath() + "/profile.jpg");
 	changed_.emit();
 }
@@ -58,4 +63,17 @@ bool Login::isLoggedIn()
 	}
 }
 
+void Login::setUserEmail(std::string value)
+{
+	user_.email = value;
+}
 
+void Login::setUserName(std::string value)
+{
+	user_.name = value;
+}
+
+void Login::setUserPhone(std::string value)
+{
+	user_.phone = value;
+}

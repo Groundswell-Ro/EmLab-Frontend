@@ -40,11 +40,10 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 
 
 	root()->setStyleClass("app");
-	createApp();
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 
-	createAuth();
+	// createAuth();
 }
 
 EventManagerLab::~EventManagerLab()
@@ -97,10 +96,12 @@ void EventManagerLab::handleUserAuth()
 		profile_btn->setMenu(std::move(user_menu_ptr));
 		navbar_->bindWidget("user-menu", std::move(profile_btn));
 
-		user_menu_->select(settings);
-		// nav_menu_->select(0);
+		// user_menu_->select(settings);
+		nav_menu_->select(0);
 		
 	}else {
+		root()->clear();
+		createApp();
 		auto login_btn = navbar_->bindWidget("user-menu", std::make_unique<Wt::WPushButton>("Log In"));
 		login_btn->setStyleClass("btn btn-primary");
 		services_page_->removeSidebar();
@@ -166,24 +167,4 @@ void EventManagerLab::menuItemSelected(Wt::WMenuItem *item) {
 	current_menu_item_ = item;
 	current_menu_item_->addStyleClass("bg-body-active");
 }
-
-// create theme switcher light/dark mode
-std::unique_ptr<Wt::WPushButton> EventManagerLab::createThemeSwitcher(){
-	auto theme_switcher = std::make_unique<Wt::WPushButton>(Wt::WString::tr("sun-svg"));
-    theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
-    theme_switcher->setStyleClass("rounded-full border-0 p-0 flex justify-center items-center");
-	auto theme_switcher_ptr = theme_switcher.get();
-	// theme switcher toggle dark/light mode
-    theme_switcher_ptr->clicked().connect(this, [=](){
-        if(Wt::WApplication::instance()->htmlClass() == "dark"){
-            theme_switcher_ptr->setText(Wt::WString::tr("sun-svg"));
-            Wt::WApplication::instance()->setHtmlClass("");
-         }else {
-            theme_switcher_ptr->setText(Wt::WString::tr("moon-svg"));
-            Wt::WApplication::instance()->setHtmlClass("dark");
-        }
-    });
-	return theme_switcher;
-}
-
 

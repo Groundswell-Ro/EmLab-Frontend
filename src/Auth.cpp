@@ -127,7 +127,6 @@ void Auth::createLogin()
         auto loginReturn = tryLogin(loginInfo);
 
         if (loginReturn.loginResponse == Emlab::LoginResponse::NotIdentified) {
-            login_template_->bindString("submit-info", "No user with that Email");
         } else if (loginReturn.loginResponse == Emlab::LoginResponse::Identified) {
             login_template_->bindString("submit-info", "Password is incorrect");
         } else if (loginReturn.loginResponse == Emlab::LoginResponse::LoggedIn) {
@@ -140,6 +139,36 @@ void Auth::createLogin()
             login_template_->bindString("submit-info", "for your safety, we blocked yout access for 5 minutes because of too many failed login attempts");
         } else {
             login_template_->bindString("submit-info", "Something went wrong");
+        }
+	    // enum LoginResponse { NotIdentified, Identified, LoggedIn, IncorectPassword, ThrottlingActivated };
+
+        std::cout << "\n\n\n ------------------ RETURNING LOGIN RETURN ------------------ \n\n";
+        std::cout << "name: " << loginReturn.name << "\n";
+        std::cout << "phone: " << loginReturn.phone << "\n";
+        std::cout << "email: " << loginReturn.email << "\n";
+        std::cout << "role: " << loginReturn.role << "\n";
+        std::cout << "token: " << loginReturn.token << "\n";
+        std::cout << "darkMode: " << loginReturn.darkMode << "\n";
+        switch(loginReturn.loginResponse)
+        {
+            case Emlab::LoginResponse::NotIdentified:
+                std::cout << "loginResponse: NotIdentified\n";
+                break;
+            case Emlab::LoginResponse::Identified:
+                std::cout << "loginResponse: Identified\n";
+                break;
+            case Emlab::LoginResponse::IncorectPassword:
+                std::cout << "loginResponse: IncorectPassword\n";
+                break;
+            case Emlab::LoginResponse::ThrottlingActivated:
+                std::cout << "loginResponse: ThrottlingActivated\n";
+                break;
+            case Emlab::LoginResponse::LoggedIn:
+                std::cout << "loginResponse: LoggedIn\n";
+                break;
+            default:
+                std::cout << "loginResponse: default\n";
+                break;
         }
     });
 
@@ -328,6 +357,7 @@ void Auth::createSignUp() {
 Emlab::LoginReturn Auth::tryLogin(Emlab::LoginInfo loginInfo)
 {
     Emlab::LoginReturn loginReturn;
+
     try
     {
         Ice::CommunicatorHolder ich = Ice::initialize();
@@ -339,9 +369,11 @@ Emlab::LoginReturn Auth::tryLogin(Emlab::LoginInfo loginInfo)
         }
         // login user
         loginReturn = authInterface->loginUser(loginInfo);
+
     }
     catch (const std::exception &e)
     {
+        std::cout << "\n\n\n ------------------ EXCEPTION on login ------------------ \n\n";
         std::cerr << e.what() << std::endl;
     }
     return loginReturn;

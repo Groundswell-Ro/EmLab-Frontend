@@ -26,9 +26,15 @@ private:
 private:
     std::shared_ptr<Login> login_;
     void createProfileDialog();
-    void createProviderProfile();
+    std::unique_ptr<Wt::WPushButton> createThemeSwitcher();
+    // void createProviderProfile();
 
+    // those methods call the backend to make changes
     Emlab::ChangeUniqueDataResponse changeEmail(std::string email);
+    Emlab::ChangeUniqueDataResponse changePhone(std::string phone);
+    Emlab::ChangePasswordResponse changePassword(std::string oldPassword, std::string newPassword);
+    bool setName(std::string name);
+    
 
 
 };

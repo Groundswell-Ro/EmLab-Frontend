@@ -27,6 +27,9 @@ public:
 	std::string SERVICE_CONN_STRING = Emlab::SERVICEADAPTER + connection.toUTF8();
 	std::string REVIEW_CONN_STRING = Emlab::REVIEWADAPTER + connection.toUTF8();
 
+	void setUserEmail(std::string value);
+	void setUserName(std::string value);
+	void setUserPhone(std::string value);
 
 private:
 	Emlab::LoginReturn user_;

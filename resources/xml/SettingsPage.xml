@@ -9,7 +9,7 @@
     </message>
 
     <message id='settings-general-data-widget'>
-        general data widge5t here
+        ${theme-switcher}
     </message>
 
     <message id='data-form-widget'>
@@ -60,10 +60,62 @@
             <div class="">Your email is the way you identify on this app</div>
             <div class="">if you change it you will have to login with the new email address:</div>
             <div class="font-bold">
-                <span class="underline text-red-500">${old-email}</span> 
+                <span class="underline text-red-500">${old-value}</span> 
                 <span class="text-yellow-400">---></span>
 
-                <span class="underline text-green-500">${new-email}</span>
+                <span class="underline text-green-500">${new-value}</span>
+            </div>
+        </div>
+        <div class="flex justify-between mt-5">
+            ${cancel-btn class="btn btn-seccondary"}
+            ${change-btn class="btn btn-primary"}
+        </div>
+    </message>
+
+    <message id='password-change-confirmation'>
+        <div class="text-center text-xl font-bold mb-3">Change Password</div>
+        <div class="space-y-2">
+            <div class="text-yellow-500 underline">WORNING !!!</div>
+            <div class="">Your Password will be changed</div>
+            <div class="">Are you sure ?</div>
+        </div>
+        <div class="flex justify-between mt-5">
+            ${cancel-btn class="btn btn-seccondary"}
+            ${change-btn class="btn btn-primary"}
+        </div>
+    </message>
+
+
+    <message id='name-change-confirmation'>
+        <div class="text-center text-xl font-bold mb-3">Change Email</div>
+        <div class="space-y-2">
+            <div class="text-yellow-500 underline">WORNING !!!</div>
+            <div class="">Your Name will be changed</div>
+            <div class="">Are you sure ?</div>
+            <div class="font-bold">
+                <span class="underline text-red-500">${old-value}</span> 
+                <span class="text-yellow-400">---></span>
+
+                <span class="underline text-green-500">${new-value}</span>
+            </div>
+        </div>
+        <div class="flex justify-between mt-5">
+            ${cancel-btn class="btn btn-seccondary"}
+            ${change-btn class="btn btn-primary"}
+        </div>
+    </message>
+
+    <message id='phone-change-confirmation'>
+        <div class="text-center text-xl font-bold mb-3">Change Email</div>
+        <div class="space-y-2">
+            <div class="text-yellow-500 underline">WORNING !!!</div>
+            <div class="">Your phone will be changed</div>
+            <div class="">Are you sure ?</div>
+            <div class="font-bold">
+                <span class="underline text-red-500">${old-value}</span> 
+                <span class="text-yellow-400">---></span>
+
+                <span class="underline text-green-500">${new-value}</span>
             </div>
         </div>
         <div class="flex justify-between mt-5">

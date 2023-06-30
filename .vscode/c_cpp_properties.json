@@ -4,7 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/../comunication/comm/**"
+                "${workspaceFolder}/../comunication/comm/**",
+                "/home/alex/projects/emlab/comunication/comm",
+                "/home/alex/projects/emlab/comunication/comm"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

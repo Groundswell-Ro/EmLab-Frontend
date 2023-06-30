@@ -3485,6 +3485,10 @@ svg{
   margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
 }
 
+.self-start{
+  align-self: flex-start;
+}
+
 .justify-self-end{
   justify-self: end;
 }
