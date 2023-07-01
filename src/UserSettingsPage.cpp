@@ -20,6 +20,9 @@
 #include <Wt/WRegExpValidator.h>
 #include <Wt/WLengthValidator.h>
 #include <Wt/WMessageBox.h>
+#include <Wt/WApplication.h>
+
+#include <iostream>
 
 UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
@@ -72,6 +75,63 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createSettingsGeneralWidget(std
     auto tmp = returnWidget->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("settings-general-data-widget")));
     tmp->bindWidget("theme-switcher", createThemeSwitcher());
 
+    auto photo_uploder = tmp->bindWidget("change-profile-photo", std::make_unique<PhotoUploder>());
+    photo_uploder->setSinglePhoto(login_->getUserPhotoPath() + "profile.jpg");
+    photo_uploder->singlePhotoChanged().connect(this, [=](){
+
+        auto confirmation_dialog = Wt::WApplication::instance()->root()->addChild(std::make_unique<Wt::WDialog>());
+        confirmation_dialog->setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
+        confirmation_dialog->titleBar()->clear();
+        confirmation_dialog->rejectWhenEscapePressed();
+        confirmation_dialog->setModal(true);
+        confirmation_dialog->setMovable(false);
+
+        auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("photo-change-confirmation")));
+                
+        // images
+        auto prev_img = temp->bindWidget("old-value", std::make_unique<Wt::WImage>(Wt::WLink(login_->getUserPhotoPath() + "profile.jpg")));
+        auto current_img = temp->bindWidget("new-value", std::make_unique<Wt::WImage>(Wt::WLink(photo_uploder->photos_[0])));
+        std::string imgs_style = "w-24 h-24 rounded-full object-cover bg-center";
+        prev_img->setStyleClass(imgs_style);
+        current_img->setStyleClass(imgs_style);
+
+        auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Photo"));
+        auto cancel_btn = temp->bindWidget("cancel-btn", std::make_unique<Wt::WPushButton>("Cancel"));
+
+        cancel_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::reject);
+        change_btn->clicked().connect(confirmation_dialog, &Wt::WDialog::accept);
+
+        
+        confirmation_dialog->finished().connect([=](Wt::DialogCode code){
+            if (code == Wt::DialogCode::Accepted)
+            {
+                // save new photo
+                auto result = changePhoto(photo_uploder->photos_[0]);
+                if (result)
+                {
+                    // set navbar user popup photo
+                    auto cast = Wt::WApplication::instance()->root()->find("profile-btn");
+                    Wt::WPushButton* user_menu_btn = dynamic_cast<Wt::WPushButton*>(cast);
+                    user_menu_btn->setIcon(photo_uploder->photos_[0]);
+                    photo_uploder->bindString("status", "<p class='text-green-600'>Photo changed</p>");
+                }
+                else
+                {
+                    photo_uploder->bindString("status", "<p class='text-green-600'>Photo not changed, something went wrong, make a  photo and contact the developer :D</p>");
+                }
+            }else {
+                photo_uploder->bindString("status", "<p class='text-green-600'>Photo not changed</p>");
+            }
+        });
+
+
+        // // set navbar user popup photo
+        // auto cast = Wt::WApplication::instance()->root()->find("profile-btn");
+        // Wt::WPushButton* user_menu_btn = dynamic_cast<Wt::WPushButton*>(cast);
+        // user_menu_btn->setIcon(photo_uploder->photos_[0]);
+        confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
+
+    });
     return returnWidget;
 }
 
@@ -83,7 +143,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
     
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
     tmp->bindString("title", "email");
-    tmp->bindString("current-data", login_->user().email);
+    tmp->bindString("current-data", login_->user().userInfo.email);
     tmp->bindEmpty("submit-info");
     tmp->bindWidget("validation-state", std::make_unique<Wt::WTemplate>("<div class=\"text-red-400 font-semibold\">Not Validated</div>"));
     
@@ -108,7 +168,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
         }else if (validation_result.state() == Wt::ValidationState::Invalid){
             tmp->bindString("submit-info", validation_result.message());
             return;
-        }else if (email_input->text() == login_->user().email){
+        }else if (email_input->text() == login_->user().userInfo.email){
             tmp->bindString("submit-info", "<p class\text-red-600'>Email is the same as the current one!</p>");
             return;
         }
@@ -121,7 +181,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
         confirmation_dialog->setMovable(false);
 
         auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("email-change-confirmation")));
-        temp->bindString("old-value", login_->user().email);
+        temp->bindString("old-value", login_->user().userInfo.email);
         temp->bindString("new-value", email_input->text());
 
         auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Email"));
@@ -140,7 +200,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
                 if(email_Change_Response == Emlab::ChangeUniqueDataResponse::Changed){
                     tmp->bindString("submit-info", "<p class='text-green-600'>Email changed successfully!</p>");
                     login_->setUserEmail(email_input->text().toUTF8());
-                    tmp->bindString("current-data", login_->user().email);
+                    tmp->bindString("current-data", login_->user().userInfo.email);
                 }else if(email_Change_Response == Emlab::ChangeUniqueDataResponse::NotChanged){
                     tmp->bindString("submit-info", "<p class='text-yellow-600'>Email not changed!</p>");
                 }else if(email_Change_Response == Emlab::ChangeUniqueDataResponse::AllreadyExists){
@@ -152,7 +212,6 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
             confirmation_dialog->removeFromParent();
         });
         
-        // confirmation_dialog->show();
         confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
 
     });
@@ -166,7 +225,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
     
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
     tmp->bindString("title", "name");
-    tmp->bindString("current-data", login_->user().name);
+    tmp->bindString("current-data", login_->user().userInfo.name);
     tmp->bindEmpty("submit-info");
     tmp->bindEmpty("validation-state");
 
@@ -191,7 +250,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
         }else if (validation_result.state() == Wt::ValidationState::Invalid){
             tmp->bindString("submit-info", validation_result.message());
             return;
-        }else if (login_->user().name == name_input->text().toUTF8()){
+        }else if (login_->user().userInfo.name == name_input->text().toUTF8()){
             tmp->bindString("submit-info", "<p class='text-red-600'>Name is the same as the current one!</p>");
             return;
         }
@@ -204,7 +263,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
         confirmation_dialog->setMovable(false);
 
         auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("name-change-confirmation")));
-        temp->bindString("old-value", login_->user().name);
+        temp->bindString("old-value", login_->user().userInfo.name);
         temp->bindString("new-value", name_input->text());
 
         auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Name"));
@@ -221,7 +280,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
                 {
                     tmp->bindString("submit-info", "<p class='text-green-600'>Name changed successfully!</p>");
                     login_->setUserName(name_input->text().toUTF8());
-                    tmp->bindString("current-data", login_->user().name);
+                    tmp->bindString("current-data", login_->user().userInfo.name);
                     
                 }else {
                     tmp->bindString("submit-info", "<p class='text-red-600'>Name not changed! make a picture and show the developer :)</p>");
@@ -245,7 +304,7 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
 
     auto tmp = widget_tmp->bindWidget("data-form-widget", std::make_unique<Wt::WTemplate>(tr("data-form-widget")));
     tmp->bindString("title", "phone number");
-    std::string phone = login_->user().phone;
+    std::string phone = login_->user().userInfo.phone;
     phone.insert(4, " ");
     phone.insert(8, " ");
     tmp->bindString("current-data", phone);
@@ -273,7 +332,7 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
         }else if (validation_result.state() == Wt::ValidationState::Invalid){
             tmp->bindString("submit-info", validation_result.message());
             return;
-        }else if (login_->user().phone == phone_input->text().toUTF8()){
+        }else if (login_->user().userInfo.phone == phone_input->text().toUTF8()){
             tmp->bindString("submit-info", "<p class='text-red-600'>Phone number is the same as the current one!</p>");
             return;
         }
@@ -286,7 +345,7 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
         confirmation_dialog->setMovable(false);
 
         auto temp = confirmation_dialog->contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("phone-change-confirmation")));
-        temp->bindString("old-value", login_->user().phone);
+        temp->bindString("old-value", login_->user().userInfo.phone);
         temp->bindString("new-value", phone_input->text());
 
         auto change_btn = temp->bindWidget("change-btn", std::make_unique<Wt::WPushButton>("Change Phone Number"));
@@ -534,7 +593,7 @@ void UserSettingsPage::createProfileDialog()
     auto service_description_input_input = service_description_input->bindWidget("input", std::make_unique<Wt::WTextArea>());
     service_description_input_input->addStyleClass("resize-none resize-y");
 
-    auto service_photo_uploder = content_temp->bindWidget("service-photo-uploder", std::make_unique<PhotoUploder>(login_->user().email + "/temporary/", false));
+    auto service_photo_uploder = content_temp->bindWidget("service-photo-uploder", std::make_unique<PhotoUploder>(false));
 
     submit_btn->setStyleClass("btn btn-primary");
 
@@ -637,19 +696,34 @@ void UserSettingsPage::createProfileDialog()
 
 // create theme switcher light/dark mode
 std::unique_ptr<Wt::WPushButton> UserSettingsPage::createThemeSwitcher(){
-	auto theme_switcher = std::make_unique<Wt::WPushButton>(Wt::WString::tr("sun-svg"));
-    theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
-    theme_switcher->setStyleClass("rounded-full border-0 p-0 flex justify-center items-center");
+    bool darkMode = login_->user().userInfo.darkMode;
+    auto theme_switcher = std::make_unique<Wt::WPushButton>();
+    std::cout << "\n\n darkMode: " << darkMode << "\n\n";
+    if(darkMode){
+        theme_switcher->setText(Wt::WString::tr("moon-svg"));
+        theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
+        theme_switcher->setStyleClass("rounded-full border-0 p-0 flex justify-center items-center");
+        Wt::WApplication::instance()->setHtmlClass("dark");
+    }else {
+        theme_switcher->setText(Wt::WString::tr("sun-svg"));
+        theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
+        theme_switcher->setStyleClass("rounded-full border-0 p-0 flex justify-center items-center");
+        Wt::WApplication::instance()->setHtmlClass("");
+    }
+
 	auto theme_switcher_ptr = theme_switcher.get();
+    
 	// theme switcher toggle dark/light mode
     theme_switcher_ptr->clicked().connect(this, [=](){
-        bool darkMode = Wt::WApplication::instance()->htmlClass() == "dark";
-        if(darkMode){
-            theme_switcher_ptr->setText(Wt::WString::tr("sun-svg"));
-            Wt::WApplication::instance()->setHtmlClass("");
-         }else {
+        bool darkMode = login_->user().userInfo.darkMode;
+        login_->setDarkMode(!darkMode);
+        std::cout << "\n\n darkmoder: " << !darkMode << "\n\n";
+        if(!darkMode){
             theme_switcher_ptr->setText(Wt::WString::tr("moon-svg"));
             Wt::WApplication::instance()->setHtmlClass("dark");
+         }else {
+            theme_switcher_ptr->setText(Wt::WString::tr("sun-svg"));
+            Wt::WApplication::instance()->setHtmlClass("");
         }
         try {
             Ice::CommunicatorHolder ich = Ice::initialize();
@@ -746,3 +820,22 @@ Emlab::ChangePasswordResponse UserSettingsPage::changePassword(std::string oldPa
     }
     return passwordChangeResponse;
 }
+
+bool UserSettingsPage::changePhoto(std::string photoPath)
+{
+    try {
+        Ice::CommunicatorHolder ich = Ice::initialize();
+        auto base = ich->stringToProxy(login_->AUTH_CONN_STRING);
+        auto authInterface = Ice::checkedCast<Emlab::AuthInterfacePrx>(base);
+        if (!authInterface)
+        {
+            throw std::runtime_error("Invalid proxy");
+        }
+        authInterface->setUserPhoto(login_->userToken(), Emlab::imageToBytes(photoPath));
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+    return true;
+}
+

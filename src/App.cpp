@@ -56,7 +56,7 @@ EventManagerLab::~EventManagerLab()
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	auto auth = root()->addChild(std::make_unique<Auth>(login_));
-	// auth->dev_loginUser("client33@gmail.com", "asdfghj1");
+	// auth->dev_loginUser("client1@gmail.com", "asdfghj1");
 	// auth->dev_loginUser("alex@gmail.com", "asdfghj1");
 
 }
@@ -66,10 +66,11 @@ void EventManagerLab::handleUserAuth()
 {	
 	if (login_->isLoggedIn())
 	{
-		auto profile_img = Wt::WLink(sessionId() + "/profile.jpg");
+		auto profile_img = Wt::WLink(login_->getUserPhotoPath() + "profile.jpg");
 
 		auto profile_btn = std::make_unique<Wt::WPushButton>();
 		profile_btn->setIcon(profile_img);
+		profile_btn->setObjectName("profile-btn");
 		services_page_->addSidebar();
 		profile_btn->setStyleClass("btn-user-image my-1 me-1 p-0 after:bg-green-400 ");
 		auto user_menu_ptr = std::make_unique<Wt::WPopupMenu>(stack_);

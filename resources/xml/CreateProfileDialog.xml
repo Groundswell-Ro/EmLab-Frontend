@@ -24,21 +24,7 @@
 
 
 
-	<message id='photo.uploder.template'>
-		<div class="relative">
-			<div class="text-center whitespace-nowrap text-xs mb-4 absolute -top-4 right-0">
-				${status class="text-green-800"}
-			</div>
-			<div class="">
-				${<if-multiple>}
-				${add-photo-btn class="btn w-1/3 m-0 p-0 py-1 rounded-md absolute -top-6"}
-				${</if-multiple>}
-				${uploder-content class="min-h-[8rem] min-w-[99%]"}
 
-			</div>
-			${uploader class="!hidden"}
-		</div>
-	</message>
 
 
 </messages>

@@ -34,6 +34,7 @@ private:
     Emlab::ChangeUniqueDataResponse changePhone(std::string phone);
     Emlab::ChangePasswordResponse changePassword(std::string oldPassword, std::string newPassword);
     bool setName(std::string name);
+    bool changePhoto(std::string photoPath);
     
 
 

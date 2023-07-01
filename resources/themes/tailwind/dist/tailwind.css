@@ -2922,6 +2922,14 @@ svg{
   top: 0.5rem;
 }
 
+.right-1\/2{
+  right: 50%;
+}
+
+.-top-8{
+  top: -2rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -3117,6 +3125,15 @@ svg{
   margin-top: 1.25rem;
 }
 
+.mt-8{
+  margin-top: 2rem;
+}
+
+.ms-3{
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+}
+
 .block{
   display: block;
 }
@@ -3195,6 +3212,10 @@ svg{
 
 .h-full{
   height: 100%;
+}
+
+.h-24{
+  height: 6rem;
 }
 
 .max-h-\[90vh\]{
@@ -3286,6 +3307,10 @@ svg{
   width: 100%;
 }
 
+.w-24{
+  width: 6rem;
+}
+
 .min-w-\[16rem\]{
   min-width: 16rem;
 }
@@ -3331,6 +3356,10 @@ svg{
   max-width: 1280px;
 }
 
+.max-w-sm{
+  max-width: 24rem;
+}
+
 .flex-shrink-0{
   flex-shrink: 0;
 }
@@ -3370,6 +3399,21 @@ svg{
 
 .translate-y-1\/2{
   --tw-translate-y: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.translate-x-1{
+  --tw-translate-x: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-x-1{
+  --tw-translate-x: -0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.translate-x-1\/2{
+  --tw-translate-x: 50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3483,6 +3527,12 @@ svg{
   --tw-space-y-reverse: 0;
   margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .self-start{
@@ -3957,9 +4007,14 @@ svg{
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 
-.text-green-400{
+.text-green-500{
   --tw-text-opacity: 1;
-  color: rgb(74 222 128 / var(--tw-text-opacity));
+  color: rgb(34 197 94 / var(--tw-text-opacity));
+}
+
+.text-green-600{
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 
 .text-green-800{
@@ -4006,44 +4061,14 @@ svg{
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.text-yellow-300{
-  --tw-text-opacity: 1;
-  color: rgb(253 224 71 / var(--tw-text-opacity));
-}
-
-.text-red-300{
-  --tw-text-opacity: 1;
-  color: rgb(252 165 165 / var(--tw-text-opacity));
-}
-
-.text-yellow-500{
-  --tw-text-opacity: 1;
-  color: rgb(234 179 8 / var(--tw-text-opacity));
-}
-
-.text-green-200{
-  --tw-text-opacity: 1;
-  color: rgb(187 247 208 / var(--tw-text-opacity));
-}
-
-.text-green-300{
-  --tw-text-opacity: 1;
-  color: rgb(134 239 172 / var(--tw-text-opacity));
-}
-
-.text-green-500{
-  --tw-text-opacity: 1;
-  color: rgb(34 197 94 / var(--tw-text-opacity));
-}
-
 .text-yellow-400{
   --tw-text-opacity: 1;
   color: rgb(250 204 21 / var(--tw-text-opacity));
 }
 
-.text-green-600{
+.text-yellow-500{
   --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
+  color: rgb(234 179 8 / var(--tw-text-opacity));
 }
 
 .text-yellow-600{

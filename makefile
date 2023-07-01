@@ -59,7 +59,7 @@ run:
 	./$(APPNAME) $(RLIB)
 
 runTrace:
-	./$(APPNAME) --Ice.Trace.Network=2 $(RCMD) 
+	./$(APPNAME) --Ice.Trace.Network=2 $(RCMD) $(RLIB)
 
 dbg:
 	gdb ./$(APPNAME)

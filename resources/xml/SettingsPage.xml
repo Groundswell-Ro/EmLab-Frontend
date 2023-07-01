@@ -10,6 +10,9 @@
 
     <message id='settings-general-data-widget'>
         ${theme-switcher}
+        <div class="max-w-sm flex justify-start mt-8 ms-3">
+            ${change-profile-photo}
+        </div>
     </message>
 
     <message id='data-form-widget'>
@@ -50,6 +53,24 @@
             ${submit-info}
             ${password-requirments}
             ${submit-btn class="btn btn-primary ms-auto"}
+        </div>
+    </message>
+
+    <message id='photo-change-confirmation'>
+        <div class="text-center text-xl font-bold mb-3">Change Photo</div>
+        <div class="space-y-2">
+            <div class="text-yellow-500 underline">WORNING !!!</div>
+            <div class="">Your profile photo will be changed</div>
+            <div class="font-bold flex justify-center items-center space-x-4">
+                <span class="">${old-value}</span> 
+                <span class="text-yellow-400">---></span>
+
+                <span class="">${new-value}</span>
+            </div>
+        </div>
+        <div class="flex justify-between mt-5">
+            ${cancel-btn class="btn btn-seccondary"}
+            ${change-btn class="btn btn-primary"}
         </div>
     </message>
 

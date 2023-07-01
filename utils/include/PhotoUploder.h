@@ -7,11 +7,11 @@
 #include <Wt/WLink.h>
 #include <Wt/WFileDropWidget.h>
 #include <Wt/WPushButton.h>
-
+#include <Wt/WSignal.h>
 class PhotoUploder : public Wt::WTemplate
 {
 public:
-    PhotoUploder(std::string userPath = "", bool singlePhoto = true);
+    PhotoUploder(bool singlePhoto = true);
     ~PhotoUploder();
     Emlab::ImageData getImageData();
 
@@ -21,6 +21,8 @@ public:
 
     void setSinglePhoto(Wt::WString photo_path = "");
     void setMultiplePhotosDisplay();
+	Wt::Signal<> &singlePhotoChanged() { return single_photo_changed_; };
+    std::vector<std::string> photos_;
     
 private:
     void uploderChanged();
@@ -31,7 +33,9 @@ private:
 
     bool singlePhoto_;
     // photos path are stored here
-    std::vector<std::string> photos_;
+	Wt::Signal<> single_photo_changed_;
+
+
 };
 
 

@@ -30,6 +30,7 @@ public:
 	void setUserEmail(std::string value);
 	void setUserName(std::string value);
 	void setUserPhone(std::string value);
+	void setDarkMode(bool darkMode);
 
 private:
 	Emlab::LoginReturn user_;

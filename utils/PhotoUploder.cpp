@@ -3,15 +3,14 @@
 #include <Wt/WCssDecorationStyle.h>
 #include <Wt/WApplication.h>
 
-PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
-{
-    destination += Wt::WApplication::instance()->sessionId() + "/";
+PhotoUploder::PhotoUploder(bool singlePhoto)
+{;
     singlePhoto_ = singlePhoto;
 
     setTemplateText(tr("photo.uploder.template"));
 	file_uploder_ = bindWidget("uploader", std::make_unique<Wt::WFileUpload>());
 
-	status_ = bindWidget("status", std::make_unique<Wt::WText>("Click above to add a photo"));
+	status_ = bindWidget("status", std::make_unique<Wt::WText>("<p class='text-green-600'>Click bellow to change photo</p>"));
 	uploder_content_ = bindWidget("uploder-content", std::make_unique<Wt::WContainerWidget>());
 
     // file_uploder_->setMultiple(!singlePhoto);
@@ -39,14 +38,8 @@ PhotoUploder::PhotoUploder(std::string userPath, bool singlePhoto)
 
 PhotoUploder::~PhotoUploder()
 {
-    if(singlePhoto_){
-        std::cout << "\n\n deleting file <" << destination.toUTF8() + file_uploder_->clientFileName().toUTF8() << ">\n\n";
-        Emlab::deleteFile(destination.toUTF8() + file_uploder_->clientFileName().toUTF8());
-    }else {
-        for(auto photo : photos_){
-            std::cout << "\n\n deleting file <" << photo << ">\n\n";
-            Emlab::deleteFile(photo);
-        }
+    if(photos_.size() > 0){
+        Emlab::deleteFolder(destination.toUTF8(), Wt::WApplication::instance()->sessionId() + "/");
     }
 }
  
@@ -76,17 +69,20 @@ void PhotoUploder::uploderUploded()
     status_->toggleStyleClass("!text-red-300", false);
 
     // transfer
-    auto treansfer_result = Emlab::bytesToImage(Emlab::imageToBytes(source.toUTF8()), destination.toUTF8() + clientFileName.toUTF8());
+    auto session_id = Wt::WApplication::instance()->sessionId() + "/";
+    auto destination_for_session = destination.toUTF8() + session_id;
+    auto treansfer_result = Emlab::bytesToImage(Emlab::imageToBytes(source.toUTF8()), destination_for_session + clientFileName.toUTF8());
     if(treansfer_result){
         if(singlePhoto_){
-            setSinglePhoto(Wt::WString(destination + clientFileName).toUTF8());
+            setSinglePhoto(Wt::WString(destination_for_session + clientFileName).toUTF8());
+            single_photo_changed_.emit();
         }
         else{
-            photos_.push_back(Wt::WString(destination + clientFileName).toUTF8());
+            photos_.push_back(Wt::WString(destination_for_session + clientFileName).toUTF8());
             setMultiplePhotosDisplay();
         }
     }else {
-        std::cout <<"\n\n transfer result <" << treansfer_result << ">\n\n";
+        std::cout <<"\n\n transfer result FAILED  <" << treansfer_result << ">\n\n";
     }
 
 }
@@ -99,7 +95,7 @@ void PhotoUploder::uploderFileToLarge()
 
 Emlab::ImageData PhotoUploder::getImageData()
 {
-    return Emlab::imageToBytes(destination.toUTF8() + file_uploder_->clientFileName().toUTF8());
+    return Emlab::imageToBytes(destination.toUTF8() + Wt::WApplication::instance()->sessionId() + file_uploder_->clientFileName().toUTF8());
 }
 
 // this is used only when the photo uploder is set to a single photo

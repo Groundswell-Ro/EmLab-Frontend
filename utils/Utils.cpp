@@ -68,7 +68,6 @@ namespace Emlab
     }
 
     bool deleteFile(const std::string& filePath) {
-        std::cout << "\n\n path of file to be deleted : " << filePath;
         const char* filename = filePath.c_str();
         int result = std::remove(filename);
         if (result != 0) {
@@ -82,7 +81,6 @@ namespace Emlab
 
     bool deleteFolder(const std::string& basePath, const std::string& folderName) {
         std::string folderPath = basePath + "/" + folderName;
-        std::cout << "\n\n path of folder to be deleted : " << folderPath;
 
         DIR* dir = opendir(folderPath.c_str());
         if (dir == nullptr) {
