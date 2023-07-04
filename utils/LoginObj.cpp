@@ -27,10 +27,12 @@ void Login::login(Emlab::LoginReturn loginReturn)
 	user_.userInfo.email = loginReturn.userInfo.email;
 	user_.userInfo.name = loginReturn.userInfo.name;
 	user_.userInfo.phone = loginReturn.userInfo.phone;
+	user_.userInfo.role = loginReturn.userInfo.role;
 	user_.token = loginReturn.token;
 	user_.userInfo.darkMode = loginReturn.userInfo.darkMode;
 	Emlab::bytesToImage(Emlab::Comunication::getUserPhotoWithToken(loginReturn.token), getUserPhotoPath() + "profile.jpg");
 	changed_.emit();
+	std::cout << "\n\n\n role = " << user_.userInfo.role << "\n\n\n";
 }
 
 void Login::logout()

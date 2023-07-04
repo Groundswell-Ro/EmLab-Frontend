@@ -22,7 +22,8 @@ public:
     void setSinglePhoto(Wt::WString photo_path = "");
     void setMultiplePhotosDisplay();
 	Wt::Signal<> &singlePhotoChanged() { return single_photo_changed_; };
-    std::vector<std::string> photos_;
+    // photos_ holds the path and name of the photos
+    std::vector<std::pair<std::string, std::string> > photos_;
     
 private:
     void uploderChanged();
@@ -32,7 +33,6 @@ private:
     Wt::WString default_photo_path_ = "resources/images/blank-profile-picture.png";
 
     bool singlePhoto_;
-    // photos path are stored here
 	Wt::Signal<> single_photo_changed_;
 
 

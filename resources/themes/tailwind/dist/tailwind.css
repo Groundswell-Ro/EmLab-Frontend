@@ -2878,12 +2878,12 @@ svg{
   top: -0.75rem;
 }
 
-.-top-4{
-  top: -1rem;
-}
-
 .-top-6{
   top: -1.5rem;
+}
+
+.-top-8{
+  top: -2rem;
 }
 
 .bottom-0{
@@ -2906,6 +2906,10 @@ svg{
   right: 0px;
 }
 
+.right-1\/2{
+  right: 50%;
+}
+
 .right-12{
   right: 3rem;
 }
@@ -2922,12 +2926,8 @@ svg{
   top: 0.5rem;
 }
 
-.right-1\/2{
-  right: 50%;
-}
-
-.-top-8{
-  top: -2rem;
+.-top-4{
+  top: -1rem;
 }
 
 .z-10{
@@ -3104,6 +3104,11 @@ svg{
           margin-inline-start: 0.5rem;
 }
 
+.ms-3{
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+}
+
 .ms-auto{
   -webkit-margin-start: auto;
           margin-inline-start: auto;
@@ -3129,9 +3134,12 @@ svg{
   margin-top: 2rem;
 }
 
-.ms-3{
-  -webkit-margin-start: 0.75rem;
-          margin-inline-start: 0.75rem;
+.mb-0{
+  margin-bottom: 0px;
+}
+
+.mt-4{
+  margin-top: 1rem;
 }
 
 .block{
@@ -3174,6 +3182,10 @@ svg{
   height: 0.5rem;
 }
 
+.h-24{
+  height: 6rem;
+}
+
 .h-3{
   height: 0.75rem;
 }
@@ -3214,10 +3226,6 @@ svg{
   height: 100%;
 }
 
-.h-24{
-  height: 6rem;
-}
-
 .max-h-\[90vh\]{
   max-height: 90vh;
 }
@@ -3256,6 +3264,10 @@ svg{
 
 .w-2\/3{
   width: 66.666667%;
+}
+
+.w-24{
+  width: 6rem;
 }
 
 .w-32{
@@ -3307,10 +3319,6 @@ svg{
   width: 100%;
 }
 
-.w-24{
-  width: 6rem;
-}
-
 .min-w-\[16rem\]{
   min-width: 16rem;
 }
@@ -3360,6 +3368,11 @@ svg{
   max-width: 24rem;
 }
 
+.max-w-fit{
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+}
+
 .flex-shrink-0{
   flex-shrink: 0;
 }
@@ -3392,6 +3405,11 @@ svg{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.translate-x-1\/2{
+  --tw-translate-x: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .translate-x-full{
   --tw-translate-x: 100%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -3399,21 +3417,6 @@ svg{
 
 .translate-y-1\/2{
   --tw-translate-y: 50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-x-1{
-  --tw-translate-x: 0.25rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-x-1{
-  --tw-translate-x: -0.25rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-x-1\/2{
-  --tw-translate-x: 50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3511,6 +3514,12 @@ svg{
   gap: 1rem;
 }
 
+.space-x-4 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-y-2 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -3527,12 +3536,6 @@ svg{
   --tw-space-y-reverse: 0;
   margin-top: calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.25rem * var(--tw-space-y-reverse));
-}
-
-.space-x-4 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(1rem * var(--tw-space-x-reverse));
-  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .self-start{
@@ -3880,6 +3883,10 @@ svg{
 
 .text-end{
   text-align: end;
+}
+
+.\!text-end{
+  text-align: end !important;
 }
 
 .font-sans{

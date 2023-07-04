@@ -36,10 +36,9 @@
         <div class="flex flex-col sm:flex-row">
             <div class="basic-widget text-center min-w-[200px] max-w-[600px] self-start">
 
-            ${<if-no-profile>}
+            ${<if-client>}
                 ${create-profile-btn class="btn btn-primary mx-auto calitalize"}
-            ${</if-no-profile>}
-
+            ${</if-client>}
             ${menu class="flex flex-col list-none p-0 m-1 space-y-3 self-start"}
             </div>
             ${stack class="mt-0 ms-0"}

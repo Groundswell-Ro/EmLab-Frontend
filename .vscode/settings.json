@@ -74,5 +74,6 @@
     "typeindex": "cpp",
     "variant": "cpp"
   },
-  "C_Cpp.errorSquiggles": "enabled"
+  "C_Cpp.errorSquiggles": "enabled",
+  "C_Cpp.intelliSenseEngineFallback": "disabled"
 }

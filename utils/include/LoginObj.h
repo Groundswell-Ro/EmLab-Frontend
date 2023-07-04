@@ -24,8 +24,7 @@ public:
     Wt::WString connection = ":default -p 10000";
 	std::string AUTH_CONN_STRING = Emlab::AUTHADAPTER + connection.toUTF8();
 	std::string EVENT_CONN_STRING = Emlab::EVENTADAPTER + connection.toUTF8();
-	std::string SERVICE_CONN_STRING = Emlab::SERVICEADAPTER + connection.toUTF8();
-	std::string REVIEW_CONN_STRING = Emlab::REVIEWADAPTER + connection.toUTF8();
+	std::string PROVIDER_CONN_STRING = Emlab::PROVIDERADAPTER + connection.toUTF8();
 
 	void setUserEmail(std::string value);
 	void setUserName(std::string value);

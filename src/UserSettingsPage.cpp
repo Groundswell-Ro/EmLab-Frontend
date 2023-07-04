@@ -1,5 +1,8 @@
 #include "include/UserSettingsPage.h"
+
 #include "../../comunication/comm/AuthInterface.h"
+#include "../../comunication/comm/ProviderInterface.h"
+
 #include <stdexcept>
 #include <Ice/Ice.h>
 
@@ -28,10 +31,13 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 :    login_(login)
 {
     setStyleClass("mx-auto w-full max-w-7xl overflow-y-auto");
+    createSettingsPage();
+}
 
+void UserSettingsPage::createSettingsPage()
+{
     auto tmp = addWidget(std::make_unique<Wt::WTemplate>(tr("profile-content-widget")));
-    tmp->setCondition("if-no-profile", true);
-    auto create_profile_btn = tmp->bindWidget("create-profile-btn", std::make_unique<Wt::WPushButton>("create provider profile"));
+
     auto stack = tmp->bindWidget("stack", std::make_unique<Wt::WStackedWidget>());
     auto menu = tmp->bindWidget("menu", std::make_unique<Wt::WMenu>(stack));
     stack->setStyleClass("flex-grow mt-3");
@@ -60,11 +66,17 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
     menu_item_phone->setStyleClass(menu_item_styles);
     menu_item_password->setStyleClass(menu_item_styles);
 
-    create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
+
+    if(login_->user().userInfo.role == Emlab::CLIENTROLE){
+        tmp->setCondition("if-client", true);
+        auto create_profile_btn = tmp->bindWidget("create-profile-btn", std::make_unique<Wt::WPushButton>("create provider profile"));
+        create_profile_btn->clicked().connect(this, &UserSettingsPage::createProfileDialog);
+    }else {
+        
+    }
 
     menu->select(menu_item_general);
     // createProfileDialog();
-
 }
 
 std::unique_ptr<Wt::WTemplate> UserSettingsPage::createSettingsGeneralWidget(std::string tempName)
@@ -90,7 +102,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createSettingsGeneralWidget(std
                 
         // images
         auto prev_img = temp->bindWidget("old-value", std::make_unique<Wt::WImage>(Wt::WLink(login_->getUserPhotoPath() + "profile.jpg")));
-        auto current_img = temp->bindWidget("new-value", std::make_unique<Wt::WImage>(Wt::WLink(photo_uploder->photos_[0])));
+        auto current_img = temp->bindWidget("new-value", std::make_unique<Wt::WImage>(Wt::WLink(photo_uploder->photos_[0].first)));
         std::string imgs_style = "w-24 h-24 rounded-full object-cover bg-center";
         prev_img->setStyleClass(imgs_style);
         current_img->setStyleClass(imgs_style);
@@ -106,21 +118,22 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createSettingsGeneralWidget(std
             if (code == Wt::DialogCode::Accepted)
             {
                 // save new photo
-                auto result = changePhoto(photo_uploder->photos_[0]);
+                auto result = changePhoto(photo_uploder->photos_[0].first);
                 if (result)
                 {
                     // set navbar user popup photo
                     auto cast = Wt::WApplication::instance()->root()->find("profile-btn");
                     Wt::WPushButton* user_menu_btn = dynamic_cast<Wt::WPushButton*>(cast);
-                    user_menu_btn->setIcon(photo_uploder->photos_[0]);
-                    photo_uploder->bindString("status", "<p class='text-green-600'>Photo changed</p>");
+                    user_menu_btn->setIcon(photo_uploder->photos_[0].first);
+                    photo_uploder->status_->setText("Photo changed");
                 }
                 else
                 {
-                    photo_uploder->bindString("status", "<p class='text-green-600'>Photo not changed, something went wrong, make a  photo and contact the developer :D</p>");
+                    photo_uploder->status_->setText("Photo not changed, something went wrong, make a  photo and contact the developer :D");
                 }
             }else {
-                photo_uploder->bindString("status", "<p class='text-green-600'>Photo not changed</p>");
+                photo_uploder->setSinglePhoto(login_->getUserPhotoPath() + "profile.jpg");
+                photo_uploder->status_->setText("Photo not changed");
             }
         });
 
@@ -155,8 +168,8 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
     email_input->setPlaceholderText("New Email");
     auto email_validator = Wt::WRegExpValidator("(?!(^[.-].*|[^@]*[.-]@|.*\\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~.-]+@)(?!-.*|.*-\\.)([a-zA-Z0-9-]{1,63}\\.)+[a-zA-Z]{2,15}");
     email_validator.setMandatory(true);
-    email_validator.setInvalidNoMatchText("<p class='text-red-600'>Email is not valid address, \"example.address@mail.com\"</p>");
-    email_validator.setInvalidBlankText("<p class='text-red-600'>Email is empty</p>");
+    email_validator.setInvalidNoMatchText("Email is not valid address, \"example.address@mail.com\"");
+    email_validator.setInvalidBlankText("Email is empty");
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
 
     submit_btn->clicked().connect(this, [=](){
@@ -169,7 +182,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
             tmp->bindString("submit-info", validation_result.message());
             return;
         }else if (email_input->text() == login_->user().userInfo.email){
-            tmp->bindString("submit-info", "<p class\text-red-600'>Email is the same as the current one!</p>");
+            tmp->bindString("submit-info", "<p class\text-red-600'>Email is the same as the current one!");
             return;
         }
         // send data
@@ -198,16 +211,16 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeEmailWidget(std::st
                 confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::Linear, 300));
                 // response
                 if(email_Change_Response == Emlab::ChangeUniqueDataResponse::Changed){
-                    tmp->bindString("submit-info", "<p class='text-green-600'>Email changed successfully!</p>");
+                    tmp->bindString("submit-info", "Email changed successfully!");
                     login_->setUserEmail(email_input->text().toUTF8());
                     tmp->bindString("current-data", login_->user().userInfo.email);
                 }else if(email_Change_Response == Emlab::ChangeUniqueDataResponse::NotChanged){
-                    tmp->bindString("submit-info", "<p class='text-yellow-600'>Email not changed!</p>");
+                    tmp->bindString("submit-info", "Email not changed!");
                 }else if(email_Change_Response == Emlab::ChangeUniqueDataResponse::AllreadyExists){
-                    tmp->bindString("submit-info", "<p class='text-red-600'>Email allready exists!</p>");
+                    tmp->bindString("submit-info", "Email allready exists!");
                 }
             }else {
-                tmp->bindString("submit-info", "<p class='text-green-600'>Email not changed!</p>");
+                tmp->bindString("submit-info", "Email not changed!");
             }
             confirmation_dialog->removeFromParent();
         });
@@ -237,8 +250,8 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
     name_input->setPlaceholderText("New Username");
     auto name_validator = Wt::WRegExpValidator("^[a-zA-Z ]{3,50}$");
     name_validator.setMandatory(true);
-    name_validator.setInvalidNoMatchText("<p class='text-red-600'>Username should be between 3 and 50 characters long and contain only letters</p>");
-    name_validator.setInvalidBlankText("<p class='text-red-600'>Username is empty</p>");
+    name_validator.setInvalidNoMatchText("Username should be between 3 and 50 characters long and contain only letters");
+    name_validator.setInvalidBlankText("Username is empty");
 
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
@@ -251,7 +264,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
             tmp->bindString("submit-info", validation_result.message());
             return;
         }else if (login_->user().userInfo.name == name_input->text().toUTF8()){
-            tmp->bindString("submit-info", "<p class='text-red-600'>Name is the same as the current one!</p>");
+            tmp->bindString("submit-info", "Name is the same as the current one!");
             return;
         }
         // send data
@@ -278,16 +291,16 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangeNameWidget(std::str
                 // response
                 if(result)
                 {
-                    tmp->bindString("submit-info", "<p class='text-green-600'>Name changed successfully!</p>");
+                    tmp->bindString("submit-info", "Name changed successfully!");
                     login_->setUserName(name_input->text().toUTF8());
                     tmp->bindString("current-data", login_->user().userInfo.name);
                     
                 }else {
-                    tmp->bindString("submit-info", "<p class='text-red-600'>Name not changed! make a picture and show the developer :)</p>");
+                    tmp->bindString("submit-info", "Name not changed! make a picture and show the developer :)");
                 }
 
             }else {
-                tmp->bindString("submit-info", "<p class='text-red-600'>Name not changed!</p>");
+                tmp->bindString("submit-info", "Name not changed!");
             }
             confirmation_dialog->removeFromParent();
         });
@@ -319,8 +332,8 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
     phone_input->setInputMask("9999999999");
     auto phone_validator =  Wt::WRegExpValidator("^\\d{10}$");
     phone_validator.setMandatory(true);
-    phone_validator.setInvalidNoMatchText("<p class='text-red-600'>Phone number should be10 numbers long, 0000 000 000</p>");
-    phone_validator.setInvalidBlankText("<p class='text-red-600'>Phone number is empty</p>");
+    phone_validator.setInvalidNoMatchText("Phone number should be10 numbers long, 0000 000 000");
+    phone_validator.setInvalidBlankText("Phone number is empty");
 
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
@@ -333,7 +346,7 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
             tmp->bindString("submit-info", validation_result.message());
             return;
         }else if (login_->user().userInfo.phone == phone_input->text().toUTF8()){
-            tmp->bindString("submit-info", "<p class='text-red-600'>Phone number is the same as the current one!</p>");
+            tmp->bindString("submit-info", "Phone number is the same as the current one!");
             return;
         }
         
@@ -361,19 +374,19 @@ auto widget_tmp = std::make_unique<Wt::WTemplate>(tr(tempName));
                 // response
                 if(phone_change_response == Emlab::ChangeUniqueDataResponse::Changed)
                 {
-                    tmp->bindString("submit-info", "<p class='text-green-600'>Phone number changed successfully!</p>");
+                    tmp->bindString("submit-info", "Phone number changed successfully!");
                     auto phone = phone_input->text().toUTF8();
                     phone.insert(4, " ");
                     phone.insert(8, " ");
                     tmp->bindString("current-data", phone);
                     login_->setUserPhone(phone_input->text().toUTF8());
                 }else if (phone_change_response == Emlab::ChangeUniqueDataResponse::NotChanged)
-                    tmp->bindString("submit-info", "<p class='text-red-600'>Phone number not changed! make a picture and show the developer :)</p>");
+                    tmp->bindString("submit-info", "Phone number not changed! make a picture and show the developer :)");
                 else if (phone_change_response == Emlab::ChangeUniqueDataResponse::AllreadyExists)
-                    tmp->bindString("submit-info", "<p class='text-red-600'>Phone number allready exists!</p>");
+                    tmp->bindString("submit-info", "Phone number allready exists!");
 
             }else {
-                tmp->bindString("submit-info", "<p class='text-green-600'>Phone number not changed!</p>");
+                tmp->bindString("submit-info", "Phone number not changed!");
             }
         });
         confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
@@ -459,8 +472,8 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std:
 
     auto password_validator =  Wt::WRegExpValidator("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
     password_validator.setMandatory(true);
-    password_validator.setInvalidNoMatchText("<p class='text-red-600'>Password must contain at least 6 characters, including letters and numbers</p>");
-    password_validator.setInvalidBlankText("<p class='text-red-600'>Field is empty</p>");
+    password_validator.setInvalidNoMatchText("Password must contain at least 6 characters, including letters and numbers");
+    password_validator.setInvalidBlankText("Field is empty");
     
     auto submit_btn = tmp->bindWidget("submit-btn", std::make_unique<Wt::WPushButton>("submit"));
     submit_btn->clicked().connect(this, [=](){
@@ -494,7 +507,7 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std:
             new_password_repeat_temp->bindWidget("error", std::make_unique<Wt::WText>("Passwords do not match"));
             return;
         }if(password_input->text() == new_password_input->text()){
-            tmp->bindWidget("submit-info", std::make_unique<Wt::WText>("<p class='text-red-400'>New password must be different from old password</p>"));
+            tmp->bindWidget("submit-info", std::make_unique<Wt::WText>("New password must be different from old password"));
             return;
         }
         std::cout << "\n\n validation passed \n\n";
@@ -521,17 +534,17 @@ std::unique_ptr<Wt::WTemplate> UserSettingsPage::createChangePasswordWidget(std:
                 auto response = changePassword(password_input->text().toUTF8(), new_password_input->text().toUTF8());
                 switch(response){
                     case Emlab::ChangePasswordResponse::PasswordChanged:
-                        tmp->bindString("submit-info", "<p class='text-green-600'>Password changed successfully</p>");
+                        tmp->bindString("submit-info", "Password changed successfully");
                     break;
                     case Emlab::ChangePasswordResponse::PasswordNotChanged:
-                        tmp->bindString("submit-info", "<p class='text-red-400'>Password failed changing! make a photo and tell the developer to check this out</p>");
+                        tmp->bindString("submit-info", "Password failed changing! make a photo and tell the developer to check this out");
                     break;
                     case Emlab::ChangePasswordResponse::OldPasswordIncorrect:
-                        tmp->bindString("submit-info", "<p class='text-red-400'>Old password is incorrect</p>");
+                        tmp->bindString("submit-info", "Old password is incorrect");
                     break;
                 }
             }else {
-                tmp->bindString("submit-info", "<p class='text-green-600'>Password change canceled</p>");
+                tmp->bindString("submit-info", "Password change canceled");
             }
         });
         confirmation_dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 150));
@@ -564,8 +577,7 @@ void UserSettingsPage::createProfileDialog()
     close_btn->setStyleClass("btn btn-danger flex justify-center items-center absolute top-0 right-0 rounded-full p-2 m-2 cursor-pointer");
 
     auto photo_uploder = content_temp->bindWidget("photo-uploder", std::make_unique<PhotoUploder>());
-    // login_->getUserPhotoPath() + "/profile.jpg"
-    photo_uploder->setSinglePhoto();
+    photo_uploder->setSinglePhoto(login_->getUserPhotoPath() + "profile.jpg");
     photo_uploder->status_->setText("Is this photo ok as your profile photo?");
 
     auto username_input_temp = content_temp->bindWidget("username-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
@@ -596,20 +608,6 @@ void UserSettingsPage::createProfileDialog()
     auto service_photo_uploder = content_temp->bindWidget("service-photo-uploder", std::make_unique<PhotoUploder>(false));
 
     submit_btn->setStyleClass("btn btn-primary");
-
-    dialog->finished().connect([=]{
-        if(dialog->result() == Wt::DialogCode::Accepted)
-        {
-            std::cout << "\n\n dialog accepted protocol here \n\n";
-        }else 
-        {
-            std::cout << "\n\n dialog rejected protocol here \n\n";
-        }
-        removeWidget(dialog);
-    });
-    // dialog->show();
-    dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 500));
-
 
     submit_btn->clicked().connect(this, [=](){
 
@@ -682,16 +680,57 @@ void UserSettingsPage::createProfileDialog()
             default:
                 service_description_input->setCondition("if-error-message", false);
         }
+        
+        
+        std::cout << "\n\n validation finished succesfuly \n\n";
+        
+        
+        dialog->accept();
 
-
-        // gather data
-
-        // send data
-
-        // responde
     });
 
+    dialog->setHidden(false, Wt::WAnimation(Wt::AnimationEffect::SlideInFromTop, Wt::TimingFunction::EaseInOut, 500));
 
+    username_input->setValueText("username here");
+    about_self_input->setValueText("about self here");
+    service_title_input_input->setValueText("service title here");
+    service_description_input_input->setValueText("service description here");
+
+    dialog->finished().connect([=]{
+        if(dialog->result() == Wt::DialogCode::Accepted)
+        {
+            std::cout << "\n\n dialog accepted protocol here \n\n";
+            // steps are : register provider profile -> register provider service -> register provider service photo
+            // register provider profile
+            Emlab::ProviderProfileInfo providerProfileInfo;
+            providerProfileInfo.username = username_input->text().toUTF8();
+            providerProfileInfo.description = about_self_input->text().toUTF8();
+
+            auto profileId = setUserProviderProfile(providerProfileInfo);
+
+            // register provider service
+            Emlab::ProviderServiceInfo providerServiceInfo;
+            providerServiceInfo.title = service_title_input_input->text().toUTF8();
+            providerServiceInfo.description = service_description_input_input->text().toUTF8();
+            providerServiceInfo.price = -1;
+
+            auto serviceId = setProviderService(providerServiceInfo);
+
+            // register provider service photos
+            Emlab::ImageInfo imageInfo;
+
+            for(auto& photo : service_photo_uploder->photos_){
+                imageInfo.name = photo.second;
+                imageInfo.data = Emlab::imageToBytes(photo.first);
+                addPhotoToService(serviceId, imageInfo);
+            }           
+
+        }else 
+        {
+            std::cout << "\n\n dialog rejected protocol here \n\n";
+        }
+        removeWidget(dialog);
+    });
 }
 
 // create theme switcher light/dark mode
@@ -740,7 +779,6 @@ std::unique_ptr<Wt::WPushButton> UserSettingsPage::createThemeSwitcher(){
     });
 	return theme_switcher;
 }
-
 
 Emlab::ChangeUniqueDataResponse UserSettingsPage::changeEmail(std::string email)
 {
@@ -839,3 +877,54 @@ bool UserSettingsPage::changePhoto(std::string photoPath)
     return true;
 }
 
+int UserSettingsPage::setUserProviderProfile(Emlab::ProviderProfileInfo providerProfileInfo)
+{
+    int providerProfileId = 0;
+    try {
+        Ice::CommunicatorHolder ich = Ice::initialize();
+        auto base = ich->stringToProxy(login_->PROVIDER_CONN_STRING);
+        auto providerInterface = Ice::checkedCast<Emlab::ProviderInterfacePrx>(base);
+        if (!providerInterface)
+        {
+            throw std::runtime_error("Invalid proxy");
+        }
+        providerProfileId = providerInterface->registerProvider(login_->userToken(), providerProfileInfo);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    return providerProfileId;
+}
+
+int UserSettingsPage::setProviderService(Emlab::ProviderServiceInfo providerServiceInfo)
+{
+    int providerServiceId = 0;
+    try {
+        Ice::CommunicatorHolder ich = Ice::initialize();
+        auto base = ich->stringToProxy(login_->PROVIDER_CONN_STRING);
+        auto providerInterface = Ice::checkedCast<Emlab::ProviderInterfacePrx>(base);
+        if (!providerInterface)
+        {
+            throw std::runtime_error("Invalid proxy");
+        }
+        providerServiceId = providerInterface->registerProvicerService(login_->userToken(), providerServiceInfo);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+    return providerServiceId;
+}
+
+void UserSettingsPage::addPhotoToService(int serviceId, Emlab::ImageInfo imageInfo)
+{
+    try {
+        Ice::CommunicatorHolder ich = Ice::initialize();
+        auto base = ich->stringToProxy(login_->PROVIDER_CONN_STRING);
+        auto providerInterface = Ice::checkedCast<Emlab::ProviderInterfacePrx>(base);
+        if (!providerInterface)
+        {
+            throw std::runtime_error("Invalid proxy");
+        }
+        providerInterface->addPhotoToService(login_->userToken(), std::to_string(serviceId), imageInfo);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+}

@@ -43,7 +43,7 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 
-	// createAuth();
+	createAuth();
 }
 
 EventManagerLab::~EventManagerLab()
@@ -56,7 +56,7 @@ EventManagerLab::~EventManagerLab()
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	auto auth = root()->addChild(std::make_unique<Auth>(login_));
-	// auth->dev_loginUser("client1@gmail.com", "asdfghj1");
+	auth->dev_loginUser("client1@gmail.com", "asdfghj1");
 	// auth->dev_loginUser("alex@gmail.com", "asdfghj1");
 
 }
@@ -97,8 +97,8 @@ void EventManagerLab::handleUserAuth()
 		profile_btn->setMenu(std::move(user_menu_ptr));
 		navbar_->bindWidget("user-menu", std::move(profile_btn));
 
-		// user_menu_->select(settings);
-		nav_menu_->select(0);
+		user_menu_->select(settings);
+		// nav_menu_->select(0);
 		
 	}else {
 		root()->clear();

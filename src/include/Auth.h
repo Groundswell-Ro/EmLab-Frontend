@@ -1,4 +1,3 @@
-#include "../../utils/include/AuthForms.h"
 #include "../../utils/include/LoginObj.h"
 
 #include <Wt/WTemplate.h>
