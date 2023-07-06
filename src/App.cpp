@@ -37,13 +37,13 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	require("resources/Js/Utility.js");
 	require("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
 
-
+	// 
 
 	root()->setStyleClass("app");
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 
-	createAuth();
+	// createAuth();
 }
 
 EventManagerLab::~EventManagerLab()
@@ -56,7 +56,7 @@ EventManagerLab::~EventManagerLab()
 // create Authentification/Registration page
 void EventManagerLab::createAuth() {
 	auto auth = root()->addChild(std::make_unique<Auth>(login_));
-	auth->dev_loginUser("client1@gmail.com", "asdfghj1");
+	// auth->dev_loginUser("client1@gmail.com", "asdfghj1");
 	// auth->dev_loginUser("alex@gmail.com", "asdfghj1");
 
 }
@@ -80,24 +80,30 @@ void EventManagerLab::handleUserAuth()
 		auto logout_btn = std::make_unique<Wt::WMenuItem>("Log Out");
 
 		user_menu_->setStyleClass("basic-widget px-1 py-2");
-		// auto profile = user_menu_->addItem("Profile",  std::make_unique<UserProfile>(login_));
 		auto settings = user_menu_->addItem("Settings", std::make_unique<UserSettingsPage>(login_));
-		auto logout = user_menu_->addItem(std::move(logout_btn));
 
-		logout->clicked().connect(this, [=]() { login_->logout(); });
-		// profile->clicked().connect(this, [=](){ menuItemSelected(profile); });
 		settings->clicked().connect(this, [=](){ menuItemSelected(settings); });
 		
 		Wt::WString user_menu_item_styles = "bg-body-hover-border block rounded-md text-inherit flex items-center text-sm [&>a]:px-8 [&>a]:py-2";
-		// profile->setStyleClass(user_menu_item_styles);
 		settings->setStyleClass(user_menu_item_styles);
-		logout->setStyleClass("btn btn-primary text-xs ms-auto w-fit");
 
+		if(login_->getUserRole() == Emlab::PROVIDERROLE)
+		{
+			auto profile_content = std::make_unique<UserProfile>(login_, login_->provider().id);
+			auto profile = user_menu_->addItem("Profile",  std::move(profile_content));
+			profile->clicked().connect(this, [=](){ menuItemSelected(profile); });
+			profile->setStyleClass(user_menu_item_styles);
+
+		}
+		auto logout = user_menu_->addItem(std::move(logout_btn));
+		logout->clicked().connect(this, [=]() { login_->logout(); });
+		logout->setStyleClass("btn btn-primary text-xs ms-auto w-fit");
 
 		profile_btn->setMenu(std::move(user_menu_ptr));
 		navbar_->bindWidget("user-menu", std::move(profile_btn));
 
-		user_menu_->select(settings);
+		user_menu_->select(user_menu_->itemAt(1));
+		// user_menu_->select(settings);
 		// nav_menu_->select(0);
 		
 	}else {
@@ -112,10 +118,8 @@ void EventManagerLab::handleUserAuth()
 }
 
 // create Application Page
-void EventManagerLab::createApp() {
-
-	// root()->clear();
-
+void EventManagerLab::createApp() 
+{
 	// Create navigation
 	navbar_ = root()->addWidget(std::make_unique<Wt::WTemplate>(Wt::WString::tr("navbar")));
 	auto logo = navbar_->bindWidget("logo", std::make_unique<Wt::WImage>("https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"));
@@ -133,13 +137,18 @@ void EventManagerLab::createApp() {
 	auto portofolio_menu_item = nav_menu_->addItem("Find services", std::move(services_page));
 	auto page_two_menu_item = nav_menu_->addItem("Organizer", std::move(organizer_page));
 
+
+	// internal base paths
+	portofolio_menu_item->setLink(Wt::WLink(Wt::LinkType::InternalPath, "/portofolios"));
+
 	// menu_ Item styles
-	Wt::WString list_item_styles = "bg-body-hover-border w-4/5 rounded-md sm:rounded-none h-6 h-full flex items-center justify-center";
+	std::string list_item_styles = "bg-body-hover-border w-4/5 rounded-md sm:rounded-none h-6 h-full flex items-center justify-center";
 	portofolio_menu_item->setStyleClass(list_item_styles);
 	page_two_menu_item->setStyleClass(list_item_styles);
-	Wt::WString menuItemStyles = "sm:!rounded-none p-3 text-inherit !m-0 font-medium";
+	std::string menuItemStyles = "sm:!rounded-none p-3 text-inherit !m-0 font-medium";
 	portofolio_menu_item->anchor()->setStyleClass(menuItemStyles); 
 	page_two_menu_item->anchor()->setStyleClass(menuItemStyles);
+
 
 	portofolio_menu_item->clicked().connect(this, [=](){ menuItemSelected(portofolio_menu_item); });
 	page_two_menu_item->clicked().connect(this, [=](){ menuItemSelected(page_two_menu_item); });
