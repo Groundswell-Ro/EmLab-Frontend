@@ -31,7 +31,7 @@
     </message>
 
     <!-- profile content -->
-    <message id='profile-content-widget'>
+    <message id='layout-content-widget'>
 
         <div class="flex flex-col sm:flex-row">
             <div class="basic-widget text-center min-w-[200px] max-w-[600px] self-start">
@@ -88,19 +88,19 @@
             <div class="space-y-2 flex flex-col items-stretch">
                 <div class="flex">
                     <div class="flex-grow max-w-[10rem] pe-4">Username: </div>
-                    <div class="flex-grow">Alexandru Dan Croitoriu</div>
+                    <div class="flex-grow">${username}</div>
                 </div>
                 <div class="flex">
                     <div class="flex-grow max-w-[10rem] pe-4">Name:</div>
-                    <div class="flex-grow">Alexandru Dan Croitoriu</div>
+                    <div class="flex-grow">${name}</div>
                 </div>
                 <div class="flex">
                     <div class="flex-grow max-w-[10rem] pe-4">Phone:</div>
-                    <div class="flex-grow">0771 232 534</div>
+                    <div class="flex-grow">${phone}</div>
                 </div>
                 <div class="flex">
                     <div class="flex-grow max-w-[10rem] pe-4">Email:</div>
-                    <div class="flex-grow">partyentertainers93@gmail.com</div>
+                    <div class="flex-grow">${email}</div>
                 </div>
             </div>
         </div>
@@ -127,20 +127,20 @@
         <div class="flex flex-col space-y-5">
             <div class="flex justify-between">
                 <div class="flex flex-col justify-between">
-                    ${title class="text-2xl font-extrabold tracking-wide"}
-                    ${rating}
+                    ${title class="text-2xl font-extrabold tracking-wide capitalize"}
+                    ${description}
+                    ${service-price class="underline"}
                 </div>
                 <div class="inline-flex flex-col items-center m-0">
                     <div class="text-3xl sm:text-4xl font-extrabold tracking-wide">${number-of-reviews}</div>
                     <div class="text-base sm:text-lg text-gray-400">reviews</div>
+                    ${rating}
                 </div>
             </div>
-            ${description}
-            ${price class="block text-end underline"}
-            <div class="flex">
-                ${prev-btn class="btn bg-transparent shadow-none my-0 focus:ring-0"}
-                ${service-galery-stack}
-                ${next-btn class="btn bg-transparent shadow-none my-0 focus:ring-0"}
+            <div class="flex justify-between -mx-2">
+                ${prev-btn class="btn bg-transparent shadow-none m-0 focus:ring-0"}
+                ${service-galery-stack class="w-full"}
+                ${next-btn class="btn bg-transparent shadow-none m-0 focus:ring-0"}
             </div>
         </div>
 

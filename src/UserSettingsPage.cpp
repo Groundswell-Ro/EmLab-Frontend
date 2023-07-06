@@ -36,7 +36,7 @@ UserSettingsPage::UserSettingsPage(std::shared_ptr<Login> login)
 
 void UserSettingsPage::createSettingsPage()
 {
-    auto tmp = addWidget(std::make_unique<Wt::WTemplate>(tr("profile-content-widget")));
+    auto tmp = addWidget(std::make_unique<Wt::WTemplate>(tr("layout-content-widget")));
 
     auto stack = tmp->bindWidget("stack", std::make_unique<Wt::WStackedWidget>());
     auto menu = tmp->bindWidget("menu", std::make_unique<Wt::WMenu>(stack));
@@ -45,7 +45,6 @@ void UserSettingsPage::createSettingsPage()
     
     auto settings_general_tmp = createSettingsGeneralWidget("settings-widget");
     auto change_email_tmp = createChangeEmailWidget("settings-widget");
-    // auto change_username_tmp = createChangeUsernameWidget("settings-widget");
     auto change_name_tmp = createChangeNameWidget("settings-widget");
     auto change_phone_tmp = createChangePhoneWidget("settings-widget");
     auto change_password_tmp = createChangePasswordWidget("settings-widget");
@@ -53,7 +52,6 @@ void UserSettingsPage::createSettingsPage()
 
     auto menu_item_general = menu->addItem("General", std::move(settings_general_tmp));
     auto menu_item_email = menu->addItem("Change Email", std::move(change_email_tmp));
-    // auto menu_item_username = menu->addItem("Change Username", std::move(change_username_tmp));
     auto menu_item_name = menu->addItem("Change Name", std::move(change_name_tmp));
     auto menu_item_phone = menu->addItem("Change Phone", std::move(change_phone_tmp));
     auto menu_item_password = menu->addItem("Change Password", std::move(change_password_tmp));
@@ -61,7 +59,6 @@ void UserSettingsPage::createSettingsPage()
     Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
     menu_item_general->setStyleClass(menu_item_styles);
     menu_item_email->setStyleClass(menu_item_styles);
-    // menu_item_username->setStyleClass(menu_item_styles);
     menu_item_name->setStyleClass(menu_item_styles);
     menu_item_phone->setStyleClass(menu_item_styles);
     menu_item_password->setStyleClass(menu_item_styles);
@@ -729,7 +726,7 @@ void UserSettingsPage::createProfileDialog()
         {
             std::cout << "\n\n dialog rejected protocol here \n\n";
         }
-        removeWidget(dialog);
+        // removeWidget(dialog);
     });
 }
 
@@ -737,7 +734,6 @@ void UserSettingsPage::createProfileDialog()
 std::unique_ptr<Wt::WPushButton> UserSettingsPage::createThemeSwitcher(){
     bool darkMode = login_->user().userInfo.darkMode;
     auto theme_switcher = std::make_unique<Wt::WPushButton>();
-    std::cout << "\n\n darkMode: " << darkMode << "\n\n";
     if(darkMode){
         theme_switcher->setText(Wt::WString::tr("moon-svg"));
         theme_switcher->setTextFormat(Wt::TextFormat::XHTML);
@@ -906,7 +902,7 @@ int UserSettingsPage::setProviderService(Emlab::ProviderServiceInfo providerServ
         {
             throw std::runtime_error("Invalid proxy");
         }
-        providerServiceId = providerInterface->registerProvicerService(login_->userToken(), providerServiceInfo);
+        providerServiceId = providerInterface->registerProviderService(login_->userToken(), providerServiceInfo);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
@@ -923,7 +919,7 @@ void UserSettingsPage::addPhotoToService(int serviceId, Emlab::ImageInfo imageIn
         {
             throw std::runtime_error("Invalid proxy");
         }
-        providerInterface->addPhotoToService(login_->userToken(), std::to_string(serviceId), imageInfo);
+        providerInterface->addPhotoToService(login_->userToken(), serviceId, imageInfo);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

@@ -33,7 +33,7 @@ FindServicesPage::FindServicesPage(std::shared_ptr<Login> login)
 	login_(login)
 {
 	setStyleClass("relative w-full h-full flex");
-	addWidget(std::make_unique<UserProfile>(login_));
+	// addWidget(std::make_unique<UserProfile>(login_, login_->provider().name));
 }
 
 void FindServicesPage::addSidebar()

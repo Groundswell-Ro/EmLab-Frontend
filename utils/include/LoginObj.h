@@ -2,7 +2,6 @@
 #include "Utils.h"
 #include <Wt/WSignal.h>
 #include <Wt/WString.h>
-
 class Login
 {
 public:
@@ -16,6 +15,7 @@ public:
 	bool isLoggedIn();
 
 	Emlab::LoginReturn &user() { return user_; };
+	Emlab::ProviderProfileInfo &provider() { return provider_; };
 	Wt::Signal<> &changed() { return changed_; };
 	std::string userToken() { return user_.token; };
 	bool loggedInOnce_ = false;
@@ -31,10 +31,17 @@ public:
 	void setUserPhone(std::string value);
 	void setDarkMode(bool darkMode);
 
+	std::string getUserRole();
+	std::string getUserToken();
+	std::string getUserIdentity();
+
 private:
 	Emlab::LoginReturn user_;
+	Emlab::ProviderProfileInfo provider_;
+
 	Wt::Signal<> changed_;
     std::string temp_images_path_ = "resources/temp_images/";
 
+	void setUserProvider();
 
 };

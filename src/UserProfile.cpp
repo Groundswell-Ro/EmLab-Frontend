@@ -1,4 +1,5 @@
 #include "include/UserProfile.h"
+#include "../../comunication/comm/ProviderInterface.h"
 
 #include <Wt/WMenu.h>
 #include <Wt/WMenuItem.h>
@@ -10,11 +11,15 @@
 #include <Wt/WAnimation.h>
 #include <Wt/WLineEdit.h>
 
-UserProfile::UserProfile(std::shared_ptr<Login> login)
+#include <stdexcept>
+#include <Ice/Ice.h>
+
+UserProfile::UserProfile(std::shared_ptr<Login> login, int profileId)
 :   Wt::WTemplate(tr("profile")),
     login_(login)
 {
     setStyleClass("mx-auto w-full max-w-7xl overflow-y-auto");
+    getProfileData(profileId);
 	auto header = bindWidget("profile-header", std::make_unique<Wt::WTemplate>(tr("profile-header")));
 	auto header_cover = header->bindWidget("header-cover", std::make_unique<Wt::WTemplate>(tr("header-cover")));
 	header_cover->decorationStyle().setBackgroundImage(Wt::WLink("resources/images/profile-cover/cover1.jpg"));
@@ -46,7 +51,7 @@ UserProfile::UserProfile(std::shared_ptr<Login> login)
 	services_menu->setStyleClass(menu_item_styles);
 	reviews_menu->setStyleClass(menu_item_styles);
 
-    menu->select(info_menu);
+    menu->select(services_menu);
 }
 
 std::unique_ptr<Wt::WContainerWidget> UserProfile::createInfo()
@@ -54,29 +59,39 @@ std::unique_ptr<Wt::WContainerWidget> UserProfile::createInfo()
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
     returnWidget->setStyleClass("basic-widget mt-0");
     auto info_tmp = returnWidget->addWidget(std::make_unique<Wt::WTemplate>(tr("info-content-widget")));
+
+    info_tmp->bindString("name", profileData_.profile.name);
+    info_tmp->bindString("username", profileData_.profile.username);
+    info_tmp->bindString("phone", profileData_.profile.phone);
+    info_tmp->bindString("email", profileData_.profile.email);
+
     return returnWidget;
 }
 
 std::unique_ptr<Wt::WContainerWidget> UserProfile::createGalery()
 {
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
-    auto tmp = returnWidget->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-content-widget")));
+    auto tmp = returnWidget->addWidget(std::make_unique<Wt::WTemplate>(tr("layout-content-widget")));
 
     auto stack = tmp->bindWidget("stack", std::make_unique<Wt::WStackedWidget>());
     auto menu = tmp->bindWidget("menu", std::make_unique<Wt::WMenu>(stack));
     stack->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::Fade), true);
     stack->setStyleClass("basic-widget mt-0 ms-0 flex-grow");
-    auto all_photos_container = std::make_unique<Wt::WContainerWidget>();
-    all_photos_container->setStyleClass("grid grid-cols-2 md:grid-cols-3 gap-4");
-    for(int i = 0; i < 10; i++) {
-        auto photo = all_photos_container->addWidget(std::make_unique<Wt::WImage>(Wt::WLink("resources/images/profile-cover/cover1.jpg")));
-        photo->setStyleClass("h-auto max-w-full rounded-lg");
+
+    auto container = std::make_unique<Wt::WContainerWidget>();
+    auto container_styles = "grid grid-cols-2 md:grid-cols-3 gap-4";
+    auto menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
+    for(auto servicePhoto : servicePhotos_)
+    {   
+        container->setStyleClass(container_styles);
+        for(auto photo : servicePhoto.second)
+        {
+            container->addWidget(std::make_unique<Wt::WImage>(Wt::WLink(photo.path)))->setStyleClass("h-auto max-w-full rounded-lg");
+        }
+        auto menu_item = menu->addItem(servicePhoto.first, std::move(container));
+        menu_item->setStyleClass(menu_item_styles);
+
     }
-
-    auto all_photos_menu_item = menu->addItem("All Photos", std::move(all_photos_container));
-
-    Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
-    all_photos_menu_item->setStyleClass(menu_item_styles);
 
     menu->select(0);
     return returnWidget;
@@ -86,68 +101,74 @@ std::unique_ptr<Wt::WContainerWidget> UserProfile::createServices()
 {
     std::unique_ptr<Wt::WContainerWidget> returnWidget = std::make_unique<Wt::WContainerWidget>();
     
-    auto tmp = returnWidget->addWidget(std::make_unique<Wt::WTemplate>(tr("profile-content-widget")));
+    auto tmp = returnWidget->addWidget(std::make_unique<Wt::WTemplate>(tr("layout-content-widget")));
     auto stack = tmp->bindWidget("stack", std::make_unique<Wt::WStackedWidget>());
     auto menu = tmp->bindWidget("menu", std::make_unique<Wt::WMenu>(stack));
     stack->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::Fade), true);
     stack->setStyleClass("basic-widget mt-0 ms-0 flex-grow");
 
     // add service to provider 
-    auto service_one = std::make_unique<Wt::WTemplate>(tr("service"));
+    for(auto service : profileData_.services){
+        auto service_tmp = std::make_unique<Wt::WTemplate>(tr("service"));
+        auto title = service_tmp->bindWidget("title", std::make_unique<Wt::WText>(service.title));
+        auto description = service_tmp->bindWidget("description", std::make_unique<Wt::WText>(service.description));
+        auto price = service_tmp->bindWidget("service-price", std::make_unique<Wt::WText>(std::to_string(service.price) + " Ron/hour"));
+        auto number_of_reviews = service_tmp->bindWidget("number-of-reviews", std::make_unique<Wt::WText>("24 i"));
+        auto rating = service_tmp->bindWidget("rating", std::make_unique<Wt::WText>("4.5 ★★★★★ i"));
+        auto photo_stack = service_tmp->bindWidget("service-galery-stack", std::make_unique<Wt::WStackedWidget>());
+        photo_stack->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::Fade), true);
+        auto prev_btn = service_tmp->bindWidget("prev-btn", std::make_unique<Wt::WPushButton>(tr("arrow-left-svg")));
+        auto next_btn = service_tmp->bindWidget("next-btn", std::make_unique<Wt::WPushButton>(tr("arrow-right-svg")));
+        prev_btn->setTextFormat(Wt::TextFormat::XHTML);
+        next_btn->setTextFormat(Wt::TextFormat::XHTML);
 
-    auto title = service_one->bindWidget("title", std::make_unique<Wt::WText>("Animator"));
-    auto description = service_one->bindWidget("description", std::make_unique<Wt::WText>(tr("service-description-test")));
-    auto price = service_one->bindWidget("price", std::make_unique<Wt::WText>("200 Ron/hour"));
-    auto number_of_reviews = service_one->bindWidget("number-of-reviews", std::make_unique<Wt::WText>("24"));
-    auto rating = service_one->bindWidget("rating", std::make_unique<Wt::WText>("4.5 ★★★★★"));
-    auto photo_stack = service_one->bindWidget("service-galery-stack", std::make_unique<Wt::WStackedWidget>());
-    photo_stack->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::Fade), true);
-    // photo_stack->setTransitionAnimation(Wt::WAnimation(Wt::AnimationEffect::SlideInFromLeft), true);
-    auto prev_btn = service_one->bindWidget("prev-btn", std::make_unique<Wt::WPushButton>(tr("arrow-left-svg")));
-    auto next_btn = service_one->bindWidget("next-btn", std::make_unique<Wt::WPushButton>(tr("arrow-right-svg")));
-    prev_btn->setTextFormat(Wt::TextFormat::XHTML);
-    next_btn->setTextFormat(Wt::TextFormat::XHTML);
-
-    
-    for(int i = 0 ; i < 2; i++) {
-        auto galery_page_1 = photo_stack->addWidget(std::make_unique<Wt::WContainerWidget>());
-        auto img_1 = galery_page_1->addWidget(std::make_unique<Wt::WImage>(Wt::WLink("resources/images/profile-cover/cover1.jpg")));
-        auto img_2 = galery_page_1->addWidget(std::make_unique<Wt::WImage>(Wt::WLink("resources/images/profile-cover/cover2.jpg")));
-        auto img_3 = galery_page_1->addWidget(std::make_unique<Wt::WImage>(Wt::WLink("resources/images/profile-cover/cover3.jpg")));
-        auto img_4 = galery_page_1->addWidget(std::make_unique<Wt::WImage>(Wt::WLink("resources/images/profile-cover/cover4.jpg")));
-
+        
         auto images_styles = "w-1/4 h-32 object-cover";
-        img_1->setStyleClass(images_styles);
-        img_2->setStyleClass(images_styles);
-        img_3->setStyleClass(images_styles);
-        img_4->setStyleClass(images_styles);
+        auto galery_page = std::make_unique<Wt::WContainerWidget>();
+        int count = 0;
+
+        for (const auto& pair : servicePhotos_) {
+            if (pair.first == service.title) {
+                const std::vector<ServicePhoto>& servicePhotos = pair.second;
+                for (const auto& servicePhoto : servicePhotos) {
+                    ++count;
+                    if (count == 4) {
+                        photo_stack->addWidget(std::move(galery_page));
+                        galery_page = std::make_unique<Wt::WContainerWidget>();
+                        count = 0;
+                    }
+                    galery_page->addWidget(std::make_unique<Wt::WImage>(Wt::WLink(servicePhoto.path)))->setStyleClass(images_styles);
+                }
+            }
+        }
+        if(count != 0){
+            photo_stack->addWidget(std::move(galery_page));
+        }
+
+        prev_btn->clicked().connect(this, [=](){
+            if(photo_stack->currentIndex() == 0) {
+                photo_stack->setCurrentIndex(photo_stack->count() - 1);
+            } else {
+                photo_stack->setCurrentIndex(photo_stack->currentIndex() - 1);
+            }
+        });
+
+        next_btn->clicked().connect(this, [=](){
+            if(photo_stack->currentIndex() == photo_stack->count() - 1) {
+                photo_stack->setCurrentIndex(0);
+            } else {
+                photo_stack->setCurrentIndex(photo_stack->currentIndex() + 1);
+            }
+        });
+
+
+        auto menu_item_one = menu->addItem(service.title, std::move(service_tmp));
+
+        Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
+        menu_item_one->setStyleClass(menu_item_styles);
     }
 
-    prev_btn->clicked().connect(this, [=](){
-        if(photo_stack->currentIndex() == 0) {
-            photo_stack->setCurrentIndex(photo_stack->count() - 1);
-        } else {
-            photo_stack->setCurrentIndex(photo_stack->currentIndex() - 1);
-        }
-    });
-
-    next_btn->clicked().connect(this, [=](){
-        if(photo_stack->currentIndex() == photo_stack->count() - 1) {
-            photo_stack->setCurrentIndex(0);
-        } else {
-            photo_stack->setCurrentIndex(photo_stack->currentIndex() + 1);
-        }
-    });
-
-
-    auto menu_item_one = menu->addItem("Animator", std::move(service_one));
-
-    Wt::WString menu_item_styles = "bg-body-hover-border simple-menu-item py-2 px-3 text-bold";
-    menu_item_one->setStyleClass(menu_item_styles);
-
     menu->select(0);
-
-
     return returnWidget;
 }
 
@@ -206,4 +227,48 @@ std::unique_ptr<Wt::WContainerWidget> UserProfile::createReviews()
     menu->select(0);
 
     return returnWidget;
+}
+
+void UserProfile::getProfileData(int profileId)
+{
+	try {
+        Ice::CommunicatorHolder ich = Ice::initialize();
+        auto base = ich->stringToProxy(login_->PROVIDER_CONN_STRING);
+        auto providerInterface = Ice::checkedCast<Emlab::ProviderInterfacePrx>(base);
+        if (!providerInterface)
+        {
+            throw std::runtime_error("Invalid proxy");
+        }
+
+        // auto providerInfo = providerInterface->getProfileAsUser(login_->user().token);
+        auto providerInfo = providerInterface->getProfileAsClient(profileId);
+		auto providerServices = providerInterface->getSeqProviderServices(profileId);
+
+		profileData_.profile = providerInfo;
+
+        for(auto providerService : providerServices)
+        {
+            profileData_.services.push_back(providerService);
+
+            // service photos 
+            std::vector<ServicePhoto> servicePhotos;
+            for(auto servicePhotoId : providerService.photoIds){                
+                auto photoInfo = providerInterface->getProviderServicePhoto(servicePhotoId);
+                auto photoPath = "resources/portofolioImages/" + providerInfo.email + "/" + providerService.title + "/" + photoInfo.name;
+                Emlab::bytesToImage(photoInfo.data, photoPath);
+                ServicePhoto servicePhoto;
+                servicePhoto.id = servicePhotoId;
+                servicePhoto.path = photoPath;
+                servicePhoto.serviceId = providerService.id;
+                servicePhoto.name = photoInfo.name;
+                servicePhotos.push_back(servicePhoto);
+            }
+            auto servicePhotoInfo = std::make_pair(providerService.title, servicePhotos);
+            servicePhotos_.push_back(servicePhotoInfo);
+
+        }
+		
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
 }

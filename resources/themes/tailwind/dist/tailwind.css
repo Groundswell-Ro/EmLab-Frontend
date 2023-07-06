@@ -2854,8 +2854,38 @@ svg{
   border: 3px solid var(--primary);
 }
 
-.static{
-  position: static;
+.container{
+  width: 100%;
+}
+
+@media (min-width: 640px){
+  .container{
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px){
+  .container{
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px){
+  .container{
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px){
+  .container{
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px){
+  .container{
+    max-width: 1536px;
+  }
 }
 
 .fixed{
@@ -2878,12 +2908,12 @@ svg{
   top: -0.75rem;
 }
 
-.-top-6{
-  top: -1.5rem;
+.-top-4{
+  top: -1rem;
 }
 
-.-top-8{
-  top: -2rem;
+.-top-6{
+  top: -1.5rem;
 }
 
 .bottom-0{
@@ -2906,10 +2936,6 @@ svg{
   right: 0px;
 }
 
-.right-1\/2{
-  right: 50%;
-}
-
 .right-12{
   right: 3rem;
 }
@@ -2924,10 +2950,6 @@ svg{
 
 .top-2{
   top: 0.5rem;
-}
-
-.-top-4{
-  top: -1rem;
 }
 
 .z-10{
@@ -3013,6 +3035,26 @@ svg{
 .my-5{
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
+}
+
+.-mx-4{
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+.-mx-6{
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+
+.-mx-8{
+  margin-left: -2rem;
+  margin-right: -2rem;
+}
+
+.-mx-2{
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
 }
 
 .\!mt-0{
@@ -3132,14 +3174,6 @@ svg{
 
 .mt-8{
   margin-top: 2rem;
-}
-
-.mb-0{
-  margin-bottom: 0px;
-}
-
-.mt-4{
-  margin-top: 1rem;
 }
 
 .block{
@@ -3368,11 +3402,6 @@ svg{
   max-width: 24rem;
 }
 
-.max-w-fit{
-  max-width: -moz-fit-content;
-  max-width: fit-content;
-}
-
 .flex-shrink-0{
   flex-shrink: 0;
 }
@@ -3402,11 +3431,6 @@ svg{
 
 .-translate-x-32{
   --tw-translate-x: -8rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-x-1\/2{
-  --tw-translate-x: 50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3885,10 +3909,6 @@ svg{
   text-align: end;
 }
 
-.\!text-end{
-  text-align: end !important;
-}
-
 .font-sans{
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
@@ -4019,11 +4039,6 @@ svg{
   color: rgb(34 197 94 / var(--tw-text-opacity));
 }
 
-.text-green-600{
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
-}
-
 .text-green-800{
   --tw-text-opacity: 1;
   color: rgb(22 101 52 / var(--tw-text-opacity));
@@ -4076,11 +4091,6 @@ svg{
 .text-yellow-500{
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity));
-}
-
-.text-yellow-600{
-  --tw-text-opacity: 1;
-  color: rgb(202 138 4 / var(--tw-text-opacity));
 }
 
 .underline{

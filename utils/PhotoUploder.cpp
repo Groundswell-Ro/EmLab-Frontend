@@ -53,7 +53,6 @@ void PhotoUploder::uploderUploded()
 {
     status_->setText("File upload is succesfull.");
     
-    std::cout << "\n\n segfault after this \n\n";
     Wt::WString source = file_uploder_->spoolFileName();
     Wt::WString clientFileName = file_uploder_->clientFileName().toUTF8();
 
@@ -110,7 +109,7 @@ void PhotoUploder::setSinglePhoto(Wt::WString photo_path)
     auto img_background = Wt::WCssDecorationStyle();
     
     if(photo_path == ""){
-        std::cout << "\n\n setSinglePhoto = '' \n\n";
+        // std::cout << "\n\n setSinglePhoto = '' \n\n";
         img_background.setBackgroundImage(Wt::WLink(default_photo_path_.toUTF8()));
     }else{
         if(photos_.size() > 0){
@@ -119,7 +118,7 @@ void PhotoUploder::setSinglePhoto(Wt::WString photo_path)
         }
         std::pair<std::string, std::string> photo = std::make_pair(photo_path.toUTF8(), photo_path.toUTF8());
         photos_.push_back(photo);
-        std::cout << "\n\n setSinglePhoto = " << photo_path.toUTF8() << "\n\n";
+        // std::cout << "\n\n setSinglePhoto = " << photo_path.toUTF8() << "\n\n";
         img_background.setBackgroundImage(Wt::WLink(photo_path.toUTF8()));
     } 
 
