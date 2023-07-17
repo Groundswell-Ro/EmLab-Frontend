@@ -726,7 +726,6 @@ void UserSettingsPage::createProfileDialog()
         {
             std::cout << "\n\n dialog rejected protocol here \n\n";
         }
-        // removeWidget(dialog);
     });
 }
 

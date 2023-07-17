@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <messages>
-
-	<message id='login-content'>
-		<div class="text-center text-xl font-bold">Login</div>
-		<div>
+    <message id="login-content">
+        <div>${stylus}</div>
+        <div class="">
 			${email-input class="mb-4"}
 			${password-input class="mb-4"}
 		</div>
-		<!-- Buttons -->
-		<div class="flex justify-between">
-			${sign-up-button class="btn btn-seccondary px-3 py-2 m-0"}
-			${login-button class="btn btn-primary px-3 py-2 m-0"}
-		</div>
-		<!-- Submit Info -->
-		<div class="text-red-500">
+        <!-- Buttons -->
+        <div class="flex justify-between">${sign-up-button class="btn btn-seccondary px-3 py-2 m-0"}			${login-button class="btn btn-primary px-3 py-2 m-0"}		</div>
+        <!-- Submit Info -->
+        <div class="? text-red-500">
 			${submit-info}
 		</div>
-
-	</message>
-
-	<message id='sign-up-content'>
-		<!-- Photo -->
-		<div>
+    </message>
+    <message id="sign-up-content">
+        <div>${stylus}</div>
+        <!-- Photo -->
+        <div class="">
 			${photo-uploader}
 		</div>
-		<div>
+        <div class="">
 			${name-input class="mb-4"}
 			${email-input class="mb-4"}
 			${phone-input class="mb-4"}
@@ -32,24 +27,23 @@
 			${password-requirments class="mb-4"}
 			${password-repeat-input class="mb-4"}
 		</div>
-		<!-- Buttons -->
-		<div class="w-full flex justify-between">
+        <!-- Buttons -->
+        <div class="w-full flex justify-between">
 			${back-to-login class="btn btn-seccondary w-32 px-5 py-2"}
 			${submit-btn class="btn btn-primary w-32 px-5 py-2"}
 		</div>
 		${submit-info class="text-red-500"}
 	
 	</message>
-
-	<message id="password-requirments">
-		<div class="font-semibold">
+    <message id="password-requirments">
+        <div>${stylus}</div>
+        <div class="font-semibold">
 		The password should respect the below criteria:
 		</div>
-		<ul class="ml-4 ms-0 mt-2 list-disc ps-3 text-sm">
-			<li>at least 6 characters long</li>
-			<li>at least one letter</li>
-			<li>at least one number</li>
-		</ul>
-	</message>
-
+        <ul class="ml-4 ms-0 mt-2 list-disc ps-3 text-sm">
+            <li class="">at least 6 characters long</li>
+            <li class="">at least one letter</li>
+            <li class="">at least one number</li>
+        </ul>
+    </message>
 </messages>

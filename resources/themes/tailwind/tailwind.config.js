@@ -43,5 +43,14 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [    
+    require("tailwindcss-question-mark")({
+      animationDuration: "0.6s",
+      enableAnimation: true,
+      highlightColorStart: "#f16bc9",
+      highlightColorEnd: "#f71fb6",
+      widthStart: "2px",
+      widthEnd: "3px",
+    }),
+  ],
 };

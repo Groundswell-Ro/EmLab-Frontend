@@ -13,16 +13,12 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	: Wt::WApplication(env),
 	  login_(std::make_shared<Login>())
 {
-	
-	
 	// Set up application resourses and settings
 	setTitle("Event Manager Lab");
 	// setCssTheme("");
 	// setCssTheme("polished");
 	// include tailwind css file
 	useStyleSheet("resources/themes/tailwind/dist/tailwind.css");
-
-
 
 	// import resources
 	messageResourceBundle().use(appRoot() + "resources/xml/Auth");
@@ -33,6 +29,7 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	messageResourceBundle().use(appRoot() + "resources/xml/Svg");
 	messageResourceBundle().use(appRoot() + "resources/xml/CreateProfileDialog");
 	messageResourceBundle().use(appRoot() + "resources/xml/SettingsPage");
+	messageResourceBundle().use(appRoot() + "resources/xml/Stylus");
 	// require("resources/Js/CopyToClipboard.js");
 	require("resources/Js/Utility.js");
 	require("https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js");
@@ -43,7 +40,18 @@ EventManagerLab::EventManagerLab(const Wt::WEnvironment &env)
 	login_->changed().connect(this, &EventManagerLab::handleUserAuth);
 	login_->changed().emit();
 
-	// createAuth();
+
+	internalPathChanged().connect(this, &EventManagerLab::handleInternalPathChange);
+	handleInternalPathChange(internalPath());
+
+	
+
+	createAuth();
+}
+
+void EventManagerLab::handleInternalPathChange(const std::string& path)
+{
+	std::cout << "path changed: " << path << std::endl;
 }
 
 EventManagerLab::~EventManagerLab()

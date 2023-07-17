@@ -1,8 +1,9 @@
 #include "include/Auth.h"
 #include "../../comunication/comm/AuthInterface.h"
 #include "../utils/include/PhotoUploder.h"
+#include "../utils/include/TemplateEditorDialog.h"
 
-#include <Wt/WTemplate.h>
+#include <Wt/WApplication.h>
 #include <Wt/WTemplate.h>
 #include <Wt/WPushButton.h>
 #include <Wt/WSignal.h>
@@ -14,10 +15,21 @@
 #include <stdexcept>
 #include <Ice/Ice.h>
 
+std::unique_ptr<Wt::WPushButton> createStylusBtn(Wt::WTemplate* parent_template = nullptr) {
+    auto stylus_btn = std::make_unique<Wt::WPushButton>("stylus");
+    stylus_btn->setStyleClass("absolute -bottom-[15px] left-1/2 -translate-x-1/2 opacity-20 hover:opacity-60");
+    stylus_btn->clicked().connect([=](){
+        auto dialog = Wt::WApplication::instance()->addChild(std::make_unique<TemplateEditorDialog>("Auth", "login-content", parent_template));
+        dialog->setOffsets(20, Wt::Side::Bottom);
+    });
+    return stylus_btn;
+}
+
 Auth::Auth(std::shared_ptr<Login> login) 
   :  login_(login)
 {
     setTitleBarEnabled(false);
+    setModal(false);
     setOffsets(20, Wt::Side::Top | Wt::Side::Left | Wt::Side::Right);
     // setStyleClass("");
     // contents()->setStyleClass("w-full relative");
@@ -62,6 +74,10 @@ void Auth::createLogin()
     contents()->clear();
     
 	login_template_ = contents()->addWidget(std::make_unique<Wt::WTemplate>(tr("login-content")));
+
+    // Stylus -----
+    auto stylus_btn = login_template_->bindWidget("stylus", createStylusBtn(login_template_));
+    stylus_btn->clicked().emit(Wt::WMouseEvent());
 
     auto email_temp = login_template_->bindWidget("email-input", std::make_unique<Wt::WTemplate>(tr("input-template-normal")));
     email_temp->bindString("label", "Email");
@@ -155,7 +171,15 @@ void Auth::createSignUp() {
     contents()->clear();
 
     registration_template_ = contents()->addWidget(std::make_unique<Wt::WTemplate>(Wt::WString::tr("sign-up-content")));
-    registration_template_->bindWidget("password-requirments", std::make_unique<Wt::WTemplate>(Wt::WString::tr("password-requirments")));
+    
+
+    auto password_requierments_temp = registration_template_->bindWidget("password-requirments", std::make_unique<Wt::WTemplate>(Wt::WString::tr("password-requirments")));
+    password_requierments_temp->addStyleClass("relative");
+
+    // Stylus ------
+    registration_template_->bindWidget("stylus", createStylusBtn(registration_template_));
+    password_requierments_temp->bindWidget("stylus", createStylusBtn(password_requierments_temp));
+
     registration_template_->bindEmpty("submit-info");
 
 	auto photo_uploder_ = registration_template_->bindWidget("photo-uploader", std::make_unique<PhotoUploder>());

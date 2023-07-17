@@ -28,6 +28,8 @@ private:
     Wt::WStackedWidget* stack_;
     Wt::WMenu* nav_menu_;
 
+    Wt::WContainerWidget* portofolio_page_;
+
     FindServicesPage* services_page_;
     OrganizerPage* organizer_page_;
     
@@ -40,4 +42,5 @@ private:
     std::unique_ptr<Wt::WPushButton> createThemeSwitcher();
     // this only handles the underline styles of the nav menu and user menu
     void menuItemSelected(Wt::WMenuItem* selecter_item); 
+    void handleInternalPathChange(const std::string& path);
 };

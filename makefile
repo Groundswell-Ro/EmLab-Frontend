@@ -14,7 +14,7 @@ OBJDIR = ./src/obj
 LDFLAGS =  -lwthttp -lwt -lwtdbo -lIce++11 -lpthread -lssl -lcrypto -lboost_filesystem
 
 # Runtime lib
-RLIB = --docroot . --http-address 0.0.0.0 --http-port 9090
+RLIB = --docroot . --http-address 0.0.0.0 --http-port 9093
 
 
 ############## Creating variables #############

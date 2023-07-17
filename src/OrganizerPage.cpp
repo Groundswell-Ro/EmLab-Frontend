@@ -11,7 +11,7 @@ OrganizerPage::OrganizerPage(std::shared_ptr<Login> login)
 {
     addStyleClass("");
 
-    // createButtonsExampla();
+    createButtonsExampla();
 	createEventsTable();
 }
 
@@ -35,7 +35,6 @@ void OrganizerPage::createEventsTable()
 
 	if(!login_->isLoggedIn()) return;
 	populateEventsTable();
-	
 
 } 
 

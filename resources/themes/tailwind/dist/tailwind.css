@@ -2650,7 +2650,7 @@ svg{
   border-radius: 9999px;
 }
 
-.Wt-dialog{
+.Wt-dialog:not(.stylus){
   margin-left: auto !important;
   margin-right: auto !important;
   max-width: 24rem !important;
@@ -2670,7 +2670,7 @@ svg{
   color: rgb(12 12 12 / var(--tw-text-opacity));
 }
 
-:is(.dark .Wt-dialog){
+:is(.dark .Wt-dialog:not(.stylus)){
   --tw-bg-opacity: 1;
   background-color: rgb(35 35 36 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
@@ -2678,7 +2678,7 @@ svg{
 }
 
 @media (min-width: 640px){
-  .Wt-dialog{
+  .Wt-dialog:not(.stylus){
     margin: 0.75rem;
     max-width: none;
   }
@@ -2888,6 +2888,10 @@ svg{
   }
 }
 
+.static{
+  position: static;
+}
+
 .fixed{
   position: fixed;
 }
@@ -2898,6 +2902,10 @@ svg{
 
 .relative{
   position: relative;
+}
+
+.-bottom-\[15px\]{
+  bottom: -15px;
 }
 
 .-right-14{
@@ -2992,9 +3000,19 @@ svg{
   margin: auto;
 }
 
+.-mx-2{
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
 .mx-1{
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+}
+
+.mx-2{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .mx-3{
@@ -3005,11 +3023,6 @@ svg{
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
-}
-
-.my-0{
-  margin-top: 0px;
-  margin-bottom: 0px;
 }
 
 .my-1{
@@ -3035,26 +3048,6 @@ svg{
 .my-5{
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
-}
-
-.-mx-4{
-  margin-left: -1rem;
-  margin-right: -1rem;
-}
-
-.-mx-6{
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-}
-
-.-mx-8{
-  margin-left: -2rem;
-  margin-right: -2rem;
-}
-
-.-mx-2{
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
 }
 
 .\!mt-0{
@@ -3098,6 +3091,10 @@ svg{
   margin-bottom: 1.25rem;
 }
 
+.mb-6{
+  margin-bottom: 1.5rem;
+}
+
 .mb-7{
   margin-bottom: 1.75rem;
 }
@@ -3109,6 +3106,16 @@ svg{
 .me-1{
   -webkit-margin-end: 0.25rem;
           margin-inline-end: 0.25rem;
+}
+
+.me-2{
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
+}
+
+.me-4{
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
 }
 
 .me-5{
@@ -3176,8 +3183,27 @@ svg{
   margin-top: 2rem;
 }
 
+.-ms-1{
+  -webkit-margin-start: -0.25rem;
+          margin-inline-start: -0.25rem;
+}
+
+.-ms-2{
+  -webkit-margin-start: -0.5rem;
+          margin-inline-start: -0.5rem;
+}
+
+.-ms-4{
+  -webkit-margin-start: -1rem;
+          margin-inline-start: -1rem;
+}
+
 .block{
   display: block;
+}
+
+.inline{
+  display: inline;
 }
 
 .flex{
@@ -3206,6 +3232,10 @@ svg{
 
 .hidden{
   display: none;
+}
+
+.h-1\/2{
+  height: 50%;
 }
 
 .h-12{
@@ -3260,6 +3290,10 @@ svg{
   height: 100%;
 }
 
+.h-\[100\%\]{
+  height: 100%;
+}
+
 .max-h-\[90vh\]{
   max-height: 90vh;
 }
@@ -3268,12 +3302,20 @@ svg{
   max-height: calc(100vh - 5rem);
 }
 
+.min-h-\[400px\]{
+  min-height: 400px;
+}
+
 .min-h-\[8rem\]{
   min-height: 8rem;
 }
 
 .min-h-\[calc\(100vh-5rem\)\]{
   min-height: calc(100vh - 5rem);
+}
+
+.min-h-full{
+  min-height: 100%;
 }
 
 .w-1\/2{
@@ -3353,6 +3395,14 @@ svg{
   width: 100%;
 }
 
+.min-w-\[125px\]{
+  min-width: 125px;
+}
+
+.min-w-\[150px\]{
+  min-width: 150px;
+}
+
 .min-w-\[16rem\]{
   min-width: 16rem;
 }
@@ -3378,8 +3428,20 @@ svg{
   max-width: 80rem;
 }
 
+.max-w-\[100vw\]{
+  max-width: 100vw;
+}
+
 .max-w-\[10rem\]{
   max-width: 10rem;
+}
+
+.max-w-\[125px\]{
+  max-width: 125px;
+}
+
+.max-w-\[150px\]{
+  max-width: 150px;
 }
 
 .max-w-\[600px\]{
@@ -3400,6 +3462,14 @@ svg{
 
 .max-w-sm{
   max-width: 24rem;
+}
+
+.max-w-\[20px\]{
+  max-width: 20px;
+}
+
+.max-w-\[10px\]{
+  max-width: 10px;
 }
 
 .flex-shrink-0{
@@ -3441,6 +3511,11 @@ svg{
 
 .translate-y-1\/2{
   --tw-translate-y: 50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.rotate-90{
+  --tw-rotate: 90deg;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -3538,6 +3613,12 @@ svg{
   gap: 1rem;
 }
 
+.space-x-2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-4 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
@@ -3564,6 +3645,10 @@ svg{
 
 .self-start{
   align-self: flex-start;
+}
+
+.self-stretch{
+  align-self: stretch;
 }
 
 .justify-self-end{
@@ -3596,6 +3681,10 @@ svg{
 
 .whitespace-nowrap{
   white-space: nowrap;
+}
+
+.break-words{
+  overflow-wrap: break-word;
 }
 
 .rounded{
@@ -3656,6 +3745,14 @@ svg{
   border-top-width: 0px;
 }
 
+.border-l{
+  border-left-width: 1px;
+}
+
+.border-l-2{
+  border-left-width: 2px;
+}
+
 .border-solid{
   border-style: solid;
 }
@@ -3702,6 +3799,11 @@ svg{
 .bg-gray-300{
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-gray-50{
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
 .bg-gray-500{
@@ -3817,6 +3919,11 @@ svg{
   padding-right: 0.25rem;
 }
 
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -3865,6 +3972,11 @@ svg{
   padding-bottom: 0.5rem;
 }
 
+.pe-3{
+  -webkit-padding-end: 0.75rem;
+          padding-inline-end: 0.75rem;
+}
+
 .pe-4{
   -webkit-padding-end: 1rem;
           padding-inline-end: 1rem;
@@ -3893,6 +4005,11 @@ svg{
           padding-inline-start: 0.75rem;
 }
 
+.ps-2{
+  -webkit-padding-start: 0.5rem;
+          padding-inline-start: 0.5rem;
+}
+
 .text-left{
   text-align: left;
 }
@@ -3903,10 +4020,6 @@ svg{
 
 .text-start{
   text-align: start;
-}
-
-.text-end{
-  text-align: end;
 }
 
 .font-sans{
@@ -3994,6 +4107,14 @@ svg{
 
 .tracking-wide{
   letter-spacing: 0.025em;
+}
+
+.tracking-tighter{
+  letter-spacing: -0.05em;
+}
+
+.tracking-widest{
+  letter-spacing: 0.1em;
 }
 
 .\!text-red-300{
@@ -4099,6 +4220,10 @@ svg{
 
 .underline-offset-4{
   text-underline-offset: 4px;
+}
+
+.opacity-20{
+  opacity: 0.2;
 }
 
 .opacity-75{
@@ -4218,6 +4343,28 @@ svg{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.\?{
+  outline-style: solid;
+  outline-width: 1px;
+  outline-color: #f16bc9;
+  box-shadow: inset 1px 1px #f16bc9, inset -1px -1px #f16bc9;
+  animation: \?wobble 0.6s ease-in-out alternate infinite;
+}
+
+@keyframes \?wobble{
+  0%{
+    outline-width: 1px;
+    outline-color: #f16bc9;
+    box-shadow: inset 1px 1px #f16bc9, inset -1px -1px #f16bc9;
+  }
+
+  100%{
+    outline-width: 1.5px;
+    outline-color: #f71fb6;
+    box-shadow: inset 1.5px 1.5px #f71fb6, inset -1.5px -1.5px #f71fb6;
+  }
+}
+
 .after\:bg-green-400::after{
   content: var(--tw-content);
   --tw-bg-opacity: 1;
@@ -4234,6 +4381,19 @@ svg{
   background-color: rgb(220 252 231 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-red-400:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 113 113 / var(--tw-bg-opacity));
+}
+
+.hover\:p-20:hover{
+  padding: 5rem;
+}
+
+.hover\:p-4:hover{
+  padding: 1rem;
+}
+
 .hover\:\!text-red-800:hover{
   --tw-text-opacity: 1 !important;
   color: rgb(153 27 27 / var(--tw-text-opacity)) !important;
@@ -4242,6 +4402,10 @@ svg{
 .hover\:\!text-white:hover{
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+.hover\:opacity-60:hover{
+  opacity: 0.6;
 }
 
 .focus\:outline-none:focus{

@@ -1,5 +1,5 @@
 @import url("general.css");
 
-.Wt-dialog {
+.Wt-dialog:not(.stylus) {
     @apply basic-widget !max-w-sm sm:max-w-none border-0 !mx-auto;
 }
